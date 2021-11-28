@@ -1,11 +1,11 @@
 {
-  "name": "gatsby-starter-blog",
+  "name": "kxxt-website",
   "private": true,
-  "description": "A starter for a blog powered by Gatsby and Markdown",
+  "description": "kxxt's personal website",
   "version": "0.1.0",
-  "author": "Kyle Mathews <mathews.kyle@gmail.com>",
+  "author": "kxxt <rsworktech@outlook.com>",
   "bugs": {
-    "url": "https://github.com/gatsbyjs/gatsby/issues"
+    "url": "https://github.com/kxxt/kxxt.github.io/issues"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
@@ -43,15 +43,15 @@
   "devDependencies": {
     "prettier": "^2.4.1"
   },
-  "homepage": "https://github.com/gatsbyjs/gatsby-starter-blog#readme",
+  "homepage": "https://kxxt.github.io",
   "keywords": [
-    "gatsby"
+    "gatsby", "blog", "personal website"
   ],
-  "license": "0BSD",
+  "license": "See LICENSE",
   "main": "n/a",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gatsbyjs/gatsby-starter-blog.git"
+    "url": "git+https://github.com/kxxt/kxxt.github.io.git"
   },
   "scripts": {
     "build": "gatsby build",
