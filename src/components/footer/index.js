@@ -23,7 +23,7 @@ const Footer = () => {
             Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
           </div>
           <div className="column is-3">
-            <h4 className="subtitle">Contact</h4>
+            <h4 id="contact" className="subtitle">Contact</h4>
             <ul>
               <li>
                 <a href="https://github.com/kxxt">
