@@ -1,0 +1,12 @@
+.blog-summary {
+  margin-bottom: 20px;
+
+  & > header {
+    & > :global(h2.title) {
+      margin-bottom: 0.4rem;
+    }
+    & > :global(.tags) {
+      margin-top: 0.3rem;
+    }
+  }
+}
