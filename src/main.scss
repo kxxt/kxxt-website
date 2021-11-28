@@ -1,0 +1,45 @@
+@charset "utf-8";
+
+
+@import "~bulma/bulma.sass";
+
+
+#main-container {
+  margin-top: 1rem;
+}
+
+#index-hero {
+  background-image: url("images/hero-image.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  & > .hero-body {
+    flex-direction: column;
+    justify-content: center;
+
+    & > .title {
+      color: yellow;
+      background-color: #000000c9;
+      padding: 10px;
+      margin-bottom: 32px;
+      margin-top: 10px;
+    }
+
+    & > .subtitle {
+      color: yellow;
+      background-color: #000000d4;
+      padding: 10px 20px 10px;
+      text-align: center;
+      font-size: 1.35rem;
+      line-height: 1.8rem;
+      margin-top: 0;
+    }
+
+  }
+}
+
+@include touch {
+  #main-container {
+    padding: 0 2em;
+  }
+}
