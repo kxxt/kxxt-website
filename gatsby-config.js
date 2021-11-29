@@ -1,15 +1,12 @@
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Starter Blog`,
+    title: `kxxt`,
     author: {
-      name: `Kyle Mathews`,
-      summary: `who lives and works in San Francisco building useful things.`
+      name: `kxxt`,
+      summary: `A student studying Data Science and Artificial Intelligence. Major Language: C# and Python. My personal chinese TG channel: https://t.me/kxxtchannel`
     },
-    description: `A starter blog demonstrating what Gatsby can do.`,
-    siteUrl: `https://gatsbystarterblogsource.gatsbyjs.io/`,
-    social: {
-      twitter: `kylemathews`
-    }
+    description: `kxxt's personal website`,
+    siteUrl: `https://kxxt.vercel.app/`
   },
   plugins: [
     `gatsby-plugin-sass`,
@@ -21,10 +18,34 @@ module.exports = {
         path: `${__dirname}/src/images`
       }
     },
+    "gatsby-transformer-remark",
     {
       resolve: `gatsby-plugin-mdx`,
       options: {
         extensions: [`.mdx`, `.md`],
+        remarkPlugins: [
+          // "@fec/remark-a11y-emoji/gatsby"
+        ],
+        gatsbyRemarkPlugins: [
+          "gatsby-remark-smartypants",
+          `gatsby-remark-copy-linked-files`,
+          `gatsby-remark-responsive-iframe`,
+          `gatsby-remark-images`,
+          {
+            resolve: `gatsby-remark-prismjs`,
+            options: {
+              classPrefix: "language-",
+              inlineCodeMarker: null,
+              showLineNumbers: true,
+              aliases: { sh: "bash" },
+              prompt: {
+                user: "root",
+                host: "localhost",
+                global: false
+              }
+            }
+          }
+        ]
       }
     },
     {
@@ -39,7 +60,7 @@ module.exports = {
       options: {
         path: `${__dirname}/content/blog`
 
-      },
+      }
     },
     // {
     //   resolve: `gatsby-transformer-remark`,
@@ -126,15 +147,15 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `Gatsby Starter Blog`,
-        short_name: `GatsbyJS`,
+        name: `kxxt`,
+        short_name: `kxxt`,
         start_url: `/`,
         background_color: `#ffffff`,
         // This will impact how browsers show your PWA/website
         // https://css-tricks.com/meta-theme-color-and-trickery/
         // theme_color: `#663399`,
         display: `minimal-ui`,
-        icon: `src/images/gatsby-icon.png` // This path is relative to the root of the site.
+        icon: `src/images/profile-pic.png` // This path is relative to the root of the site.
       }
     },
     `gatsby-plugin-react-helmet`
