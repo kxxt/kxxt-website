@@ -1,14 +1,22 @@
 import * as React from "react"
 import { Link, graphql } from "gatsby"
+import { MDXProvider } from "@mdx-js/react"
+import { MDXRenderer } from "gatsby-plugin-mdx"
 
-import Bio from "../components/bio"
-import Layout from "../components/layout"
-import Seo from "../components/seo"
+import Layout from "./layout"
+import Seo from "./seo"
+import Tags from "./tags"
+
+import * as styles from "./blog-post.module.scss"
+import BlogPostNav from "./blog-post-nav"
+
+const shortcodes = { Link } // Provide common components here
 
 const BlogPostTemplate = ({ data, location }) => {
   const post = data.mdx
   const siteTitle = data.site.siteMetadata?.title || `Title`
   const { previous, next } = data
+
 
   return (
     <Layout location={location} title={siteTitle}>
@@ -21,45 +29,17 @@ const BlogPostTemplate = ({ data, location }) => {
         itemScope
         itemType="http://schema.org/Article"
       >
-        <header>
+        <header className={styles.postHeader}>
           <h1 itemProp="headline">{post.frontmatter.title}</h1>
-          <p>{post.frontmatter.date}</p>
+          <p>{post.frontmatter.date} · {post.timeToRead} min read</p>
+          <Tags tags={post.frontmatter.tags} />
         </header>
-        <section
-          dangerouslySetInnerHTML={{ __html: post.body }}
-          itemProp="articleBody"
-        />
+        <MDXProvider components={shortcodes}>
+          <MDXRenderer frontmatter={post.frontmatter}>{post.body}</MDXRenderer>
+        </MDXProvider>
         <hr />
-        <footer>
-          <Bio />
-        </footer>
       </article>
-      <nav className="blog-post-nav">
-        <ul
-          style={{
-            display: `flex`,
-            flexWrap: `wrap`,
-            justifyContent: `space-between`,
-            listStyle: `none`,
-            padding: 0
-          }}
-        >
-          <li>
-            {previous && (
-              <Link to={previous.slug} rel="prev">
-                ← {previous.frontmatter.title}
-              </Link>
-            )}
-          </li>
-          <li>
-            {next && (
-              <Link to={next.slug} rel="next">
-                {next.frontmatter.title} →
-              </Link>
-            )}
-          </li>
-        </ul>
-      </nav>
+      <BlogPostNav next={next} previous={previous} />
     </Layout>
   )
 }
@@ -80,23 +60,29 @@ export const pageQuery = graphql`
         mdx(id: { eq: $id }) {
             id
             excerpt(pruneLength: 160)
+            timeToRead
             body
             frontmatter {
                 title
+                tags
                 date(formatString: "MMMM DD, YYYY")
                 description
             }
         }
         previous: mdx(id: { eq: $previousPostId }) {
             slug
+            timeToRead
             frontmatter {
                 title
+                date(formatString: "MMMM DD, YYYY")
             }
         }
         next: mdx(id: { eq: $nextPostId }) {
             slug
+            timeToRead
             frontmatter {
                 title
+                date(formatString: "MMMM DD, YYYY")
             }
         }
     }

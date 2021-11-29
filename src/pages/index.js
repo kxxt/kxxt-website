@@ -111,6 +111,7 @@ export const pageQuery = graphql`
             nodes {
                 excerpt
                 slug
+                timeToRead
                 frontmatter {
                     date(formatString: "MMMM DD, YYYY")
                     title

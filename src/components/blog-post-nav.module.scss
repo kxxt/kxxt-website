@@ -1,0 +1,34 @@
+@import "~bulma/sass/utilities/mixins";
+
+
+.blog-post-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  list-style: none;
+  padding: 0;
+
+  & > :global(.box) {
+    height: min-content;
+
+    & > a {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      & > .arrow {
+        font-size: 1.5rem;
+      }
+
+      & > div > :global(.subtitle) {
+        margin-bottom: 0.5rem;
+      }
+    }
+  }
+}
+
+
+@include mobile() {
+  .blog-post-nav > :global(.box) {
+    width: 100%;
+  }
+}

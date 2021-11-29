@@ -5,7 +5,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   const { createPage } = actions
 
   // Define a template for blog post
-  const blogPost = path.resolve(`./src/templates/blog-post.js`)
+  const blogPost = path.resolve(`./src/components/blog-post.js`)
 
   // Get all markdown blog posts sorted by date
   const result = await graphql(
@@ -26,7 +26,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
 
   if (result.errors) {
     reporter.panicOnBuild(
-      `There was an error loading your blog posts`,
+      `There was an error querying your blog posts`,
       result.errors
     )
     return
@@ -44,7 +44,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
       const nextPostId = index === posts.length - 1 ? null : posts[index + 1].id
 
       createPage({
-        path: post.slug,
+        path: `blog/${post.slug}`,
         component: blogPost,
         context: {
           id: post.id,

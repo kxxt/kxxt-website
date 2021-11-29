@@ -1,9 +1,10 @@
 import React from "react"
 import { Link } from "gatsby"
 import * as styles from "./blog-summary.module.scss"
+import Tags from "./tags"
 
 const BlogSummary = ({ post }) => {
-  const title = post.frontmatter.title || post.fields.slug
+  const title = post.frontmatter.title || post.slug
   return (
     <article
       className={`${styles.blogSummary} box`}
@@ -12,23 +13,12 @@ const BlogSummary = ({ post }) => {
     >
       <header>
         <h2 className="title is-4">
-          <Link to={post.slug} itemProp="url">
+          <Link to={`/blog/${post.slug}`} itemProp="url">
             <span itemProp="headline">{title}</span>
           </Link>
         </h2>
-        <small>{post.frontmatter.date}</small>
-        <div className="tags">
-          {post.frontmatter.tags.map(tag => (
-            <Link
-              key={tag}
-              to={`/tags/${tag}/`}
-              className="tag is-primary"
-              itemProp="keywords"
-            >
-              {tag}
-            </Link>
-          ))}
-        </div>
+        <small>{post.frontmatter.date} · {post.timeToRead} min read</small>
+        <Tags tags={post.frontmatter.tags} />
       </header>
       <section>
         <p
