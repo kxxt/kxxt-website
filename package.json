@@ -12,6 +12,8 @@
     "@fortawesome/free-brands-svg-icons": "^5.15.4",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@fortawesome/react-fontawesome": "^0.1.16",
+    "@mdx-js/mdx": "^1.6.22",
+    "@mdx-js/react": "^1.6.22",
     "bulma": "^0.9.3",
     "gatsby": "^4.2.0",
     "gatsby-plugin-feed": "^4.2.0",
@@ -19,7 +21,9 @@
     "gatsby-plugin-google-analytics": "^4.2.0",
     "gatsby-plugin-image": "^2.2.0",
     "gatsby-plugin-manifest": "^4.2.0",
+    "gatsby-plugin-mdx": "^3.2.0",
     "gatsby-plugin-offline": "^5.2.0",
+    "gatsby-plugin-page-creator": "^4.2.0",
     "gatsby-plugin-react-helmet": "^5.2.0",
     "gatsby-plugin-sass": "^5.2.0",
     "gatsby-plugin-sharp": "^4.2.0",
@@ -41,11 +45,14 @@
     "typeface-montserrat": "0.0.75"
   },
   "devDependencies": {
+    "gh-pages": "^3.2.3",
     "prettier": "^2.4.1"
   },
   "homepage": "https://kxxt.github.io",
   "keywords": [
-    "gatsby", "blog", "personal website"
+    "gatsby",
+    "blog",
+    "personal website"
   ],
   "license": "See LICENSE",
   "main": "n/a",
@@ -57,6 +64,7 @@
     "build": "gatsby build",
     "develop": "gatsby develop",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
+    "deploy": "gatsby build && gh-pages -d public",
     "start": "gatsby develop",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
