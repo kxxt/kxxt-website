@@ -12,7 +12,7 @@ const BlogSummary = ({ post }) => {
     >
       <header>
         <h2 className="title is-4">
-          <Link to={post.fields.slug} itemProp="url">
+          <Link to={post.slug} itemProp="url">
             <span itemProp="headline">{title}</span>
           </Link>
         </h2>

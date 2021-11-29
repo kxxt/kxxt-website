@@ -9,7 +9,7 @@ import BlogSummary from "../components/blog-summary"
 
 const BlogIndex = ({ data, location }) => {
   const siteTitle = data.site.siteMetadata?.title || `Title`
-  const posts = data.allMarkdownRemark.nodes
+  const posts = data.allMdx.nodes
   const line1 = `Welcome to my <strong style="color: orangered;">personal website</strong>!<br/>`
   const line2 = `${line1}I'm a <strong style="color: cyan;">software developer</strong>.`
   const line3 = `${line2}<br/>I speak <em style="color: cornflowerblue;">English</em> and <em style="color: palevioletred;">Chinese</em>.`
@@ -88,7 +88,7 @@ const BlogIndex = ({ data, location }) => {
       <ol style={{ listStyle: `none` }}>
         {posts.map(post => {
           return (
-            <li key={post.fields.slug}>
+            <li key={post.slug}>
               <BlogSummary post={post} />
             </li>
           )
@@ -107,12 +107,10 @@ export const pageQuery = graphql`
                 title
             }
         }
-        allMarkdownRemark(sort: {fields: [frontmatter___date], order: DESC}) {
+        allMdx(sort: {fields: [frontmatter___date], order: DESC}) {
             nodes {
                 excerpt
-                fields {
-                    slug
-                }
+                slug
                 frontmatter {
                     date(formatString: "MMMM DD, YYYY")
                     title
