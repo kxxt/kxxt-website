@@ -3,7 +3,7 @@ import { graphql } from "gatsby"
 
 import Layout from "../components/layout"
 import Seo from "../components/seo"
-import Tags from "../components/tags"
+import Tags from "../components/tags/tags"
 
 const TagsPage = ({ data, location }) => {
   const title = "Tags"

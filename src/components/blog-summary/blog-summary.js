@@ -1,7 +1,7 @@
 import React from "react"
 import { Link } from "gatsby"
 import * as styles from "./blog-summary.module.scss"
-import Tags from "../tags"
+import Tags from "../tags/tags"
 
 const BlogSummary = ({ post }) => {
   const title = post.frontmatter.title || post.slug

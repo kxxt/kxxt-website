@@ -5,7 +5,7 @@ import { MDXRenderer } from "gatsby-plugin-mdx"
 
 import Layout from "../components/layout"
 import Seo from "../components/seo"
-import Tags from "../components/tags"
+import Tags from "../components/tags/tags"
 
 import * as styles from "./blog-post.module.scss"
 import BlogBottomNav from "../components/blog-bottom-nav/blog-bottom-nav"

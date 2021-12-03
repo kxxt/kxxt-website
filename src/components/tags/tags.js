@@ -1,6 +1,6 @@
 import React from "react"
 import { Link } from "gatsby"
-
+import * as styles from "./tags.module.scss"
 
 const TagLink = ({ tag, totalCount = 0, fontSize }) => {
   return (
@@ -14,10 +14,9 @@ const TagLink = ({ tag, totalCount = 0, fontSize }) => {
   )
 }
 
-const Tags = ({ tags, withCount = false, fontSize = "14px" }) => {
-
+const Tags = ({ tags, withCount = false, fontSize = "14px", inline = false }) => {
   return (
-    <div className="tags">
+    <div className={`tags ${inline ? styles.tagsInline : ""}`}>
       {
         withCount
           ? tags.map(({ tag, totalCount }) => (
