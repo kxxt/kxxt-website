@@ -9,6 +9,10 @@ module.exports = {
     siteUrl: `https://kxxt.vercel.app/`
   },
   plugins: [
+    // {
+    //   resolve: "gatsby-plugin-exclude",
+    //   options: { paths: ["/content/**"] }
+    // },
     `gatsby-plugin-sass`,
     `gatsby-plugin-image`,
     {
@@ -27,10 +31,15 @@ module.exports = {
           // "@fec/remark-a11y-emoji/gatsby"
         ],
         gatsbyRemarkPlugins: [
+          `gatsby-remark-autolink-headers`,
           "gatsby-remark-smartypants",
           `gatsby-remark-copy-linked-files`,
           `gatsby-remark-responsive-iframe`,
           `gatsby-remark-images`,
+          {
+            resolve: `gatsby-remark-embed-snippet`,
+            options: {}
+          },
           {
             resolve: `gatsby-remark-prismjs`,
             options: {
@@ -62,29 +71,6 @@ module.exports = {
 
       }
     },
-    // {
-    //   resolve: `gatsby-transformer-remark`,
-    //   options: {
-    //     plugins: [
-    //       {
-    //         resolve: `gatsby-remark-images`,
-    //         options: {
-    //           maxWidth: 1024,
-    //           sizeByPixelDensity: true
-    //         }
-    //       },
-    //       {
-    //         resolve: `gatsby-remark-responsive-iframe`,
-    //         options: {
-    //           wrapperStyle: `margin-bottom: 1.0725rem`
-    //         }
-    //       },
-    //       `gatsby-remark-prismjs`,
-    //       `gatsby-remark-copy-linked-files`,
-    //       `gatsby-remark-smartypants`
-    //     ]
-    //   }
-    // },
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
     // {
