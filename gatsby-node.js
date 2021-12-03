@@ -57,15 +57,17 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   }
 
   const tags = result.data.allMdx.group
-  tags.forEach(({ tag, totalCount }) => {
-    createPage({
-      path: `/tags/${_.kebabCase(tag)}/`,
-      component: path.resolve(`./src/templates/tag-page.js`),
-      context: {
-        tag, totalCount
-      }
+  if (tags.length > 0) {
+    tags.forEach(({ tag, totalCount }) => {
+      createPage({
+        path: `/tags/${_.kebabCase(tag)}/`,
+        component: path.resolve(`./src/templates/tag-page.js`),
+        context: {
+          tag, totalCount
+        }
+      })
     })
-  })
+  }
 }
 
 exports.onCreateNode = ({ node, actions, getNode }) => {
