@@ -14,12 +14,10 @@ const shortcodes = { Link } // Provide common components here
 
 const BlogPostTemplate = ({ data, location }) => {
   const post = data.mdx
-  const siteTitle = data.site.siteMetadata?.title || `Title`
   const { previous, next } = data
 
-
   return (
-    <Layout location={location} title={siteTitle}>
+    <Layout location={location}>
       <Seo
         title={post.frontmatter.title}
         description={post.frontmatter.description || post.excerpt}
