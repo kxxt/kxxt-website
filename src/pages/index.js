@@ -5,7 +5,7 @@ import Layout from "../components/layout"
 import Seo from "../components/seo"
 import ReactTyped from "react-typed"
 import { StaticImage } from "gatsby-plugin-image"
-import BlogSummaryList from "../components/blog-summary-list"
+import BlogSummaryList from "../components/blog-summary/blog-summary-list"
 
 const BlogIndex = ({ data, location }) => {
   const siteTitle = data.site.siteMetadata?.title || `Title`

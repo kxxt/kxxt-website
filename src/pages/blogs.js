@@ -3,7 +3,7 @@ import { graphql } from "gatsby"
 
 import Layout from "../components/layout"
 import Seo from "../components/seo"
-import BlogSummaryList from "../components/blog-summary-list"
+import BlogSummaryList from "../components/blog-summary/blog-summary-list"
 
 const BlogsPage = ({ data, location }) => {
   const posts = data.allMdx.nodes

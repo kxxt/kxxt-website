@@ -1,7 +1,7 @@
 import React from "react"
 import { Link } from "gatsby"
 
-import * as styles from "./blog-post-nav.module.scss"
+import * as styles from "./blog-bottom-nav.module.scss"
 
 const navContentConfig = {
   prev: {
@@ -16,7 +16,7 @@ const navContentConfig = {
   }
 }
 
-const BlogPostNavContent = ({ post, pos }) => {
+const BlogBottomNavContent = ({ post, pos }) => {
 
   return (
     <li className="box">
@@ -40,15 +40,15 @@ const BlogPostNavContent = ({ post, pos }) => {
   )
 }
 
-const BlogPostNav = ({ next, previous }) => {
+const BlogBottomNav = ({ next, previous }) => {
   return (
     <nav>
       <ul className={styles.blogPostNav}>
-        {previous ? <BlogPostNavContent post={previous} pos="prev" /> : <li />}
-        {next && <BlogPostNavContent post={next} pos="next" />}
+        {previous ? <BlogBottomNavContent post={previous} pos="prev" /> : <li />}
+        {next && <BlogBottomNavContent post={next} pos="next" />}
       </ul>
     </nav>
   )
 }
 
-export default BlogPostNav
+export default BlogBottomNav

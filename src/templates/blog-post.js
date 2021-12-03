@@ -8,7 +8,7 @@ import Seo from "../components/seo"
 import Tags from "../components/tags"
 
 import * as styles from "./blog-post.module.scss"
-import BlogPostNav from "../components/blog-post-nav"
+import BlogBottomNav from "../components/blog-bottom-nav/blog-bottom-nav"
 
 const shortcodes = { Link } // Provide common components here
 
@@ -39,7 +39,7 @@ const BlogPostTemplate = ({ data, location }) => {
         </MDXProvider>
         <hr />
       </article>
-      <BlogPostNav next={next} previous={previous} />
+      <BlogBottomNav next={next} previous={previous} />
     </Layout>
   )
 }
