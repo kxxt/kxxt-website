@@ -2,10 +2,11 @@ import React from "react"
 import { faGithub, faTelegram } from "@fortawesome/free-brands-svg-icons"
 import { faAt } from "@fortawesome/free-solid-svg-icons"
 import IconText from "../icon-text"
+import * as styles from "./footer.module.scss"
 
 const Footer = () => {
   return (
-    <footer className="footer">
+    <footer className={`footer ${styles.pageFooter}`}>
       <div className="container">
         <div className="columns">
           <div className="column is-3">
