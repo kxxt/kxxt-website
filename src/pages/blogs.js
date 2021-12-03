@@ -29,15 +29,7 @@ export const pageQuery = graphql`
         }
         allMdx(sort: {fields: [frontmatter___date], order: DESC}) {
             nodes {
-                excerpt
-                slug
-                timeToRead
-                frontmatter {
-                    date(formatString: "MMMM DD, YYYY")
-                    title
-                    description
-                    tags
-                }
+                ...BlogSummaryFields
             }
         }
     }

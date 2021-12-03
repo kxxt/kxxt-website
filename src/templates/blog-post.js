@@ -58,32 +58,13 @@ export const pageQuery = graphql`
             }
         }
         mdx(id: { eq: $id }) {
-            id
-            excerpt(pruneLength: 160)
-            timeToRead
-            body
-            frontmatter {
-                title
-                tags
-                date(formatString: "MMMM DD, YYYY")
-                description
-            }
+            ...BlogFields
         }
         previous: mdx(id: { eq: $previousPostId }) {
-            slug
-            timeToRead
-            frontmatter {
-                title
-                date(formatString: "MMMM DD, YYYY")
-            }
+            ...BlogQuickInfoFields
         }
         next: mdx(id: { eq: $nextPostId }) {
-            slug
-            timeToRead
-            frontmatter {
-                title
-                date(formatString: "MMMM DD, YYYY")
-            }
+            ...BlogQuickInfoFields
         }
     }
 `
