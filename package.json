@@ -65,7 +65,7 @@
     "build": "gatsby build",
     "develop": "gatsby develop",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
-    "deploy": "gatsby build && gh-pages -d public",
+    "deploy": "gatsby build && gh-pages -d public -r https://github.com/kxxt/kxxt.github.io",
     "start": "gatsby develop",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
