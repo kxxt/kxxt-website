@@ -83,7 +83,7 @@ const BlogIndex = ({ data, location }) => {
 
   return (
     <Layout location={location} title={siteTitle} hero={hero}>
-      <Seo title="All posts" />
+      <Seo title="Home" />
 
       <ol style={{ listStyle: `none` }}>
         {posts.map(post => {
