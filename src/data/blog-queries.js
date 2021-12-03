@@ -27,7 +27,7 @@ export const blogQuickInfoFields = graphql`
 
 export const blogSummaryFields = graphql`
     fragment BlogSummaryFields on Mdx {
-        excerpt
+        excerpt(pruneLength: 160)
         slug
         timeToRead
         frontmatter {
