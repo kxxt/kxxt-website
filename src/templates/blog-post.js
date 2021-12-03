@@ -3,12 +3,12 @@ import { Link, graphql } from "gatsby"
 import { MDXProvider } from "@mdx-js/react"
 import { MDXRenderer } from "gatsby-plugin-mdx"
 
-import Layout from "./layout"
-import Seo from "./seo"
-import Tags from "./tags"
+import Layout from "../components/layout"
+import Seo from "../components/seo"
+import Tags from "../components/tags"
 
 import * as styles from "./blog-post.module.scss"
-import BlogPostNav from "./blog-post-nav"
+import BlogPostNav from "../components/blog-post-nav"
 
 const shortcodes = { Link } // Provide common components here
 
