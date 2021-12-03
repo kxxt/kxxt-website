@@ -5,7 +5,7 @@ import Layout from "../components/layout"
 import Seo from "../components/seo"
 import ReactTyped from "react-typed"
 import { StaticImage } from "gatsby-plugin-image"
-import BlogSummary from "../components/blog-summary"
+import BlogSummaryList from "../components/blog-summary-list"
 
 const BlogIndex = ({ data, location }) => {
   const siteTitle = data.site.siteMetadata?.title || `Title`
@@ -85,15 +85,7 @@ const BlogIndex = ({ data, location }) => {
     <Layout location={location} title={siteTitle} hero={hero}>
       <Seo title="Home" />
 
-      <ol style={{ listStyle: `none` }}>
-        {posts.map(post => {
-          return (
-            <li key={post.slug}>
-              <BlogSummary post={post} />
-            </li>
-          )
-        })}
-      </ol>
+      <BlogSummaryList posts={posts} />
     </Layout>
   )
 }
