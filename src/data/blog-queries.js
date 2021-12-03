@@ -2,7 +2,6 @@ import { graphql } from "gatsby"
 
 export const blogFields = graphql`
     fragment BlogFields on Mdx {
-        id
         excerpt(pruneLength: 160)
         timeToRead
         body
@@ -37,6 +36,5 @@ export const blogSummaryFields = graphql`
             description
             tags
         }
-        
     }
 `
