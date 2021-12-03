@@ -31,6 +31,7 @@ const BlogIndex = ({ data, location }) => {
   const learningsLines = learnings.map(learning => `${langsSummaryLine}<br/>I'm learning ${learning}.^1000`)
   const learningsSummaryLine = `${langsSummaryLine}<br/>I'm learning ${learnings.join(", ")}.`
   const softwareLine = `${learningsSummaryLine}<br/>I'm the creator and maintainer of <a href="https://github.com/kxxt/WSLDiskShrinker"><strong style="background: darkturquoise;color: palegoldenrod;text-decoration-line: underline;">WSL Disk Shrinker</strong></a>.`
+  const websiteLine = `${softwareLine}<br/>I built this site with <strong style="color: mediumpurple;">Gatsby.js</strong> and <strong style="color: cyan;">Bulma.</strong>`
   const strings = [
     line1,
     line2,
@@ -42,7 +43,8 @@ const BlogIndex = ({ data, location }) => {
     langsSummaryLine,
     ...learningsLines,
     learningsSummaryLine,
-    softwareLine
+    softwareLine,
+    websiteLine
   ]
   const hero = (
     <section id="index-hero" className="hero is-link is-fullheight-with-navbar">
