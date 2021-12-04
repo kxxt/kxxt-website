@@ -61,11 +61,6 @@ module.exports = {
               inlineCodeMarker: null,
               showLineNumbers: true,
               aliases: { sh: "bash" },
-              prompt: {
-                user: "root",
-                host: "localhost",
-                global: false
-              }
             }
           }
         ]

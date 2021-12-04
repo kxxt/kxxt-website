@@ -47,3 +47,61 @@
 html {
   scroll-behavior: smooth;
 }
+
+
+/* Adjust the position of the line numbers */
+.gatsby-highlight pre[class*="language-"].line-numbers {
+  padding-left: 2rem;
+}
+
+/**
+ * If you only want to use line numbering
+ */
+
+.gatsby-highlight {
+  background-color: #fdf6e3;
+  border-radius: 0.3em;
+  margin: 0.5em 0;
+  padding: 1.5rem 1.5rem;
+  overflow: auto;
+  position: relative;
+
+  &::before {
+    content: attr(data-language);
+    margin-bottom: -1.5rem;
+    border-radius: 0 0 5px 5px;
+    font-size: 0.9rem;
+    background-color: cyan;
+    padding: 0.1rem 0.4rem;
+    position: absolute;
+    left: 2rem;
+    top: 0;
+  }
+}
+
+.gatsby-highlight pre[class*="language-"].line-numbers {
+  padding: 0;
+  padding-left: 2rem;
+  overflow: initial;
+}
+
+.command-line-prompt > span:before {
+  color: #999;
+  content: " ";
+  display: block;
+  padding-right: 0.8em;
+}
+
+/* Prompt for all users */
+.command-line-prompt > span[data-user]:before {
+  content: "[" attr(data-user) "@" attr(data-host) "] $";
+}
+
+/* Prompt for root */
+.command-line-prompt > span[data-user="root"]:before {
+  content: "[" attr(data-user) "@" attr(data-host) "] #";
+}
+
+.command-line-prompt > span[data-prompt]:before {
+  content: attr(data-prompt);
+}
