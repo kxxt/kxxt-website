@@ -22,6 +22,7 @@ module.exports = {
         path: `${__dirname}/src/images`
       }
     },
+    `gatsby-plugin-smoothscroll`,
     {
       resolve: `gatsby-plugin-mdx`,
       options: {
@@ -43,6 +44,7 @@ module.exports = {
               }
             }
           },
+          `gatsby-remark-graphviz`,
           `gatsby-remark-autolink-headers`,
           "gatsby-remark-smartypants",
           `gatsby-remark-copy-linked-files`,
