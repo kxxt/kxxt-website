@@ -27,12 +27,22 @@ module.exports = {
       options: {
         extensions: [`.mdx`, `.md`],
         remarkPlugins: [
-          require("remark-math"),
+          require("remark-math")
         ],
         rehypePlugins: [
           require("rehype-katex")
         ],
         gatsbyRemarkPlugins: [
+          {
+            resolve: `gatsby-remark-mermaid`,
+            options: {
+              mermaidOptions: {
+                // Fix mermaid and bulma css conflicts.
+                // .label styles in bulma will override .label styles in mermaid
+                themeCSS: ".label { font-size: inherit!important; font-weight: inherit!important; line-height: initial!important; }"
+              }
+            }
+          },
           `gatsby-remark-autolink-headers`,
           "gatsby-remark-smartypants",
           `gatsby-remark-copy-linked-files`,
