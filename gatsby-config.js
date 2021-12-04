@@ -22,13 +22,15 @@ module.exports = {
         path: `${__dirname}/src/images`
       }
     },
-    "gatsby-transformer-remark",
     {
       resolve: `gatsby-plugin-mdx`,
       options: {
         extensions: [`.mdx`, `.md`],
         remarkPlugins: [
-          // "@fec/remark-a11y-emoji/gatsby"
+          require("remark-math"),
+        ],
+        rehypePlugins: [
+          require("rehype-katex")
         ],
         gatsbyRemarkPlugins: [
           `gatsby-remark-autolink-headers`,

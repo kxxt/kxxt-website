@@ -6,9 +6,10 @@ import { MDXRenderer } from "gatsby-plugin-mdx"
 import Layout from "../components/layout"
 import Seo from "../components/seo"
 import Tags from "../components/tags/tags"
+import BlogBottomNav from "../components/blog-bottom-nav/blog-bottom-nav"
 
 import * as styles from "./blog-post.module.scss"
-import BlogBottomNav from "../components/blog-bottom-nav/blog-bottom-nav"
+import "katex/dist/katex.min.css"
 
 const shortcodes = { Link } // Provide common components here
 
