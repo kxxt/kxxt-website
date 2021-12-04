@@ -1,3 +1,5 @@
+esmRequire = require("./esm-require")
+
 module.exports = {
   siteMetadata: {
     title: `kxxt`,
@@ -31,7 +33,7 @@ module.exports = {
           require("remark-math")
         ],
         rehypePlugins: [
-          require("rehype-katex")
+          esmRequire("rehype-katex").default
         ],
         gatsbyRemarkPlugins: [
           {
@@ -60,7 +62,7 @@ module.exports = {
               classPrefix: "language-",
               inlineCodeMarker: null,
               showLineNumbers: true,
-              aliases: { sh: "bash" },
+              aliases: { sh: "bash" }
             }
           }
         ]
