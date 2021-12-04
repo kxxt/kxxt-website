@@ -6473,6 +6473,16 @@ gatsby-remark-embed-snippet@^7.3.0:
     parse-numeric-range "^1.2.0"
     unist-util-map "^2.0.1"
 
+gatsby-remark-graphviz@^4.3.0:
+  version "4.3.0"
+  resolved "https://registry.npmjs.org/gatsby-remark-graphviz/-/gatsby-remark-graphviz-4.3.0.tgz#9e0fd9e91c792ea7d098f6b980691f238e179683"
+  integrity sha512-AuxsYu342qCHVldc0yWzqKMGDq6wFFeQaMmuMgEOIs48HwNy/zaQ2O6EBQzR2L6n6Kzf9kkei/xPin9nuU3FNw==
+  dependencies:
+    "@babel/runtime" "^7.15.4"
+    cheerio "^1.0.0-rc.10"
+    unist-util-visit "^2.0.3"
+    viz.js "^2.1.2"
+
 gatsby-remark-images@^6.2.0:
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/gatsby-remark-images/-/gatsby-remark-images-6.2.0.tgz#8428d594362dfef81b78d055785063cc8b0e34b2"
@@ -13740,6 +13750,11 @@ vfile@^4.0.0:
     is-buffer "^2.0.0"
     unist-util-stringify-position "^2.0.0"
     vfile-message "^2.0.0"
+
+viz.js@^2.1.2:
+  version "2.1.2"
+  resolved "https://registry.npmjs.org/viz.js/-/viz.js-2.1.2.tgz#6f09cd4e10af28754a6d50b055bd2e4a7693983a"
+  integrity sha512-UO6CPAuEMJ8oNR0gLLNl+wUiIzQUsyUOp8SyyDKTqVRBtq7kk1VnFmIZW8QufjxGrGEuI+LVR7p/C7uEKy0LQw==
 
 watchpack@^2.2.0:
   version "2.2.0"
