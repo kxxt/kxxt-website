@@ -8,6 +8,7 @@
     "url": "https://github.com/kxxt/kxxt.github.io/issues"
   },
   "dependencies": {
+    "@babel/core": "^7.16.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/free-brands-svg-icons": "^5.15.4",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
@@ -53,7 +54,8 @@
   },
   "devDependencies": {
     "gh-pages": "^3.2.3",
-    "prettier": "^2.4.1"
+    "prettier": "^2.4.1",
+    "webpack": "^5.64.4"
   },
   "homepage": "https://kxxt.github.io",
   "keywords": [
