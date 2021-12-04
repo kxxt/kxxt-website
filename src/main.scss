@@ -54,10 +54,6 @@ html {
   padding-left: 2rem;
 }
 
-/**
- * If you only want to use line numbering
- */
-
 .gatsby-highlight {
   background-color: #fdf6e3;
   border-radius: 0.3em;
@@ -69,6 +65,8 @@ html {
   &::before {
     content: attr(data-language);
     margin-bottom: -1.5rem;
+    min-width: 2rem;
+    text-align: center;
     border-radius: 0 0 5px 5px;
     font-size: 0.9rem;
     background-color: cyan;
