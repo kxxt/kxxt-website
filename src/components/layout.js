@@ -2,6 +2,7 @@ import * as React from "react"
 import Navbar from "./navbar"
 import Footer from "./footer"
 import { Helmet } from "react-helmet"
+import * as styles from "./layout.module.scss"
 
 const Layout = ({ location, children, hero = null, sidebar = null, bottom = null }) => {
   const rootPath = `${__PATH_PREFIX__}/`
@@ -17,7 +18,7 @@ const Layout = ({ location, children, hero = null, sidebar = null, bottom = null
         <div className="columns" data-is-root-path={isRootPath}>
           <main className="column">{children}</main>
           {sidebar &&
-            <aside className="column is-hidden-touch is-3">{sidebar}</aside>
+            <aside className={`column is-hidden-touch is-3 ${styles.sidebar}`}>{sidebar}</aside>
           }
         </div>
         {bottom}
