@@ -1,0 +1,11 @@
+details summary {
+  cursor: pointer;
+}
+
+details summary > * {
+  display: inline;
+}
+
+details > ul {
+  margin-left: 1rem;
+}

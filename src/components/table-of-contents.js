@@ -1,5 +1,5 @@
 import React from "react"
-
+import * as styles from "./table-of-contents.module.scss"
 
 const TOCLink = ({ item }) => (
   <a href={item.url}>{item.title}</a>
