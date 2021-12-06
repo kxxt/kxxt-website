@@ -28,8 +28,8 @@ const ItemList = ({ item, level }) => {
 const TableOfContents = ({ toc }) => {
   if (toc == null) return null
   return (
-    <div className="table-of-contents">
-      <details>
+    <div>
+      <details open>
         <summary className="menu-label">
           <h2>Table of Contents</h2>
         </summary>
