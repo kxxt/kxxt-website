@@ -3,10 +3,9 @@ import Navbar from "./navbar"
 import Footer from "./footer"
 import { Helmet } from "react-helmet"
 
-const Layout = ({ location, children, hero = null }) => {
+const Layout = ({ location, children, hero = null, sidebar = null, bottom = null }) => {
   const rootPath = `${__PATH_PREFIX__}/`
   const isRootPath = location.pathname === rootPath
-
   return (
     <>
       <Helmet>
@@ -14,8 +13,14 @@ const Layout = ({ location, children, hero = null }) => {
       </Helmet>
       <Navbar title="kxxt" />
       {hero}
-      <div id="main-container" className="container" data-is-root-path={isRootPath}>
-        <main>{children}</main>
+      <div id="main-container" className="container">
+        <div className="columns" data-is-root-path={isRootPath}>
+          <main className="column">{children}</main>
+          {sidebar &&
+            <aside className="column is-hidden-touch is-3">{sidebar}</aside>
+          }
+        </div>
+        {bottom}
       </div>
       <Footer />
     </>
