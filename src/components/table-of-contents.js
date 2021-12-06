@@ -8,7 +8,7 @@ const TOCLink = ({ item }) => (
 const ItemList = ({ item, level }) => {
   if (item.items == null || level === 6) {
     return (
-      <TOCLink item={item} />
+      <li><TOCLink item={item} /></li>
     )
   }
   return (
