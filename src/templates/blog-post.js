@@ -7,6 +7,7 @@ import Layout from "../components/layout"
 import Seo from "../components/seo"
 import Tags from "../components/tags/tags"
 import BlogBottomNav from "../components/blog-bottom-nav/blog-bottom-nav"
+import TableOfContents from "../components/table-of-contents"
 
 import * as styles from "./blog-post.module.scss"
 import "katex/dist/katex.min.css"
@@ -16,9 +17,15 @@ const shortcodes = { Link } // Provide common components here
 const BlogPostTemplate = ({ data, location }) => {
   const post = data.mdx
   const { previous, next } = data
-
+  const toc = <TableOfContents toc={post.tableOfContents.items} />
+  const bottom = (
+    <>
+      <hr />
+      <BlogBottomNav next={next} previous={previous} />
+    </>
+  )
   return (
-    <Layout location={location}>
+    <Layout location={location} sidebar={toc} bottom={bottom}>
       <Seo
         title={post.frontmatter.title}
         description={post.frontmatter.description || post.excerpt}
@@ -36,9 +43,7 @@ const BlogPostTemplate = ({ data, location }) => {
         <MDXProvider components={shortcodes}>
           <MDXRenderer frontmatter={post.frontmatter}>{post.body}</MDXRenderer>
         </MDXProvider>
-        <hr />
       </article>
-      <BlogBottomNav next={next} previous={previous} />
     </Layout>
   )
 }

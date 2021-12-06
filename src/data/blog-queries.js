@@ -5,6 +5,7 @@ export const blogFields = graphql`
         excerpt(pruneLength: 160)
         timeToRead
         body
+        tableOfContents
         frontmatter {
             title
             tags
