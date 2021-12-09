@@ -16,7 +16,7 @@ const Layout = ({ location, children, hero = null, sidebar = null, bottom = null
       {hero}
       <div id="main-container" className="container">
         <div className="columns" data-is-root-path={isRootPath}>
-          <main className="column">{children}</main>
+          <main className="column is-12-touch is-9-desktop">{children}</main>
           {sidebar &&
             <aside className={`column is-hidden-touch is-3 ${styles.sidebar}`}>{sidebar}</aside>
           }
