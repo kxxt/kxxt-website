@@ -9,7 +9,7 @@
 }
 
 #index-hero {
-  background-image: url("images/hero-image.jpg");
+  background-image: url("images/hero-image.webp");
   background-repeat: no-repeat;
   background-size: cover;
 
@@ -102,4 +102,8 @@ html {
 
 .command-line-prompt > span[data-prompt]:before {
   content: attr(data-prompt);
+}
+
+.blog-post code[class*=language-], pre[class*=language-] {
+  color: #444;
 }
