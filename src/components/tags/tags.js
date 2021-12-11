@@ -6,7 +6,7 @@ const TagLink = ({ tag, totalCount = 0, fontSize }) => {
   return (
     <Link key={tag}
           to={`/tags/${tag}/`}
-          className="tag is-primary"
+          className={`tag ${styles.tag}`}
           style={{ fontSize }}
           itemProp="keywords">
       {totalCount ? `${tag} (${totalCount})` : tag}

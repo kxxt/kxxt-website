@@ -1,3 +1,9 @@
+@import "~bulma/sass/base/generic";
+
 .tags-inline {
   display: inline;
+}
+
+.tag {
+  background-color: bulmaLighten($primary, 10%)!important;
 }
