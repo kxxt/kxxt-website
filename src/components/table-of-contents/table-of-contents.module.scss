@@ -3,24 +3,44 @@
 details.toc-top-level {
   & summary {
     cursor: pointer;
+
     & > * {
       display: inline;
     }
   }
+
   & > summary::marker {
     content: '';
   }
+
+  & > ul {
+    transition: transform 0.3s ease-out;
+  }
+
   &:not([open]) {
     writing-mode: vertical-rl;
+
+    & > ul {
+      transform: scaleY(0) scaleX(0);
+    }
   }
 }
 
-details.toc-details:not(.toc-top-level) > summary {
-  @include toc-item-box;
-}
+details.toc-details {
+  & > ul {
+    margin-left: 1rem;
+    transition: transform 0.3s;
+    transform: scaleY(0);
+  }
 
-details.toc-details > ul {
-  margin-left: 1rem;
+  &[open] > ul {
+    transform: scaleY(1);
+  }
+
+  &:not(.toc-top-level) > summary {
+    @include toc-item-box;
+  }
+
 }
 
 .toc-title {
