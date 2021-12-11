@@ -10,7 +10,7 @@ const Footer = () => {
       <div className="container">
         <div className="columns">
           <div className="column is-3">
-            <h4 className="subtitle">About</h4>
+            <p className="subtitle">About</p>
             &copy; {new Date().getFullYear()} kxxt
             <br />
 
@@ -24,7 +24,7 @@ const Footer = () => {
             Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
           </div>
           <div className="column is-3">
-            <h4 id="contact" className="subtitle">Contact</h4>
+            <p id="contact" className="subtitle">Contact</p>
             <ul>
               <li>
                 <a href="https://github.com/kxxt">
@@ -45,7 +45,7 @@ const Footer = () => {
             </ul>
           </div>
           <div className="column is-6">
-            <h4 className="subtitle">Some links</h4>
+            <p className="subtitle">Some links</p>
             <ul>
               <li><a href="/rss.xml"><IconText icon={faRss}>RSS Feed</IconText></a></li>
             </ul>
