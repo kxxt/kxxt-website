@@ -72,7 +72,7 @@
   "main": "n/a",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kxxt/kxxt.github.io.git"
+    "url": "git+https://github.com/kxxt/kxxt-website.git"
   },
   "scripts": {
     "build": "gatsby build",
