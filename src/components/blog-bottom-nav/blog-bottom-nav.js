@@ -7,12 +7,12 @@ const navContentConfig = {
   prev: {
     flexDirection: "row",
     content: "←",
-    padding: "right"
+    padding: "Right"
   },
   next: {
     flexDirection: "row-reverse",
     content: "→",
-    padding: "left"
+    padding: "Left"
   }
 }
 
@@ -25,7 +25,7 @@ const BlogBottomNavContent = ({ post, pos }) => {
       }}>
 
         <span className={styles.arrow}
-              style={{ [`padding-${navContentConfig[pos].padding}`]: "0.7rem" }}>
+              style={{ [`padding${navContentConfig[pos].padding}`]: "0.7rem" }}>
           {navContentConfig[pos].content}
         </span>
         <div>
