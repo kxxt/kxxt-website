@@ -35,7 +35,6 @@ const TableOfContents = ({ toc }) => {
   const activeId = useActiveId(ids)
   const idPaths = getIdPaths(toc)
   const { toggleSidebar } = React.useContext(SidebarContext)
-  console.log(idPaths)
   if (toc == null) return null
   return (
     <div>
