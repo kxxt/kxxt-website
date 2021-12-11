@@ -7,7 +7,7 @@ import Layout from "../components/layout"
 import Seo from "../components/seo"
 import Tags from "../components/tags/tags"
 import BlogBottomNav from "../components/blog-bottom-nav/blog-bottom-nav"
-import TableOfContents from "../components/table-of-contents"
+import TableOfContents from "../components/table-of-contents/table-of-contents"
 
 import * as styles from "./blog-post.module.scss"
 import "katex/dist/katex.min.css"
