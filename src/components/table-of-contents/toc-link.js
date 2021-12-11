@@ -4,7 +4,7 @@ import * as styles from "./toc-link.module.scss"
 
 const TOCLink = ({ item, isActive, ended }) => {
   const active = isActive ? styles.active : null
-  return <a className={`${styles.link} ${ended ? styles.ended : styles.notEnded} ${active}`}
+  return <a className={`${styles.link} ${ended ? styles.ended : ''} ${active}`}
             href={item.url}>{item.title}</a>
 }
 
