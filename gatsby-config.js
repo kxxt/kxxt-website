@@ -46,6 +46,7 @@ module.exports = {
               }
             }
           },
+          `gatsby-remark-abbr`,
           `gatsby-remark-graphviz`,
           `gatsby-remark-autolink-headers`,
           "gatsby-remark-smartypants",
