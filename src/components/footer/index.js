@@ -1,6 +1,6 @@
 import React from "react"
 import { faGithub, faTelegram } from "@fortawesome/free-brands-svg-icons"
-import { faAt } from "@fortawesome/free-solid-svg-icons"
+import { faAt, faRss } from "@fortawesome/free-solid-svg-icons"
 import IconText from "../icon-text"
 import * as styles from "./footer.module.scss"
 
@@ -47,8 +47,7 @@ const Footer = () => {
           <div className="column is-6">
             <h4 className="subtitle">Some links</h4>
             <ul>
-              <li> (Currently under construction)
-              </li>
+              <li><a href="/rss.xml"><IconText icon={faRss}>RSS Feed</IconText></a></li>
             </ul>
           </div>
         </div>
