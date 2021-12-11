@@ -1,11 +1,18 @@
 @import "variables";
 
-details.toc-top-level summary {
-  cursor: pointer;
-}
-
-details.toc-top-level summary > * {
-  display: inline;
+details.toc-top-level {
+  & summary {
+    cursor: pointer;
+    & > * {
+      display: inline;
+    }
+  }
+  & > summary::marker {
+    content: '';
+  }
+  &:not([open]) {
+    writing-mode: vertical-rl;
+  }
 }
 
 details.toc-details:not(.toc-top-level) > summary {

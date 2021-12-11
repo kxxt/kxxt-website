@@ -5,6 +5,7 @@ import TOCLink from "./toc-link"
 import ActiveIdChainContext from "./active-id-chain-context"
 import { getIds, getIdPaths } from "./logic"
 import useActiveId from "./use-active-id-hook"
+import SidebarContext from "../layout/sidebar-context"
 
 const ItemList = ({ item, level }) => {
   const activeIdChain = React.useContext(ActiveIdChainContext)
@@ -33,12 +34,13 @@ const TableOfContents = ({ toc }) => {
   const ids = getIds(toc, 0)
   const activeId = useActiveId(ids)
   const idPaths = getIdPaths(toc)
+  const { toggleSidebar } = React.useContext(SidebarContext)
   console.log(idPaths)
   if (toc == null) return null
   return (
     <div>
       <details className={styles.tocTopLevel} open>
-        <summary className={`menu-label ${styles.tocTitle}`}>
+        <summary className={`menu-label ${styles.tocTitle}`} onClick={toggleSidebar}>
           <h2>Table of Contents</h2>
         </summary>
         <ul>
