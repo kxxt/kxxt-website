@@ -9,3 +9,8 @@ details summary > * {
 details > ul {
   margin-left: 1rem;
 }
+
+.toc-item-active {
+  color: red!important;
+  background-color: green;
+}
