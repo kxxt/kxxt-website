@@ -17,7 +17,7 @@ const Footer = () => {
             This is kxxt's personal website.
             <br />
             <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img
-              alt="Creative Commons License" style={{ borderWidth: 0, marginTop: "1rem" }}
+              alt="Creative Commons License" style={{ borderWidth: 0, marginTop: "1rem", width: 88, height: 31 }}
               src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />Unless specified, the contents of
             this website are licensed under a <a
             rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons
