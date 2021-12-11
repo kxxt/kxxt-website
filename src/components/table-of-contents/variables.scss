@@ -1,0 +1,51 @@
+@import "~bulma/sass/base/generic";
+
+$toc-link-active-bg-color: #00d1b2;
+$toc-link-hover-bg-color: bulmaLighten($primary, 20%);
+$box-shadow-spread: 0.3rem;
+
+@mixin toc-item-box {
+  padding: 0.3rem 0.5rem;
+  border-radius: 0.4rem;
+  margin-bottom: 0.3rem;
+  position: relative;
+  transition: color ease-in-out 0.4s;
+  & > a{
+    transition: color ease-in-out 0.4s;
+  }
+  overflow: hidden;
+  &::before {
+    content: '';
+    display: block;
+    width: 0;
+    height: 100%;
+    position: absolute;
+    transition: width 0.5s ease-out, color 0.4s ease-in, background-color 0.4s ease-in;
+    background-color: $toc-link-active-bg-color;
+    top: 0;
+    left: 0;
+    z-index: -1;
+  }
+  &:hover {
+    box-shadow: $toc-link-hover-bg-color 0 0 $box-shadow-spread;
+    color: black;
+    & > a {
+      color: black;
+    }
+    &::before {
+      background-color: $toc-link-hover-bg-color;
+      width: 100% !important;
+    }
+  }
+}
+
+@mixin toc-item-box-active {
+  color: white;
+  & > a {
+    color: white;
+  }
+  box-shadow: $toc-link-active-bg-color 0 0 $box-shadow-spread;
+  &::before {
+    width: 100% !important;
+  }
+}

@@ -1,12 +1,10 @@
 import React from "react"
 
-import ActiveIdChainContext from "./active-id-chain-context"
 import * as styles from "./toc-link.module.scss"
 
-const TOCLink = ({ item }) => {
-  const activeIdChain = React.useContext(ActiveIdChainContext)
-  const id = item.url.slice(1)
-  return <a className={activeIdChain?.includes(id) ? styles.tocItemActive : null}
+const TOCLink = ({ item, isActive, ended }) => {
+  const active = isActive ? styles.active : null
+  return <a className={`${styles.link} ${ended ? styles.ended : styles.notEnded} ${active}`}
             href={item.url}>{item.title}</a>
 }
 

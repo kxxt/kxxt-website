@@ -1,15 +1,25 @@
-details summary {
+@import "variables";
+
+details.toc-top-level summary {
   cursor: pointer;
 }
 
-details summary > * {
+details.toc-top-level summary > * {
   display: inline;
 }
 
-details > ul {
+details.toc-details:not(.toc-top-level) > summary {
+  @include toc-item-box;
+}
+
+details.toc-details > ul {
   margin-left: 1rem;
 }
 
-.title {
-  font-size: 1rem!important;
+.toc-title {
+  font-size: 1rem !important;
+}
+
+.active {
+  @include toc-item-box-active;
 }

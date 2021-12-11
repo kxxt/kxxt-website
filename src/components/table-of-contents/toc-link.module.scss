@@ -1,4 +1,18 @@
+@import "variables";
+
 .active {
-  color: red!important;
-  background-color: green;
+  //background-color: #00c4a723;
+}
+
+.link.ended {
+  display: inline-block;
+  @include toc-item-box;
+}
+
+.active.ended {
+  @include toc-item-box-active;
+}
+
+.link {
+  color: black;
 }

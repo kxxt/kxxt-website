@@ -11,13 +11,13 @@ const ItemList = ({ item, level }) => {
   const isActive = activeIdChain?.includes(item.url.slice(1))
   if (item.items == null || level === 6) {
     return (
-      <li><TOCLink item={item} /></li>
+      <li><TOCLink item={item} isActive={isActive} ended /></li>
     )
   }
   return (
-    <details open={isActive}>
-      <summary>
-        <TOCLink item={item} />
+    <details className={styles.tocDetails} open={isActive}>
+      <summary className={isActive ? styles.active : null}>
+        <TOCLink item={item} isActive={isActive} />
       </summary>
       <ul>
         {item?.items?.map(it => (
@@ -37,8 +37,8 @@ const TableOfContents = ({ toc }) => {
   if (toc == null) return null
   return (
     <div>
-      <details open={true}>
-        <summary className={`menu-label ${styles.title}`}>
+      <details className={styles.tocTopLevel} open>
+        <summary className={`menu-label ${styles.tocTitle}`}>
           <h2>Table of Contents</h2>
         </summary>
         <ul>
