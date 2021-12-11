@@ -17,7 +17,7 @@ const shortcodes = { Link } // Provide common components here
 const BlogPostTemplate = ({ data, location }) => {
   const post = data.mdx
   const { previous, next } = data
-  const toc = <TableOfContents toc={post.tableOfContents.items} />
+  const toc = post.tableOfContents.items ? <TableOfContents toc={post.tableOfContents.items} /> : null
   const bottom = (
     <>
       <hr />
