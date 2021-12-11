@@ -1,12 +1,16 @@
 import * as React from "react"
-import Navbar from "./navbar"
-import Footer from "./footer"
+import Navbar from "../navbar"
+import Footer from "../footer"
 import { Helmet } from "react-helmet"
 import * as styles from "./layout.module.scss"
 
 const Layout = ({ location, children, hero = null, sidebar = null, bottom = null }) => {
+  const [isSidebarExpanded, setIsSidebarExpanded] = React.useState(true)
   const rootPath = `${__PATH_PREFIX__}/`
   const isRootPath = location.pathname === rootPath
+  const expandCollapseSidebar = () => {
+    setIsSidebarExpanded(!isSidebarExpanded)
+  }
   return (
     <>
       <Helmet>
@@ -16,9 +20,11 @@ const Layout = ({ location, children, hero = null, sidebar = null, bottom = null
       {hero}
       <div id="main-container" className="container">
         <div className="columns" data-is-root-path={isRootPath}>
-          <main className={`column is-12-touch ${sidebar ? 'is-9-desktop' : 'is-12-desktop'}`}>{children}</main>
+          <main
+            className={`column is-12-touch ${sidebar && isSidebarExpanded ? "is-9-desktop" : "is-12-desktop"}`}>{children}</main>
           {sidebar &&
-            <aside className={`column is-hidden-touch is-3 ${styles.sidebar}`}>{sidebar}</aside>
+            <aside
+              className={`column is-hidden-touch ${isSidebarExpanded ? "is-3" : "is-narrow"} ${styles.sidebar}`}>{sidebar}</aside>
           }
         </div>
         {bottom}
