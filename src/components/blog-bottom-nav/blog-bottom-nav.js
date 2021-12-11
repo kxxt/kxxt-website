@@ -29,7 +29,7 @@ const BlogBottomNavContent = ({ post, pos }) => {
           {navContentConfig[pos].content}
         </span>
         <div>
-          <h5 className="subtitle is-5">{post.frontmatter.title}</h5>
+          <p className="subtitle is-5">{post.frontmatter.title}</p>
           <p><small>{post.frontmatter.date}</small></p>
           <p>{post.timeToRead} min read</p>
         </div>
