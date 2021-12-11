@@ -7,19 +7,21 @@ import { getIds, getIdPaths } from "./logic"
 import useActiveId from "./use-active-id-hook"
 
 const ItemList = ({ item, level }) => {
+  const activeIdChain = React.useContext(ActiveIdChainContext)
+  const isActive = activeIdChain?.includes(item.url.slice(1))
   if (item.items == null || level === 6) {
     return (
       <li><TOCLink item={item} /></li>
     )
   }
   return (
-    <details>
+    <details open={isActive}>
       <summary>
         <TOCLink item={item} />
       </summary>
       <ul>
         {item?.items?.map(it => (
-          <ItemList item={it} level={level + 1} />
+          <ItemList key={it.url} item={it} level={level + 1} />
         ))}
       </ul>
     </details>
