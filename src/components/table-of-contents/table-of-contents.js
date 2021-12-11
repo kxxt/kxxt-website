@@ -36,7 +36,7 @@ const TableOfContents = ({ toc }) => {
   return (
     <div>
       <details open={true}>
-        <summary className="menu-label">
+        <summary className={`menu-label ${styles.title}`}>
           <h2>Table of Contents</h2>
         </summary>
         <ul>
