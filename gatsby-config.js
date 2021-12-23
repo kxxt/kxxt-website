@@ -49,6 +49,7 @@ module.exports = {
           `gatsby-remark-abbr`,
           `gatsby-remark-graphviz`,
           `gatsby-remark-autolink-headers`,
+          `gatsby-remark-check-links`,
           "gatsby-remark-smartypants",
           `gatsby-remark-copy-linked-files`,
           `gatsby-remark-responsive-iframe`,

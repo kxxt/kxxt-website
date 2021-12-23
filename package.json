@@ -33,6 +33,7 @@
     "gatsby-plugin-smoothscroll": "^1.2.0",
     "gatsby-remark-abbr": "^2.0.0",
     "gatsby-remark-autolink-headers": "^5.3.0",
+    "gatsby-remark-check-links": "^2.1.0",
     "gatsby-remark-copy-linked-files": "^5.2.0",
     "gatsby-remark-embed-snippet": "^7.3.0",
     "gatsby-remark-graphviz": "^4.3.0",
