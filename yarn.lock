@@ -6465,13 +6465,6 @@ gatsby-recipes@^1.2.0:
     xstate "^4.9.1"
     yoga-layout-prebuilt "^1.9.6"
 
-gatsby-remark-abbr@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.npmjs.org/gatsby-remark-abbr/-/gatsby-remark-abbr-2.0.0.tgz#c63540898ec2c2d51e251fc4b380d604202fb283"
-  integrity sha512-qU6fa7XZOpiNhE7Hn3hLqHRZYWborweGZnmqG8SMBLZf/XFHYEHyWlo4OFZKA81OoIfJycNrSO0RqpDFfgz+iA==
-  dependencies:
-    remark-abbr "^1.0.7"
-
 gatsby-remark-autolink-headers@^5.3.0:
   version "5.3.0"
   resolved "https://registry.npmjs.org/gatsby-remark-autolink-headers/-/gatsby-remark-autolink-headers-5.3.0.tgz#9bcadc56135e9559a92c3ca3cc0ee8f253d8ea46"
@@ -11581,7 +11574,7 @@ rehype-parse@^8.0.0:
     parse5 "^6.0.0"
     unified "^10.0.0"
 
-remark-abbr@^1.0.7:
+remark-abbr@^1.4.1:
   version "1.4.1"
   resolved "https://registry.npmjs.org/remark-abbr/-/remark-abbr-1.4.1.tgz#3813ff894acd8e66bc030e25c436c0d4525a2df4"
   integrity sha512-h3MuC2ujpaFIvDHVztxiNe7OGEXz6fAaUoaeqJhroyHCZXcspZiOg3iDoRdGLmnGSEO/x6g9nQGBDqgVsjCHKg==

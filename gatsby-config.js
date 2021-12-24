@@ -30,7 +30,8 @@ module.exports = {
       options: {
         extensions: [`.mdx`, `.md`],
         remarkPlugins: [
-          require("remark-math")
+          require("remark-math"),
+          require("remark-abbr")
         ],
         rehypePlugins: [
           esmRequire("rehype-katex").default
@@ -46,7 +47,6 @@ module.exports = {
               }
             }
           },
-          `gatsby-remark-abbr`,
           `gatsby-remark-graphviz`,
           `gatsby-remark-autolink-headers`,
           `gatsby-remark-check-links`,
