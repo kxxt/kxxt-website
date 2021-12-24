@@ -1,0 +1,94 @@
+---
+title: 在 Gatsby 中与 MDX 一起使用 KaTeX
+date: 2021-12-24
+tags: [javascript, web, gatsby, katex]
+description: 我在给我的 Gatsby 站点(使用 MDX)添加 KaTeX 支持时踩了不少坑，因此我写了这篇文章，来简述一下在 2021 年，如何在 Gatsby 中优雅的使用 KaTeX。
+---
+
+# 前言
+
+一开始，我跟据网上的教程为我的使用了 MDX 的 Gatsby 站点添加了 $\KaTeX$ 支持，比如使用 `gatsby-remark-katex`， 但是遇到了很多问题，很多都是版本的兼容性问题。
+
+尽管很多情况下，把各种依赖项降级就能解决问题，但是我本人并不喜欢降级依赖项，旧版本的依赖项一般具有更多的 Bug 和安全问题。~~（然而我还是使用了旧版的 `remark-math` :joy:）~~
+
+# 解决方案
+
+首先，直接使用 $\KaTeX$ 相关的 `remark/rehype` 底层插件，而不是通过 `gatsby-remark-katex` 这样的封装过的插件。
+
+下面是我的站点的 `package.json` 的一部分，其中高亮出来的是和配置 $\KaTeX$ 相关的依赖项。
+
+```json
+{
+    ...
+  "dependencies": {
+      ...
+      "@mdx-js/mdx": "^1.6.22",
+      "@mdx-js/react": "^1.6.22",
+      "bulma": "^0.9.3",
+      "gatsby-source-filesystem": "^4.2.0",
+#highlight-start
+      "esm": "^3.2.25",
+      "gatsby-plugin-mdx": "^3.3.0",
+      "katex": "^0.15.1",
+      "rehype-katex": "^6.0.2",
+      "remark-math": "^3.0.0",
+#highlight-end
+    }
+    ...
+}
+```
+
+注意，因为在我撰写本文的时候，`gatsby-plugin-mdx` 的使用 `mdx.js` v2.0 的版本还没有发布，所以 `gatsby-plugin-mdx` 内部使用的是第一代 `mdx`, 这导致 `gatsby-plugin-mdx` 使用的 `remark` 版本比较低(^10.0.1)，而 `remark` 在 v13.0 中作出了[重大改动(micromark)](https://github.com/remarkjs/remark/releases/tag/13.0.0)，因此很多新版本插件和新插件只兼容 v13 及以上的版本，无法和 `gatsby-plugin-mdx` 一起使用，我们用到的 `remark-math` 就是其中之一。
+
+```yaml
+gatsby-plugin-mdx@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.npmjs.org/gatsby-plugin-mdx/-/gatsby-plugin-mdx-3.3.0.tgz#18b3f5d2eab02e5bdd8264560c850473ce772039"
+  integrity sha512-4uYcNXVLnx0jgfjp3iyrGjVJr/D5gItfZxrUgVKtrsy2LhtR9gtQgLFZgGONnqDoPn+26kAlBsqTOORN3m88bQ==
+  dependencies:
+  	...
+    remark "^10.0.1"#highlight-line
+    remark-retext "^3.1.3"
+```
+
+另外，JavaScript 有了标准的模块实现([ESM](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c)), 很多 remark 插件不再与 CommonJS 的模块兼容，我们在加载这些使用 ESM 的插件时需要使用来自 [`gatsby-oi-wiki`](https://github.com/OI-wiki/gatsby-oi-wiki) 的 `esmRequire`. (在此向 [`gatsby-oi-wiki`](https://github.com/OI-wiki/gatsby-oi-wiki) 致谢)
+
+- `esmRequire.js`: https://github.com/OI-wiki/gatsby-oi-wiki/blob/7ae4ff89dfa16ee3ee4437a3f157b2dee4cc9f23/gatsby-theme-oi-wiki/esmRequire.js
+-  相关讨论： https://github.com/gatsbyjs/gatsby/issues/23705
+
+使用你最喜欢的 JavaScript 包管理器安装好依赖之后，我们来修改一下 `gatsby-config.js`:
+
+```javascript{11-16}
+esmRequire = require("./esm-require")
+
+module.exports = {
+  ...
+  plugins: [
+    ...
+    {
+      resolve: `gatsby-plugin-mdx`,
+      options: {
+        ...
+        remarkPlugins: [
+          require("remark-math"),
+        ],
+        rehypePlugins: [
+          esmRequire("rehype-katex").default
+        ],
+        ...
+      }
+    }
+  ]
+  ...
+}
+```
+
+其中，`remark-math` 解析Markdown的数学语法，`rehype-katex` 负责将 `<span class=math-inline>`  和 `<div class=math-display>` 这样的标签用 $\KaTeX$ 渲染出来.
+
+然后，我们在博客的模板文件 `src/templates/blog-post.js` 里面引入 $\KaTeX$ 的 css 就大功告成了！
+
+下面是数学公式的示例：
+$$
+A^2 + B^2 = C^2\\
+x \in \R\\
+$$
