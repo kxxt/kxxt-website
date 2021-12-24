@@ -11,9 +11,8 @@ const ItemList = ({ item, level }) => {
   const activeIdChain = React.useContext(ActiveIdChainContext)
   const isActive = activeIdChain?.includes(item.url.slice(1))
   if (item.items == null || level === 6) {
-    return (
-      <li><TOCLink item={item} isActive={isActive} ended /></li>
-    )
+    const result = <TOCLink item={item} isActive={isActive} ended />
+    return level === 1 ? result : <li>{result}</li>
   }
   return (
     <details className={styles.tocDetails} open={isActive}>
