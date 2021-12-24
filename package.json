@@ -54,6 +54,7 @@
     "react-typed": "^1.2.0",
     "rehype-katex": "^6.0.2",
     "remark-abbr": "^1.4.1",
+    "remark-emoji": "^3.0.2",
     "remark-math": "^3.0.0",
     "sass": "^1.43.5",
     "typeface-merriweather": "0.0.72",

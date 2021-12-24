@@ -31,7 +31,8 @@ module.exports = {
         extensions: [`.mdx`, `.md`],
         remarkPlugins: [
           require("remark-math"),
-          require("remark-abbr")
+          require("remark-abbr"),
+          esmRequire("remark-emoji").default
         ],
         rehypePlugins: [
           esmRequire("rehype-katex").default
