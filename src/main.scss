@@ -54,11 +54,33 @@ html {
   padding-left: 2rem;
 }
 
+
+/**
+ * Remove the default PrismJS theme background-color, border-radius, margin,
+ * padding and overflow.
+ * 1. Make the element just wide enough to fit its content.
+ * 2. Always fill the visible space in .gatsby-highlight.
+ * 3. Adjust the position of the line numbers
+ */
+.gatsby-highlight pre[class*="language-"] {
+  background-color: transparent;
+  margin: 0;
+  padding: 0;
+  overflow: initial;
+  float: left; /* 1 */
+  min-width: 100%; /* 2 */
+  &.line-numbers {
+    padding: 0;
+    padding-left: 2rem;
+    overflow: initial;
+  }
+}
+
 .gatsby-highlight {
   background-color: #fdf6e3;
   border-radius: 0.3em;
   margin: 0.5em 0;
-  padding: 1.5rem 1.5rem;
+  padding: 1.9rem 1.5rem 1.5rem;
   overflow: auto;
   position: relative;
 
@@ -77,10 +99,14 @@ html {
   }
 }
 
-.gatsby-highlight pre[class*="language-"].line-numbers {
-  padding: 0;
+.gatsby-highlight-code-line {
+  background-color: #feb;
+  display: block;
+  //margin-right: -1.5rem;
+  margin-left: -2rem;
+  //padding-right: 1.5rem;
   padding-left: 2rem;
-  overflow: initial;
+  border-left: 0.25em solid #f99;
 }
 
 .command-line-prompt > span:before {
@@ -107,3 +133,5 @@ html {
 .blog-post code[class*=language-], pre[class*=language-] {
   color: #444;
 }
+
+
