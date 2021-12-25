@@ -114,8 +114,8 @@ module.exports = {
                 return Object.assign({}, node.frontmatter, {
                   description: node.excerpt,
                   date: node.frontmatter.date,
-                  url: site.siteMetadata.siteUrl + node.slug,
-                  guid: site.siteMetadata.siteUrl + node.slug,
+                  url: `${site.siteMetadata.siteUrl}/blog/${node.slug}`,
+                  guid: node.slug,
                   custom_elements: [{ "content:encoded": node.html }]
                 })
               })
