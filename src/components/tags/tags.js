@@ -15,6 +15,7 @@ const TagLink = ({ tag, totalCount = 0, fontSize }) => {
 }
 
 const Tags = ({ tags, withCount = false, fontSize = "14px", inline = false }) => {
+  if (!tags) return null
   return (
     <div className={`tags ${inline ? styles.tagsInline : ""}`}>
       {

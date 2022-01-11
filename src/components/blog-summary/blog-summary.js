@@ -22,7 +22,7 @@ const BlogSummary = ({ post }) => {
         </h2>
 
         {dateAndTimeToRead}
-        {post.frontmatter.tags && <Tags tags={post.frontmatter.tags} />}
+        <Tags tags={post.frontmatter.tags} />
       </header>
       <section>
         <p
