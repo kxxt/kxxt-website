@@ -18,7 +18,7 @@ const BlogSummary = ({ post }) => {
           </Link>
         </h2>
         <small>{post.frontmatter.date} · {post.timeToRead} min read</small>
-        <Tags tags={post.frontmatter.tags} />
+        {post.frontmatter.tags && <Tags tags={post.frontmatter.tags} />}
       </header>
       <section>
         <p
