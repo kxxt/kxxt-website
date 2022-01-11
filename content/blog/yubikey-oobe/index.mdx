@@ -1,0 +1,413 @@
+---
+title: Yubikey 开箱上手
+date: 2022-02-11
+tags: [yubikey, 开箱, gpg, fido, auth]
+---
+
+新买的 YubiKey 5 NFC 刚刚送到，~~趁此机会来水一篇博客~~(主要是跟着 https://github.com/drduh/YubiKey-Guide 这篇教程走)
+
+首先在 Linux 系统上进行设置
+
+# 在 Linux 上设置
+
+我使用的是 Manjaro 操作系统，不同的 Linux 发行版安装依赖时所使用的命令可能会有所不同。
+
+## 配置 GPG
+
+```bash
+sudo pacman -S hopenpgp-tools yubikey-manager
+```
+
+```bash
+export GNUPGHOME=~/.gnupg
+wget -O $GNUPGHOME/gpg.conf https://raw.githubusercontent.com/drduh/config/master/gpg.conf
+```
+
+检查系统的熵是否足够（>2000）：
+
+```bash
+$ cat /proc/sys/kernel/random/entropy_avail
+3808
+```
+
+将系统切换为离线状态，然后生成密钥。
+
+```bash
+gpg --expert --full-gen-key
+export KEYID=0x57670CCFA42CCF0A
+```
+
+选择 RSA(自定义，只开启 Certify 功能) 并将 keysize 设为 4096，永不过期.
+
+使用旧密钥给新密钥签名
+
+```bash
+gpg --default-key 0x79A6DE255728228B --sign-key $KEYID
+
+sec  rsa4096/0x57670CCFA42CCF0A
+     created: 2022-01-11  expires: never       usage: C   
+     trust: ultimate      validity: ultimate
+[ultimate] (1). Levi Zim <rsworktech@outlook.com>
+
+gpg: using "0x79A6DE255728228B" as default secret key for signing
+
+sec  rsa4096/0x57670CCFA42CCF0A
+     created: 2022-01-11  expires: never       usage: C   
+     trust: ultimate      validity: ultimate
+ Primary key fingerprint: 17AA DD67 26DD C58B 8EE5  8817 5767 0CCF A42C CF0A
+
+     Levi Zim <rsworktech@outlook.com>
+
+Are you sure that you want to sign this key with your
+key "Believers in Science Studio <rsworktech@outlook.com>" (0x79A6DE255728228B)
+
+Really sign? (y/N) y
+```
+
+然后编辑密钥
+
+```bash
+gpg --expert --edit-key $KEYID
+```
+
+添加子密钥，分别负责 Sign,Encrypt 和 Authenticate，过期时间一年
+
+```
+addKey
+```
+
+检查密钥
+
+```bash
+gpg --export $KEYID | hokey lint
+```
+
+然后备份密钥
+
+```bash
+gpg --export-secret-keys --armor $KEYID > sec-key.key
+gpg --export-secret-subkeys --armor $KEYID > sec-sub-key.key
+```
+
+生成撤销证书
+
+导出公钥
+
+```bash
+gpg --armor --export $KEYID > $KEYID.asc
+```
+
+上传公钥
+
+```bash
+gpg --send-key $KEYID
+gpg --keyserver keys.gnupg.net --send-key $KEYID
+```
+
+修改卡的信息
+
+```bash
+gpg --card-edit
+admin
+kdf-setup # Key Derived Function, 从明文传递 PIN 改为验证 PIN 的 Hash
+name # 修改姓名
+passwd # 修改 PIN, Admin PIN 和 Reset Code
+```
+
+修改重试次数
+
+```bash
+sudo systemctl start pcscd 
+ykman openpgp access set-retries 6 6 6
+ykman openpgp info
+```
+
+导入 YubiKey（只导入 sub-key）
+
+```bash
+gpg --edit-key $KEYID
+依次选择各个 sub-key，执行 keytocard
+```
+
+然后把 secret key 删除，确保主密钥离线
+
+```bash
+gpg --delete-secret-key $KEYID
+```
+
+然后测试一下能否正常使用
+
+```bash
+$ echo "test message string" | gpg --encrypt --armor --recipient $KEYID -o encrypted.txt
+$ gpg --decrypt --armor encrypted.txt
+gpg: anonymous recipient; trying secret key 0x6F64DD2F6896007A ...
+gpg: okay, we are the anonymous recipient.
+gpg: encrypted with RSA key, ID 0x0000000000000000
+test message string
+$ echo "test message string" | gpg --armor --clearsign > signed.txt
+$ gpg --verify signed.txt
+gpg: Signature made 2022年01月11日 星期二 12时56分17秒 CST
+gpg:                using RSA key 289670F91C3635F0A17424456F3B98D42FC6C9D8
+gpg: Good signature from "Levi Zim <rsworktech@outlook.com>" [ultimate]
+Primary key fingerprint: 17AA DD67 26DD C58B 8EE5  8817 5767 0CCF A42C CF0A
+     Subkey fingerprint: 2896 70F9 1C36 35F0 A174  2445 6F3B 98D4 2FC6 C9D8
+```
+
+## Git
+
+```bash
+git config --global user.signingkey $KEYID
+```
+
+测试
+
+```bash
+mkdir testing
+cd testing
+git init
+touch woman
+git add woman
+git commit -sm "Test signing"
+git log --show-signature
+commit 1e2fe949c5eb0606e083f50b13963814c9a03437 (HEAD -> main)
+gpg: Signature made 2022年01月11日 星期二 13时25分07秒 CST
+gpg:                using RSA key 289670F91C3635F0A17424456F3B98D42FC6C9D8
+gpg: Good signature from "Levi Zim <rsworktech@outlook.com>" [ultimate]
+Primary key fingerprint: 17AA DD67 26DD C58B 8EE5  8817 5767 0CCF A42C CF0A
+     Subkey fingerprint: 2896 70F9 1C36 35F0 A174  2445 6F3B 98D4 2FC6 C9D8
+Author: kxxt <rsworktech@outlook.com>
+Date:   Tue Jan 11 13:25:07 2022 +0800
+
+    Test signing
+    
+    Signed-off-by: kxxt <rsworktech@outlook.com>
+```
+
+另外要把公钥添加到 Github.
+
+## 设置需要触摸 YubiKey 才能触发操作
+
+设置为 cached 会有 15s 的缓存时间，若设置为 on 则不会缓存
+
+```bash
+ykman openpgp keys set-touch aut on
+ykman openpgp keys set-touch sig cached
+ykman openpgp keys set-touch enc cached
+```
+
+## SSH
+
+编辑 `.zshrc`
+
+加入
+
+```bash
+export GPG_TTY="$(tty)"
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+gpgconf --launch gpg-agent
+```
+
+然后 `source .zshrc`, 运行 `ssh-add -L`
+
+把输出拷贝到服务器的 authorized_keys 文件里,就可以连接服务器了
+
+另外把输出也加入到 Github 的 SSH keys 里，就可以通过 SSH 使用 Github 了。
+
+对于现有的 ssh 私钥，也可以导入到 GPG 中
+
+```bash
+ssh-add ~/.ssh/id_rsa 
+```
+
+注意在导入之后应该把原来的私钥删除
+
+## 安装厂家提供的工具
+
+```bash
+sudo pacman -S yubikey-personalization yubikey-personalization-gui
+```
+
+（我装了，但是暂时还没用到）
+
+## 配置 PAM
+
+配置 PAM 之后。 YubiKey 可用于登录和提权等敏感操作
+
+参考：https://wiki.archlinux.org/title/Universal_2nd_Factor#Installing_the_PAM_module
+
+```bash
+sudo pacman -S pam-u2f
+```
+
+```bash
+mkdir ~/.config/Yubico
+pamu2fcfg -N -o pam://laptop -i pam://laptop > ~/.config/Yubico/u2f_keys
+```
+
+>  注意这里 `laptop` 是我的主机名，读者可能需要把它换掉
+>
+> 另外，这里加上 `-N`  表示需要输入 Pin, 若不需要，可以把 `-N` 去掉
+
+### Sudo
+
+为了防止误操作而失去 `root` 权限，我们提前在另一个窗口（或 Tab）运行 `sudo -s`，以便在配置出现错误时我们能够改正。
+
+编辑 `/etc/pam.d/sudo`:
+
+在第一行添加：
+
+```
+auth            sufficient      pam_u2f.so cue origin=pam://laptop appid=pam://laptop
+```
+
+注意，这里我使用的是 `sufficient` 而非 `required`， 简单的讲，在这里他们的区别如下：
+
+- `sufficient`: 可以使用 U2F 登录，也可以使用密码登录
+- `required`: 必须使用 U2F 登录
+
+然后使用 `sudo uname` 测试一下
+
+注意 FIDO 的 PIN 有重试上限，连续三次出错之后必须拔出设备重新插入，连续八次出错之后 FIDO 功能会被锁定！
+
+### GDM(Gnome Desktop Manager)
+
+编辑 `/etc/pam.d/gdm-password` ， 在开头添加
+
+```
+auth            sufficient      pam_u2f.so cue origin=pam://laptop appid=pam://laptop
+```
+
+然后注销再重新登录来测试一下。
+
+> 注意： 在 sufficient 的情况下设置 nouserok 会造成安全漏洞，导致不使用 u2f 的用户（比如 root）可以不经认证的登录！
+
+以上设置是针对的既可以使用密码登录，又可以使用 YubiKey 登录这种情形配置的。
+
+如果您需要更强的安全性（必须使用密码登录+YubiKey 登录双重认证），则应该如下设置：
+
+在文件的所有 `auth` 开头的行之后添加
+
+```
+auth            required      pam_u2f.so nouserok cue origin=pam://laptop appid=pam://laptop
+```
+
+#### 完蛋，你害得我进不去桌面了，怎么办
+
+进 TTY 去修改配置文件，然后重试
+
+# 在 Windows 上设置
+
+导入公钥
+
+```powershell
+gpg --import --armor D:\0x57670CCFA42CCF0A.asc
+```
+
+信任密钥
+
+```powershell
+gpg --edit-key 57670CCFA42CCF0A
+> trust
+```
+
+设置 Git 签名用的密钥
+
+```powershell
+git config --global user.signingkey 57670CCFA42CCF0A
+```
+
+修改 `%APPDATA%/gnupg/gpg-agent.conf` , 追加
+
+```bash
+enable-ssh-support
+enable-putty-support
+```
+
+然后重启 agent
+
+```bash
+gpg-connect-agent killagent /bye
+gpg-connect-agent /bye
+```
+
+设置 agent 开机启动：在 `shell:startup` 中新建一个快捷方式，填入如下指令：
+
+```powershell
+gpg-connect-agent /bye
+```
+
+在快捷方式属性中修改运行方式为最小化，以免开机出现烦人的弹窗
+
+这时候已经可以使用 Putty 连接服务器了
+
+另外，设置 Git 使用 Putty 的 `plink` :
+
+编辑系统环境变量，设置 `GIT_SSH` 为 `C:\Program Files\PuTTY\plink.exe`
+
+设置 Git 使用 Gpg4Win 的 gpg，编辑 `~\.gitconfig` , 添加
+
+```ini
+[gpg]
+	program = C:/Program Files (x86)/GnuPG/bin/gpg.exe
+```
+
+现在 Git 的 SSH 协议 也可以通过 gpg 来使用了
+
+> 注: 我在使用时发现第一次连接时无法选择接受 server 的 fingerprint, 
+>
+> https://support.yubico.com/hc/en-us/articles/4402836718866-Understanding-YubiKey-PINs即，在如下状态出现是否要将 key 储存在 cache 中时，无论是按  <kbd>y</kbd> 还是按 <kbd>n</kbd> 抑或是加上 <kbd>Enter</kbd> 都没有反应
+>
+> ```powershell
+> git clone git@github.com:kxxt/kxxt
+> Cloning into 'kxxt'...https://github.com/Yubico/pam-u2f/issues/144
+> The server's host key is not cached. You have no guarantee
+> that the server is the computer you think it is.
+> The server's ssh-ed25519 key fingerprint is:
+> ssh-ed25519 255 SHA256:+DiY3wvvV6TuJJhbpZisF/zLDA0zPMSvHdkr4UvCOqU
+> If you trust this host, enter "y" to add the key to
+> PuTTY's cache and carry on connecting.
+> If you want to carry on connecting just once, without
+> adding the key to the cache, enter "n".
+> If you do not trust this host, press Return to abandon the
+> connection.
+> Store key in cache? (y/n, Return cancels connection, i for more info) fatal: Could not read from remote repository.
+> ```
+>
+> 这个问题可以通过以下方式解决：
+>
+> 先直接使用 plink 连接 GitHub 一次
+>
+> ```powershell
+> & 'C:\Program Files\PuTTY\plink.exe' git@github.com
+> ```
+>
+> 这时选择 <kbd>y</kbd> 是有效的，之后再使用 Git 就可以了
+
+# 在 Android 上设置
+
+## Open Key Chain
+
+https://wiki.archlinux.org/title/Universal_2nd_Factor#Installing_the_PAM_module打开 OpenKeyChain，导入自己的公钥。
+
+因为我已经把密钥上传到了 keys.openpgp.org, 所以可以通过邮箱直接搜索到。
+
+在导入之后，核对 fingerprint, (页面右上角菜单> "Confirm with fingerprint")
+
+## Termbot
+
+在右上角菜单中点击 "Manage PubKeys",点击添加，选择 “Add OpenPGP” security key，根据提示操作即可。
+
+添加主机时选择 Yubikey 即可在连接时通过 NFC 验证
+
+# 两步验证
+
+登录各大网站设置即可
+
+# References
+
+- https://support.yubico.com/hc/en-us/articles/360013790259-Using-Your-YubiKey-with-OpenPGP
+- https://github.com/drduh/YubiKey-Guide
+- https://www.kaylyn.ink/journal/windows-using-gpg-for-ssh-authentication-and-git/
+- https://wiki.archlinux.org/title/Universal_2nd_Factor#Installing_the_PAM_module
+- https://github.com/Yubico/pam-u2f/issues/144
+- https://support.yubico.com/hc/en-us/articles/4402836718866-Understanding-YubiKey-PINsipts
