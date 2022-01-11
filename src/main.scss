@@ -100,6 +100,18 @@ html {
     left: 2rem;
     top: 0;
   }
+
+  // Fix CSS conflicts with Bulma `.number` class
+  & .token.number {
+    display: inline;
+    background-color: unset;
+    font-size: unset;
+    padding: unset;
+    vertical-align: unset;
+    text-align: unset;
+    margin-right: unset;
+    border-radius: unset;
+  }
 }
 
 .gatsby-highlight-code-line {
