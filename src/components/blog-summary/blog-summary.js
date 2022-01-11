@@ -2,12 +2,10 @@ import React from "react"
 import { Link } from "gatsby"
 import * as styles from "./blog-summary.module.scss"
 import Tags from "../tags/tags"
+import formatDateAndTimeToRead from "../../utils/date-and-time-to-read"
 
 const BlogSummary = ({ post }) => {
   const title = post.frontmatter.title || post.slug
-  const dateAndTimeToRead = post.frontmatter.date ?
-    <small>{post.frontmatter.date} · {post.timeToRead} min read</small> :
-    <small> {post.timeToRead} min read</small>
   return (
     <article
       className={`${styles.blogSummary} box`}
@@ -20,8 +18,7 @@ const BlogSummary = ({ post }) => {
             <span itemProp="headline">{title}</span>
           </Link>
         </h2>
-
-        {dateAndTimeToRead}
+        <small>{formatDateAndTimeToRead(post.frontmatter.date, post.timeToRead)}</small>
         <Tags tags={post.frontmatter.tags} />
       </header>
       <section>
