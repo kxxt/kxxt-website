@@ -5,7 +5,7 @@ import Tags from "../tags/tags"
 import formatDateAndTimeToRead from "../../utils/date-and-time-to-read"
 
 const BlogSummary = ({ post }) => {
-  const title = post.frontmatter.title || post.slug
+  const title = post.frontmatter.title || post?.headings?.[0]?.value || post.slug
   return (
     <article
       className={`${styles.blogSummary} box`}

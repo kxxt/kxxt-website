@@ -37,5 +37,8 @@ export const blogSummaryFields = graphql`
             description
             tags
         }
+        headings {
+            value
+        }
     }
 `
