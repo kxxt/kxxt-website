@@ -13,9 +13,10 @@ const Footer = () => {
           <div className="column is-3">
             <p className="subtitle">About</p>
             &copy; {new Date().getFullYear()} kxxt
+            <br/>
+            My English name is Levi Zim
             <br />
-
-            This is kxxt's personal website.
+            This is my personal website.
             <br />
             <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><StaticImage
               alt="Creative Commons License" style={{ borderWidth: 0, marginTop: "1rem", width: 88, height: 31 }}
