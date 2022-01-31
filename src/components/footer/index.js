@@ -30,18 +30,18 @@ const Footer = () => {
             <ul>
               <li>
                 <a href="https://github.com/kxxt">
-                  <IconText icon={faGithub}>kxxt</IconText>
+                  <IconText color="black" icon={faGithub}>kxxt</IconText>
                 </a>
               </li>
               <li>
                 <a
                   href="mailto:rsworktech@outlook.com">
-                  <IconText icon={faAt}>rsworktech@outlook.com</IconText>
+                  <IconText color="gold" icon={faAt}>rsworktech@outlook.com</IconText>
                 </a>
               </li>
               <li>
                 <a
-                  href="https://t.me/kxxtchannel"><IconText icon={faTelegram}>My channel</IconText>
+                  href="https://t.me/kxxtchannel"><IconText color="dodgerblue" icon={faTelegram}>My channel</IconText>
                 </a>
               </li>
             </ul>
