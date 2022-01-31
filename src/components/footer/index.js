@@ -49,7 +49,7 @@ const Footer = () => {
           <div className="column is-6">
             <p className="subtitle">Some links</p>
             <ul>
-              <li><a href="/rss.xml"><IconText icon={faRss}>RSS Feed</IconText></a></li>
+              <li><a href="/rss.xml"><IconText color="orange" icon={faRss}>RSS Feed</IconText></a></li>
             </ul>
           </div>
         </div>
