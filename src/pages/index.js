@@ -3,7 +3,7 @@ import { graphql } from "gatsby"
 
 import Layout from "../components/layout/layout"
 import Seo from "../components/seo"
-import ReactTyped from "react-typed"
+import ReactTyped from "react-typed-component"
 import { StaticImage } from "gatsby-plugin-image"
 import BlogSummaryList from "../components/blog-summary/blog-summary-list"
 
