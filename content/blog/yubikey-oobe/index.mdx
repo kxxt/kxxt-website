@@ -45,14 +45,14 @@ export KEYID=0x57670CCFA42CCF0A
 gpg --default-key 0x79A6DE255728228B --sign-key $KEYID
 
 sec  rsa4096/0x57670CCFA42CCF0A
-     created: 2022-01-11  expires: never       usage: C   
+     created: 2022-01-11  expires: never       usage: C
      trust: ultimate      validity: ultimate
 [ultimate] (1). Levi Zim <rsworktech@outlook.com>
 
 gpg: using "0x79A6DE255728228B" as default secret key for signing
 
 sec  rsa4096/0x57670CCFA42CCF0A
-     created: 2022-01-11  expires: never       usage: C   
+     created: 2022-01-11  expires: never       usage: C
      trust: ultimate      validity: ultimate
  Primary key fingerprint: 17AA DD67 26DD C58B 8EE5  8817 5767 0CCF A42C CF0A
 
@@ -117,7 +117,7 @@ passwd # 修改 PIN, Admin PIN 和 Reset Code
 修改重试次数
 
 ```bash
-sudo systemctl start pcscd 
+sudo systemctl start pcscd
 ykman openpgp access set-retries 6 6 6
 ykman openpgp info
 ```
@@ -179,7 +179,7 @@ Author: kxxt <rsworktech@outlook.com>
 Date:   Tue Jan 11 13:25:07 2022 +0800
 
     Test signing
-    
+
     Signed-off-by: kxxt <rsworktech@outlook.com>
 ```
 
@@ -216,7 +216,7 @@ gpgconf --launch gpg-agent
 对于现有的 ssh 私钥，也可以导入到 GPG 中
 
 ```bash
-ssh-add ~/.ssh/id_rsa 
+ssh-add ~/.ssh/id_rsa
 ```
 
 注意在导入之后应该把原来的私钥删除
@@ -244,9 +244,9 @@ mkdir ~/.config/Yubico
 pamu2fcfg -N -o pam://laptop -i pam://laptop > ~/.config/Yubico/u2f_keys
 ```
 
->  注意这里 `laptop` 是我的主机名，读者可能需要把它换掉
+> 注意这里 `laptop` 是我的主机名，读者可能需要把它换掉
 >
-> 另外，这里加上 `-N`  表示需要输入 Pin, 若不需要，可以把 `-N` 去掉
+> 另外，这里加上 `-N` 表示需要输入 Pin, 若不需要，可以把 `-N` 去掉
 
 ### Sudo
 
@@ -355,7 +355,7 @@ gpg-connect-agent /bye
 
 > 注: 我在使用时发现第一次连接时无法选择接受 server 的 fingerprint,
 >
-> 即，在如下状态出现是否要将 key 储存在 cache 中时，无论是按  <kbd>y</kbd> 还是按 <kbd>n</kbd> 抑或是加上 <kbd>Enter</kbd> 都没有反应
+> 即，在如下状态出现是否要将 key 储存在 cache 中时，无论是按 <kbd>y</kbd> 还是按 <kbd>n</kbd> 抑或是加上 <kbd>Enter</kbd> 都没有反应
 >
 > ```powershell
 > git clone git@github.com:kxxt/kxxt

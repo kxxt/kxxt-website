@@ -21,16 +21,16 @@ const BlogsPage = ({ data, location }) => {
 export default BlogsPage
 
 export const pageQuery = graphql`
-    query {
-        site {
-            siteMetadata {
-                title
-            }
-        }
-        allMdx(sort: {fields: [frontmatter___date], order: DESC}) {
-            nodes {
-                ...BlogSummaryFields
-            }
-        }
+  query {
+    site {
+      siteMetadata {
+        title
+      }
     }
+    allMdx(sort: { fields: [frontmatter___date], order: DESC }) {
+      nodes {
+        ...BlogSummaryFields
+      }
+    }
+  }
 `

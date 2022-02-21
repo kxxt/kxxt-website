@@ -6,7 +6,11 @@ const NavbarBrand = ({ children }) => {
   return (
     <div className="navbar-brand">
       <Link className="navbar-item" to="/">
-        <StaticImage alt="kxxt logo" width={48} src="../../images/profile-pic.png" />
+        <StaticImage
+          alt="kxxt logo"
+          width={48}
+          src="../../images/profile-pic.png"
+        />
       </Link>
       {children}
     </div>

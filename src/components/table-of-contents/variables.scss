@@ -10,17 +10,18 @@ $box-shadow-spread: 0.3rem;
   margin-bottom: 0.3rem;
   position: relative;
   transition: color ease-in-out 0.4s;
-  & > a{
+  & > a {
     transition: color ease-in-out 0.4s;
   }
   overflow: hidden;
   &::before {
-    content: '';
+    content: "";
     display: block;
     width: 0;
     height: 100%;
     position: absolute;
-    transition: width 0.5s ease-out, color 0.4s ease-in, background-color 0.4s ease-in;
+    transition: width 0.5s ease-out, color 0.4s ease-in,
+      background-color 0.4s ease-in;
     background-color: $toc-link-active-bg-color;
     top: 0;
     left: 0;

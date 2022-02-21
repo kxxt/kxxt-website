@@ -1,10 +1,5 @@
-import React from "react";
+import React from "react"
 
+const NavbarEnd = ({ children }) => <div className="navbar-end">{children}</div>
 
-const NavbarEnd = ({ children }) => (
-    <div className="navbar-end">
-        {children}
-    </div>
-)
-
-export default NavbarEnd;
+export default NavbarEnd

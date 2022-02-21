@@ -10,26 +10,26 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
 
   // Get all markdown blog posts sorted by date
   const result = await graphql(`
-        {
-            allMdx(
-                sort: { fields: [frontmatter___date], order: ASC }
-            ) {
-                nodes {
-                    id
-                    slug
-                }
-
-                group(field: frontmatter___tags) {
-                    tag: fieldValue
-                    totalCount
-                }
-
-            }
+    {
+      allMdx(sort: { fields: [frontmatter___date], order: ASC }) {
+        nodes {
+          id
+          slug
         }
-    `)
+
+        group(field: frontmatter___tags) {
+          tag: fieldValue
+          totalCount
+        }
+      }
+    }
+  `)
 
   if (result.errors) {
-    reporter.panicOnBuild(`There was an error querying your blog posts`, result.errors)
+    reporter.panicOnBuild(
+      `There was an error querying your blog posts`,
+      result.errors
+    )
     return
   }
 
@@ -50,8 +50,8 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
         context: {
           id: post.id,
           previousPostId,
-          nextPostId
-        }
+          nextPostId,
+        },
       })
     })
   }
@@ -63,8 +63,9 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
         path: `/tags/${_.kebabCase(tag)}/`,
         component: path.resolve(`./src/templates/tag-page.js`),
         context: {
-          tag, totalCount
-        }
+          tag,
+          totalCount,
+        },
       })
     })
   }
@@ -77,7 +78,9 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
     const value = createFilePath({ node, getNode })
 
     createNodeField({
-      name: `slug`, node, value
+      name: `slug`,
+      node,
+      value,
     })
   }
 }

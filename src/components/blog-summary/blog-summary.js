@@ -5,7 +5,8 @@ import Tags from "../tags/tags"
 import formatDateAndTimeToRead from "../../utils/date-and-time-to-read"
 
 const BlogSummary = ({ post }) => {
-  const title = post.frontmatter.title || post?.headings?.[0]?.value || post.slug
+  const title =
+    post.frontmatter.title || post?.headings?.[0]?.value || post.slug
   return (
     <article
       className={`${styles.blogSummary} box`}
@@ -18,14 +19,16 @@ const BlogSummary = ({ post }) => {
             <span itemProp="headline">{title}</span>
           </Link>
         </h2>
-        <small>{formatDateAndTimeToRead(post.frontmatter.date, post.timeToRead)}</small>
+        <small>
+          {formatDateAndTimeToRead(post.frontmatter.date, post.timeToRead)}
+        </small>
         <Tags tags={post.frontmatter.tags} />
       </header>
       <section>
         <p
           className="content"
           dangerouslySetInnerHTML={{
-            __html: post.frontmatter.description || post.excerpt
+            __html: post.frontmatter.description || post.excerpt,
           }}
           itemProp="description"
         />

@@ -54,7 +54,7 @@ gatsby-plugin-mdx@^3.3.0:
 另外，JavaScript 有了标准的模块实现([ESM](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c)), 很多 remark 插件不再与 CommonJS 的模块兼容，我们在加载这些使用 ESM 的插件时需要使用来自 [`gatsby-oi-wiki`](https://github.com/OI-wiki/gatsby-oi-wiki) 的 `esmRequire`. (在此向 [`gatsby-oi-wiki`](https://github.com/OI-wiki/gatsby-oi-wiki) 致谢)
 
 - `esmRequire.js`: https://github.com/OI-wiki/gatsby-oi-wiki/blob/7ae4ff89dfa16ee3ee4437a3f157b2dee4cc9f23/gatsby-theme-oi-wiki/esmRequire.js
--  相关讨论： https://github.com/gatsbyjs/gatsby/issues/23705
+- 相关讨论： https://github.com/gatsbyjs/gatsby/issues/23705
 
 使用你最喜欢的 JavaScript 包管理器安装好依赖之后，我们来修改一下 `gatsby-config.js`:
 
@@ -83,11 +83,12 @@ module.exports = {
 }
 ```
 
-其中，`remark-math` 解析Markdown的数学语法，`rehype-katex` 负责将 `<span class=math-inline>`  和 `<div class=math-display>` 这样的标签用 $\KaTeX$ 渲染出来.
+其中，`remark-math` 解析 Markdown 的数学语法，`rehype-katex` 负责将 `<span class=math-inline>` 和 `<div class=math-display>` 这样的标签用 $\KaTeX$ 渲染出来.
 
 然后，我们在博客的模板文件 `src/templates/blog-post.js` 里面引入 $\KaTeX$ 的 css 就大功告成了！
 
 下面是数学公式的示例：
+
 $$
 A^2 + B^2 = C^2\\
 x \in \R\\

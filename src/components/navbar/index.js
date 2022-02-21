@@ -8,7 +8,13 @@ import NavbarMobileMenu from "./navbar-burger"
 import NavbarBrand from "./navbar-brand"
 import { faGithub } from "@fortawesome/free-brands-svg-icons"
 import IconText from "../icon-text"
-import { faArchive, faAt, faBlog, faHome, faTags } from "@fortawesome/free-solid-svg-icons"
+import {
+  faArchive,
+  faAt,
+  faBlog,
+  faHome,
+  faTags,
+} from "@fortawesome/free-solid-svg-icons"
 
 const Navbar = ({ centerLinks, title }) => {
   const [isActive, setIsActive] = useState(false)
@@ -20,13 +26,36 @@ const Navbar = ({ centerLinks, title }) => {
         <NavbarMobileMenu toggle={toggleActive} links={centerLinks} />
       </NavbarBrand>
 
-      <div className={"navbar-menu " + (isActive ? "is-active" : "")} id="navbar-menu">
+      <div
+        className={"navbar-menu " + (isActive ? "is-active" : "")}
+        id="navbar-menu"
+      >
         <NavbarStart>
-          <NavbarLinkButton to="/"><IconText icon={faHome} color="lightseagreen">Home</IconText></NavbarLinkButton>
-          <NavbarLinkButton to="/blogs"><IconText icon={faBlog} color="hotpink">Blogs</IconText></NavbarLinkButton>
-          <NavbarLinkButton to="/archive"><IconText icon={faArchive} color="brown">Archive</IconText></NavbarLinkButton>
-          <NavbarLinkButton to="/tags"><IconText icon={faTags} color="dodgerblue">Tags</IconText></NavbarLinkButton>
-          <a href="#contact" className="navbar-item"><IconText icon={faAt} color="gold">Contact</IconText></a>
+          <NavbarLinkButton to="/">
+            <IconText icon={faHome} color="lightseagreen">
+              Home
+            </IconText>
+          </NavbarLinkButton>
+          <NavbarLinkButton to="/blogs">
+            <IconText icon={faBlog} color="hotpink">
+              Blogs
+            </IconText>
+          </NavbarLinkButton>
+          <NavbarLinkButton to="/archive">
+            <IconText icon={faArchive} color="brown">
+              Archive
+            </IconText>
+          </NavbarLinkButton>
+          <NavbarLinkButton to="/tags">
+            <IconText icon={faTags} color="dodgerblue">
+              Tags
+            </IconText>
+          </NavbarLinkButton>
+          <a href="#contact" className="navbar-item">
+            <IconText icon={faAt} color="gold">
+              Contact
+            </IconText>
+          </a>
         </NavbarStart>
         <NavbarEnd>
           <a className="navbar-item" href="https://github.com/kxxt">

@@ -18,13 +18,14 @@ const TagsPage = ({ data, location }) => {
 }
 
 export const pageQuery = graphql`
-    query {
-        allMdx {
-            group(field: frontmatter___tags) {
-                tag: fieldValue
-                totalCount
-            }
-        }
-    }`
+  query {
+    allMdx {
+      group(field: frontmatter___tags) {
+        tag: fieldValue
+        totalCount
+      }
+    }
+  }
+`
 
 export default TagsPage

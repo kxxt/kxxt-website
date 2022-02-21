@@ -4,13 +4,27 @@ import Seo from "../components/seo"
 import { graphql } from "gatsby"
 import ArchiveItem from "../components/archive/archive-item"
 
-const months = ["January", "February", "March", "April", "May", "June", "July",
-  "August", "September", "October", "November", "December"]
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+]
 
 const ArchivePage = ({ data, location }) => {
   const title = "Archive"
   const posts = data.allMdx.nodes
-  let currentYear = null, currentMonth = null, list = []
+  let currentYear = null,
+    currentMonth = null,
+    list = []
   for (let post of posts) {
     let date = new Date(post.frontmatter.date)
     const year = date.getFullYear(),
@@ -33,9 +47,7 @@ const ArchivePage = ({ data, location }) => {
       <p className="subtitle is-6">
         This is the archive page. You can find all the posts here.
       </p>
-      <div className="content">
-        {list}
-      </div>
+      <div className="content">{list}</div>
     </Layout>
   )
 }
@@ -43,17 +55,17 @@ const ArchivePage = ({ data, location }) => {
 export default ArchivePage
 
 export const pageQuery = graphql`
-    query {
-        allMdx(sort: {fields: [frontmatter___date], order: DESC}) {
-            nodes{
-                id
-                slug
-                frontmatter {
-                    date(formatString: "YYYY-MM-DD")
-                    title
-                    tags
-                }
-            }
+  query {
+    allMdx(sort: { fields: [frontmatter___date], order: DESC }) {
+      nodes {
+        id
+        slug
+        frontmatter {
+          date(formatString: "YYYY-MM-DD")
+          title
+          tags
         }
+      }
     }
+  }
 `

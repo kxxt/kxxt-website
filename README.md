@@ -8,4 +8,3 @@ My personal website powered by gatsby, hosted on vercel.
 - Bulma
 - MDX
 - SCSS
-

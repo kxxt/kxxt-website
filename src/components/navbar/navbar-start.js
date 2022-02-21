@@ -1,10 +1,7 @@
-import React from "react";
-
+import React from "react"
 
 const NavbarStart = ({ children }) => (
-    <div className="navbar-start">
-        {children}
-    </div>
+  <div className="navbar-start">{children}</div>
 )
 
-export default NavbarStart;
+export default NavbarStart

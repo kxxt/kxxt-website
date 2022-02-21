@@ -13,35 +13,61 @@ const Footer = () => {
           <div className="column is-3">
             <p className="subtitle">About</p>
             &copy; {new Date().getFullYear()} kxxt
-            <br/>
+            <br />
             My English name is Levi Zim
             <br />
             This is my personal website.
             <br />
-            <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><StaticImage
-              alt="Creative Commons License" style={{ borderWidth: 0, marginTop: "1rem", width: 88, height: 31 }}
-              src="../../images/cc-by-nc-sa-4.png" /></a><br />Unless specified, the contents of
-            this website are licensed under a <a
-            rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons
-            Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+            <a
+              rel="license"
+              href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
+            >
+              <StaticImage
+                alt="Creative Commons License"
+                style={{
+                  borderWidth: 0,
+                  marginTop: "1rem",
+                  width: 88,
+                  height: 31,
+                }}
+                src="../../images/cc-by-nc-sa-4.png"
+              />
+            </a>
+            <br />
+            Unless specified, the contents of this website are licensed under a{" "}
+            <a
+              rel="license"
+              href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
+            >
+              Creative Commons Attribution-NonCommercial-ShareAlike 4.0
+              International License
+            </a>
+            .
           </div>
           <div className="column is-3">
-            <p id="contact" className="subtitle">Contact</p>
+            <p id="contact" className="subtitle">
+              Contact
+            </p>
             <ul>
               <li>
                 <a href="https://github.com/kxxt">
-                  <IconText color="black" icon={faGithub}>kxxt</IconText>
+                  <IconText color="black" icon={faGithub}>
+                    kxxt
+                  </IconText>
                 </a>
               </li>
               <li>
-                <a
-                  href="mailto:rsworktech@outlook.com">
-                  <IconText color="gold" icon={faAt}>rsworktech@outlook.com</IconText>
+                <a href="mailto:rsworktech@outlook.com">
+                  <IconText color="gold" icon={faAt}>
+                    rsworktech@outlook.com
+                  </IconText>
                 </a>
               </li>
               <li>
-                <a
-                  href="https://t.me/kxxtchannel"><IconText color="dodgerblue" icon={faTelegram}>My channel</IconText>
+                <a href="https://t.me/kxxtchannel">
+                  <IconText color="dodgerblue" icon={faTelegram}>
+                    My channel
+                  </IconText>
                 </a>
               </li>
             </ul>
@@ -49,7 +75,13 @@ const Footer = () => {
           <div className="column is-6">
             <p className="subtitle">Some links</p>
             <ul>
-              <li><a href="/rss.xml"><IconText color="orange" icon={faRss}>RSS Feed</IconText></a></li>
+              <li>
+                <a href="/rss.xml">
+                  <IconText color="orange" icon={faRss}>
+                    RSS Feed
+                  </IconText>
+                </a>
+              </li>
             </ul>
           </div>
         </div>

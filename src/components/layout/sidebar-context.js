@@ -1,10 +1,8 @@
 import React from "react"
 
 const SidebarContext = React.createContext({
-    isSidebarExpanded: false,
-    toggleSidebar: () => {
-    }
-  }
-)
+  isSidebarExpanded: false,
+  toggleSidebar: () => {},
+})
 
 export default SidebarContext

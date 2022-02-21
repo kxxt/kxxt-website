@@ -1,6 +1,5 @@
 @import "../../../node_modules/bulma/sass/utilities/mixins";
 
-
 .blog-post-nav {
   display: flex;
   flex-wrap: wrap;
@@ -27,7 +26,6 @@
     }
   }
 }
-
 
 @include mobile() {
   .blog-post-nav > :global(.box) {

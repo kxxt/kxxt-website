@@ -1,8 +1,6 @@
 @charset "utf-8";
 
-
 @import "~bulma/bulma";
-
 
 #main-container {
   margin-top: 1rem;
@@ -34,7 +32,6 @@
       line-height: 1.8rem;
       margin-top: 0;
     }
-
   }
 }
 
@@ -143,8 +140,7 @@ html {
   content: attr(data-prompt);
 }
 
-.blog-post code[class*=language-], pre[class*=language-] {
+.blog-post code[class*="language-"],
+pre[class*="language-"] {
   color: #444;
 }
-
-

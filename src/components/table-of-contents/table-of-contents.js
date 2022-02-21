@@ -28,7 +28,6 @@ const ItemList = ({ item, level }) => {
   )
 }
 
-
 const TableOfContents = ({ toc }) => {
   const ids = getIds(toc, 0)
   const activeId = useActiveId(ids)
@@ -38,13 +37,18 @@ const TableOfContents = ({ toc }) => {
   return (
     <div>
       <details className={styles.tocTopLevel} open>
-        <summary className={`menu-label ${styles.tocTitle}`} onClick={toggleSidebar}>
+        <summary
+          className={`menu-label ${styles.tocTitle}`}
+          onClick={toggleSidebar}
+        >
           <h2>Table of Contents</h2>
         </summary>
         <ul>
           <ActiveIdChainContext.Provider value={idPaths[activeId]}>
             {toc.map(item => (
-              <li key={item.url}><ItemList item={item} level={1} /></li>
+              <li key={item.url}>
+                <ItemList item={item} level={1} />
+              </li>
             ))}
           </ActiveIdChainContext.Provider>
         </ul>

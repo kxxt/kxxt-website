@@ -5,10 +5,10 @@ module.exports = {
     title: `kxxt`,
     author: {
       name: `kxxt`,
-      summary: `A student studying Data Science and Artificial Intelligence. Major Language: C# and Python. My personal chinese TG channel: https://t.me/kxxtchannel`
+      summary: `A student studying Data Science and Artificial Intelligence. Major Language: C# and Python. My personal chinese TG channel: https://t.me/kxxtchannel`,
     },
     description: `kxxt's personal website`,
-    siteUrl: `https://kxxt.vercel.app/`
+    siteUrl: `https://kxxt.vercel.app/`,
   },
   plugins: [
     // {
@@ -21,8 +21,8 @@ module.exports = {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `images`,
-        path: `${__dirname}/src/images`
-      }
+        path: `${__dirname}/src/images`,
+      },
     },
     `gatsby-plugin-smoothscroll`,
     {
@@ -32,11 +32,9 @@ module.exports = {
         remarkPlugins: [
           require("remark-math"),
           require("remark-abbr"),
-          esmRequire("remark-emoji").default
+          esmRequire("remark-emoji").default,
         ],
-        rehypePlugins: [
-          esmRequire("rehype-katex").default
-        ],
+        rehypePlugins: [esmRequire("rehype-katex").default],
         gatsbyRemarkPlugins: [
           {
             resolve: `gatsby-remark-mermaid`,
@@ -44,9 +42,10 @@ module.exports = {
               mermaidOptions: {
                 // Fix mermaid and bulma css conflicts.
                 // .label styles in bulma will override .label styles in mermaid
-                themeCSS: ".label { font-size: inherit!important; font-weight: inherit!important; line-height: initial!important; }"
-              }
-            }
+                themeCSS:
+                  ".label { font-size: inherit!important; font-weight: inherit!important; line-height: initial!important; }",
+              },
+            },
           },
           `gatsby-remark-graphviz`,
           `gatsby-remark-autolink-headers`,
@@ -57,7 +56,7 @@ module.exports = {
           `gatsby-remark-images`,
           {
             resolve: `gatsby-remark-embed-snippet`,
-            options: {}
+            options: {},
           },
           {
             resolve: `gatsby-remark-prismjs`,
@@ -65,18 +64,18 @@ module.exports = {
               classPrefix: "language-",
               inlineCodeMarker: null,
               showLineNumbers: true,
-              aliases: { sh: "bash" }
-            }
-          }
-        ]
-      }
+              aliases: { sh: "bash" },
+            },
+          },
+        ],
+      },
     },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
         path: `${__dirname}/content/blog`,
-        name: `blog`
-      }
+        name: `blog`,
+      },
     },
     // {
     //   resolve: `gatsby-plugin-page-creator`,
@@ -90,20 +89,20 @@ module.exports = {
       resolve: `gatsby-plugin-google-gtag`,
       options: {
         trackingIds: [
-          "G-FLBVN7RJJQ" // Google Analytics / GA
+          "G-FLBVN7RJJQ", // Google Analytics / GA
         ],
         // This object gets passed directly to the gtag config command
         // This config will be shared across all trackingIds
         gtagConfig: {
-          anonymize_ip: true
+          anonymize_ip: true,
         },
         // This object is used for configuration specific to this plugin
         pluginConfig: {
           // Puts tracking script in the head instead of the body
           head: false,
-          respectDNT: true
-        }
-      }
+          respectDNT: true,
+        },
+      },
     },
     {
       resolve: `gatsby-plugin-feed`,
@@ -129,7 +128,7 @@ module.exports = {
                   date: node.frontmatter.date,
                   url: `${site.siteMetadata.siteUrl}/blog/${node.slug}`,
                   guid: node.slug,
-                  custom_elements: [{ "content:encoded": node.html }]
+                  custom_elements: [{ "content:encoded": node.html }],
                 })
               })
             },
@@ -151,17 +150,17 @@ module.exports = {
               }
             `,
             output: "/rss.xml",
-            title: "kxxt's rss feed"
-          }
-        ]
-      }
+            title: "kxxt's rss feed",
+          },
+        ],
+      },
     },
     {
       resolve: `gatsby-plugin-sitemap`,
       options: {
         output: `/sitemap`,
-        createLinkInHead: true
-      }
+        createLinkInHead: true,
+      },
     },
     {
       resolve: `gatsby-plugin-manifest`,
@@ -174,12 +173,12 @@ module.exports = {
         // https://css-tricks.com/meta-theme-color-and-trickery/
         // theme_color: `#663399`,
         display: `minimal-ui`,
-        icon: `src/images/profile-pic.png` // This path is relative to the root of the site.
-      }
+        icon: `src/images/profile-pic.png`, // This path is relative to the root of the site.
+      },
     },
-    `gatsby-plugin-react-helmet`
-// this (optional) plugin enables Progressive Web App + Offline functionality
-// To learn more, visit: https://gatsby.dev/offline
-// `gatsby-plugin-offline`,
-  ]
+    `gatsby-plugin-react-helmet`,
+    // this (optional) plugin enables Progressive Web App + Offline functionality
+    // To learn more, visit: https://gatsby.dev/offline
+    // `gatsby-plugin-offline`,
+  ],
 }

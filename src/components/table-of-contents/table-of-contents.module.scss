@@ -10,7 +10,7 @@ details.toc-top-level {
   }
 
   & > summary::marker {
-    content: '';
+    content: "";
   }
 
   & > ul {
@@ -40,7 +40,6 @@ details.toc-details {
   &:not(.toc-top-level) > summary {
     @include toc-item-box;
   }
-
 }
 
 .toc-title {
