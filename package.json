@@ -59,12 +59,13 @@
     "typeface-montserrat": "1.1.13"
   },
   "devDependencies": {
+    "@babel/core": "^7.17.5",
     "gh-pages": "^3.2.3",
     "prettier": "^2.5.1",
-    "webpack": "^5.69.1",
-    "@babel/core": "^7.17.5",
     "puppeteer": "^13.3.2",
-    "sass": "^1.49.8"
+    "sass": "^1.49.8",
+    "typescript": "^4.5.5",
+    "webpack": "^5.69.1"
   },
   "homepage": "https://kxxt.vercel.app",
   "keywords": [

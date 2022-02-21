@@ -12687,6 +12687,11 @@ typeface-montserrat@1.1.13:
   resolved "https://registry.yarnpkg.com/typeface-montserrat/-/typeface-montserrat-1.1.13.tgz#2a16729c174dd1a8c3fec05a851b7725412606cc"
   integrity sha512-Pklkyj0e+K+6I/t0M6JBDBphpfJkF1k+3qd8qDnp9aVtCC7oGBQWTAcL6+5eArfGe7h73uPwyal73hEkf9YCUA==
 
+typescript@^4.5.5:
+  version "4.5.5"
+  resolved "https://registry.npmjs.org/typescript/-/typescript-4.5.5.tgz#d8c953832d28924a9e3d37c73d729c846c5896f3"
+  integrity sha512-TCTIul70LyWe6IJWT8QSYeA54WQe8EjQFU4wY52Fasj5UKx88LNYKCgBEHcOMOrFF1rKGbD8v/xcNWVUq9SymA==
+
 unbox-primitive@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/unbox-primitive/-/unbox-primitive-1.0.1.tgz#085e215625ec3162574dc8859abee78a59b14471"
