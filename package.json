@@ -15,6 +15,7 @@
     "@mdx-js/mdx": "^1.6.22",
     "@mdx-js/react": "^1.6.22",
     "bulma": "^0.9.3",
+    "eslint-config-prettier": "^8.4.0",
     "esm": "^3.2.25",
     "gatsby": "^4.7.2",
     "gatsby-plugin-exclude": "^1.0.2",
@@ -60,7 +61,15 @@
   },
   "devDependencies": {
     "@babel/core": "^7.17.5",
+    "@babel/eslint-parser": "^7.17.0",
     "babel-eslint": "^10.0.0",
+    "eslint": "^8.2.0",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "eslint-webpack-plugin": "^3.1.1",
+    "gatsby-plugin-eslint": "^4.0.2",
     "gh-pages": "^3.2.3",
     "prettier": "^2.5.1",
     "puppeteer": "^13.3.2",
@@ -89,6 +98,7 @@
     "serve": "gatsby serve",
     "clean": "gatsby clean",
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1",
-    "prettier": "prettier --write ."
+    "prettier": "prettier --write .",
+    "lint": "eslint src/ --rulesdir ./node_modules/gatsby/dist/utils/eslint-rules"
   }
 }
