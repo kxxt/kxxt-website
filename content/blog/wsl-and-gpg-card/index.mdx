@@ -1,0 +1,211 @@
+---
+title: 在 WSL 中使用 GPG 智能卡
+date: 2022-03-17
+tags: [wsl, gpg, yubikey]
+---
+
+注意：本文假设您正在使用 WIndows 11 Build 22000 及以上版本。
+
+我所使用的 WSL 发行版是 Arch Linux, 若读者正在使用的发行版有所不同，则需要自己更改安装软件包的命令。
+
+本文介绍的方法是基于 USBIPD 的，对于 wsl 来说，智能卡是一个 USB 设备。
+
+除了本文介绍的方法之外，还有与 Windows 的 GPG 共用 socket 的方法，可以参考以下文章：
+
+https://justyn.io/blog/using-a-yubikey-for-gpg-in-wsl-windows-subsystem-for-linux-on-windows-10/
+
+# 配置 usbip
+
+参考资料：https://docs.microsoft.com/en-us/windows/wsl/connect-usb
+
+首先安装 USPBIPD-WIN, 推荐使用 `winget ` 安装：
+
+```powershell
+winget install --interactive --exact dorssel.usbipd-win
+```
+
+然后进入 wsl, 安装 usbip. 
+
+读者可以根据自己的需要选择是否安装 `usbutils`, 本文章中主要使用此软件包提供的 `lsusb` 命令来列出 USB 设备。
+
+```zsh
+sudo pacman -S usbip usbutils
+```
+
+# 配置 systemd
+
+因为 wsl 默认不支持 systemd, 而使用 GPG 智能卡需要 pcscd 服务，所以我们需要做一些 hack 来使 wsl 支持 systemd.
+
+这里我们使用 [genie](https://github.com/arkane-systems/genie), 读者也可以使用 [subsystemctl](https://github.com/sorah/subsystemctl) 来达到同样的目的。
+
+```zsh
+yay -S genie-systemd-git
+```
+
+运行 `genie -s` 进入 `bottle` (下面是命令输出)
+
+```
+genie: WARNING: systemd default target is default.target; targets other than multi-user.target may not work
+genie: WARNING: if you wish to use a different target, this warning can be disabled in the config file
+genie: WARNING: if you experience problems, please change the target to multi-user.target
+Waiting for systemd....!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+genie: systemd did not enter running state (degraded) after 240 seconds
+genie: this may be due to a problem with your systemd configuration
+genie: information on problematic units is available at https://github.com/arkane-systems/genie/wiki/Systemd-units-known-to-be-problematic-under-WSL
+genie: a list of failed units follows:
+
+  UNIT                         LOAD   ACTIVE SUB    DESCRIPTION
+● systemd-modules-load.service loaded failed failed Load Kernel Modules
+
+LOAD   = Reflects whether the unit definition was properly loaded.
+ACTIVE = The high-level unit activation state, i.e. generalization of SUB.
+SUB    = The low-level unit activation state, values depend on unit type.
+1 loaded units listed.
+genie: WARNING: systemd is in degraded state, issues may occur!
+```
+
+然后禁用有问题的服务：
+
+禁用 `systemd-modules-load.service`，因为这个服务尝试加载 wsl 不支持的内核模块。
+
+```
+sudo systemctl mask systemd-modules-load
+```
+
+根据 `genie` 的警告，我们修改一下 `systemd` 的默认 `target`
+
+```zsh
+sudo systemctl set-default multi-user.target
+```
+
+另外， 我们还需要编辑一下 `/usr/lib/systemd/system/systemd-sysusers.service`
+
+在文件末尾追加
+
+```ini
+[Service]
+LoadCredential=
+```
+
+然后退出 wsl, 彻底关闭 wsl:
+
+```powershell
+wsl --shutdown
+```
+
+以后再次进入 wsl 的时候，可以使用 `wsl genie -s` 直接进入启用了 `systemd` 的 shell.
+
+```zsh
+wsl genie -s
+```
+
+另外，读者也可以[根据 genie 的教程设置在 wsl 启动时自动运行 genie](https://github.com/arkane-systems/genie/wiki/Automatically-starting-genie-on-every-shell-session)
+
+# 配置 GPG
+
+首先安装依赖项：
+
+```zsh
+sudo pacman -S opensc ccid
+sudo systemctl enable --now pcscd
+```
+
+然后，在 Windows Powershell 中，我们将 GPG 智能卡接入 wsl.
+
+（在安装 USBIPD-WIN 时，它会把自己加入 PATH, 若读者在运行 `usbipd` 时， 报错找不到指令，可以重新打开一个 Terminal）
+
+首先列出 USB 设备：
+
+```powershell
+usbipd list
+```
+
+```
+Connected:
+BUSID  DEVICE                                                        STATE
+1-1    USB Input Device, Microsoft Usbccid Smartcard Reader (WUDF)   Shared
+1-4    Synaptics UWP WBDI SGX                                        Not shared
+1-6    HP True Vision HD Camera, HP IR Camera                        Not shared
+1-14   英特尔(R) 无线 Bluetooth(R)                                   Not shared
+3-1    USB Mass Storage Device                                       Not shared
+3-4    Realtek USB GbE Family Controller                             Not shared
+4-5    USB Billboard Device                                          Not shared
+5-1    USB Input Device                                              Not shared
+5-2    USB Input Device                                              Not shared
+
+Persisted:
+GUID                                  DEVICE
+```
+
+可以看到智能卡的 Bus ID 是 `1-1`, 读者看到的输出可能不同，请根据自己的命令输出确定智能卡的 Bus ID.
+
+然后运行：
+
+```powershell
+usbipd wsl attach --busid 1-1
+```
+
+可以将智能卡设备接入 wsl.
+
+> 注意：
+>
+> 若你是第一次将 USB 设备接入 wsl, 你可能需要使用管理员权限运行上述命令。
+
+然后在 wsl 中运行 `lsusb`, 如果没有问题的话，可以看到智能卡设备：
+
+```
+Bus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+Bus 001 Device 003: ID 1050:0407 Yubico.com Yubikey 4/5 OTP+U2F+CCID
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+```
+
+然后，我们就可以愉快的在 WSL 中使用 GPG 智能卡了。
+
+可以运行 `gpg --card-status` 来输出智能卡的信息。
+
+```
+Reader ...........: Yubico YubiKey OTP FIDO CCID 00 00
+Application ID ...: D2760001240103040006180493360000
+Application type .: OpenPGP
+Version ..........: 3.4
+Manufacturer .....: Yubico
+Serial number ....: 18049336
+Name of cardholder: Levi Zim
+Language prefs ...: en
+Salutation .......:
+URL of public key : https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x17aadd6726ddc58b8ee5881757670ccfa42ccf0a
+Login data .......: rsworktech@outlook.com
+Signature PIN ....: not forced
+Key attributes ...: rsa4096 rsa4096 rsa4096
+Max. PIN lengths .: 127 127 127
+PIN retry counter : 6 6 6
+Signature counter : 451
+KDF setting ......: on
+Signature key ....: 2896 70F9 1C36 35F0 A174  2445 6F3B 98D4 2FC6 C9D8
+      created ....: 2022-01-11 02:54:30
+Encryption key....: FAE3 237E 47CE 5A72 0008  43F1 6F64 DD2F 6896 007A
+      created ....: 2022-01-11 02:55:25
+Authentication key: 06B1 1E0F E610 F268 BE47  6259 F453 5D56 97F6 493B
+      created ....: 2022-01-11 03:06:07
+General key info..: [none]
+```
+
+读者可以在 Powershell 中运行以下命令从 wsl 中“拔出“智能卡：
+
+```powershell
+usbipd wsl detach --busid <智能卡的 Bus ID>
+```
+
+# 结尾
+
+本文中的方法不只局限于 GPG 智能卡，你也可以通过这种方法将其他 USB 设备接入 WSL.
+
+# References
+
+1. https://docs.microsoft.com/en-us/windows/wsl/connect-usb
+2. https://justyn.io/blog/using-a-yubikey-for-gpg-in-wsl-windows-subsystem-for-linux-on-windows-10/
+3. https://github.com/dorssel/usbipd-win/wiki/WSL-support
+4. https://github.com/arkane-systems/genie
+5. https://github.com/arkane-systems/genie/wiki/Systemd-units-known-to-be-problematic-under-WSL
+6. https://github.com/arkane-systems/genie/wiki/Waiting-for-the-user-systemd
+
