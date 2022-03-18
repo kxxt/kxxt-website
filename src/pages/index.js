@@ -59,7 +59,7 @@ const BlogIndex = ({ data, location }) => {
           src="../images/profile-pic.png"
         />
         <p className="title">
-          Hi, I'm <strong>kxxt</strong>
+          Hi, I&apos;m <strong>kxxt</strong>
         </p>
         <p className="subtitle">
           <ReactTyped
