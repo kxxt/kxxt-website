@@ -73,14 +73,25 @@ html {
     & > code {
       padding-left: 1rem;
     }
+
     &.line-numbers {
       padding: 0;
+
       & .line-numbers-rows {
         position: unset;
         float: unset;
         z-index: 1;
       }
+
       overflow: initial;
+    }
+
+    // Fix CSS conflicts with Bulma `.section` class
+    & > code .section {
+      padding: unset !important;
+      color: red;
+      //margin: unset;
+      //border-radius: unset;
     }
   }
 
