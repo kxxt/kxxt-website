@@ -50,7 +50,6 @@ module.exports = {
         ],
         rehypePlugins: [esmRequire("rehype-katex").default],
         gatsbyRemarkPlugins: [
-          `gatsby-remark-embedder`,
           {
             resolve: `gatsby-remark-mermaid`,
             options: {
@@ -100,6 +99,7 @@ module.exports = {
     // },
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
+    `gatsby-plugin-mdx-embed`,
     {
       resolve: `gatsby-plugin-google-gtag`,
       options: {
