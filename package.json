@@ -36,6 +36,7 @@
     "gatsby-remark-check-links": "^2.1.0",
     "gatsby-remark-copy-linked-files": "^5.11.0",
     "gatsby-remark-embed-snippet": "^7.11.0",
+    "gatsby-remark-embedder": "^6.0.0",
     "gatsby-remark-graphviz": "^4.11.0",
     "gatsby-remark-images": "^6.11.1",
     "gatsby-remark-mermaid": "^2.1.0",

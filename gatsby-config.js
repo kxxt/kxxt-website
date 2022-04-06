@@ -1,6 +1,6 @@
 esmRequire = require("./esm-require")
 
-const path = require("path");
+const path = require("path")
 
 // Get paths of Gatsby's required rules, which as of writing is located at:
 // https://github.com/gatsbyjs/gatsby/tree/fbfe3f63dec23d279a27b54b4057dd611dce74bb/packages/
@@ -12,7 +12,7 @@ const gatsbyRequiredRules = path.join(
   "dist",
   "utils",
   "eslint-rules"
-);
+)
 
 module.exports = {
   siteMetadata: {
@@ -50,6 +50,7 @@ module.exports = {
         ],
         rehypePlugins: [esmRequire("rehype-katex").default],
         gatsbyRemarkPlugins: [
+          `gatsby-remark-embedder`,
           {
             resolve: `gatsby-remark-mermaid`,
             options: {
