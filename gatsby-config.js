@@ -164,7 +164,7 @@ module.exports = {
               }
             `,
             output: "/rss.xml",
-            title: "kxxt's rss feed",
+            title: "kxxt's blog",
           },
         ],
       },
