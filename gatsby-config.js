@@ -22,7 +22,7 @@ module.exports = {
       summary: `A student studying Data Science and Artificial Intelligence. Major Language: C# and Python. My personal chinese TG channel: https://t.me/kxxtchannel`,
     },
     description: `kxxt's personal website`,
-    siteUrl: `https://kxxt.vercel.app/`,
+    siteUrl: `https://kxxt.me`,
   },
   plugins: [
     // {
