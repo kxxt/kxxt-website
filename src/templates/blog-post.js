@@ -2,6 +2,7 @@ import * as React from "react"
 import { Link, graphql } from "gatsby"
 import { MDXProvider } from "@mdx-js/react"
 import { MDXRenderer } from "gatsby-plugin-mdx"
+import Giscus from "@giscus/react"
 
 import Layout from "../components/layout/layout"
 import Seo from "../components/seo"
@@ -50,6 +51,19 @@ const BlogPostTemplate = ({ data, location }) => {
           <MDXRenderer frontmatter={post.frontmatter}>{post.body}</MDXRenderer>
         </MDXProvider>
       </article>
+      <Giscus
+        repo="kxxt/kxxt-website"
+        repoId="R_kgDOGcqT_g"
+        category="Thread"
+        categoryId="DIC_kwDOGcqT_s4COe_7"
+        mapping="og:title"
+        reactionsEnabled="1"
+        emitMetadata="0"
+        inputPosition="top"
+        theme="light"
+        lang="en"
+        loading="lazy"
+      />
     </Layout>
   )
 }
