@@ -56,7 +56,7 @@ const BlogIndex = ({ data, location }) => {
         <StaticImage
           alt="kxxt profile picture"
           width={128}
-          src="../images/profile-pic.png"
+          src="../images/profile-photo-no-bg.png"
         />
         <p className="title">
           Hi, I&apos;m <strong>kxxt</strong>
