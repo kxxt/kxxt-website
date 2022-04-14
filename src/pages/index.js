@@ -53,14 +53,16 @@ const BlogIndex = ({ data, location }) => {
     websiteLine,
   ]
   const hero = (
-    <section id="index-hero" className="hero is-link is-fullheight-with-navbar">
+    <section
+      className={`${styles.indexHero} hero is-link is-fullheight-with-navbar`}
+    >
       <div className="hero-body">
         <StaticImage
           alt="kxxt profile picture"
           width={128}
           src="../images/profile-photo-no-bg.png"
         />
-        <p className={`${styles.heroTitle} title`}>
+        <p className="title">
           Hi, I&apos;m <strong>kxxt</strong>
         </p>
         <p className="subtitle">
