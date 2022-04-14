@@ -1,5 +1,6 @@
 import * as React from "react"
 import { graphql } from "gatsby"
+import { useState } from "react"
 
 import Layout from "../components/layout/layout"
 import Seo from "../components/seo"
@@ -8,8 +9,11 @@ import { StaticImage } from "gatsby-plugin-image"
 import BlogSummaryList from "../components/blog-summary/blog-summary-list"
 
 import * as styles from "./index.module.scss"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faFastForward } from "@fortawesome/free-solid-svg-icons"
 
 const BlogIndex = ({ data, location }) => {
+  let [typingSpeed, setTypingSpeed] = useState(70)
   const siteTitle = data.site.siteMetadata?.title || `Title`
   const posts = data.allMdx.nodes
   const line1 = `Welcome to my <strong style="color: orangered;">personal website</strong>!<br/>`
@@ -65,12 +69,12 @@ const BlogIndex = ({ data, location }) => {
         <p className="title">
           Hi, I&apos;m <strong>kxxt</strong>
         </p>
+        <button className="button is-primary" onClick={() => setTypingSpeed(0)}>
+          <FontAwesomeIcon icon={faFastForward} />
+        </button>
         <p className="subtitle">
           <ReactTyped
-            // style={{ fontSize: "1.35rem", lineHeight: "1.8rem", textAlign: "center" }}
-            // typedRef={typedRef()}
-            // loop
-            typeSpeed={70}
+            typeSpeed={typingSpeed}
             className="subtitle"
             backSpeed={40}
             strings={strings}
