@@ -106,9 +106,5 @@
     "prettier": "prettier --write .",
     "lint": "eslint src/ --rulesdir ./node_modules/gatsby/dist/utils/eslint-rules",
     "prepare": "husky install"
-  },
-  "lint-staged": {
-    "*.js": "eslint --cache --fix",
-    "*.{js,jsx,ts,tsx,json,md}": "prettier --write"
   }
 }
