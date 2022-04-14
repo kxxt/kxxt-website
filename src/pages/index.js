@@ -7,6 +7,8 @@ import ReactTyped from "react-typed-component"
 import { StaticImage } from "gatsby-plugin-image"
 import BlogSummaryList from "../components/blog-summary/blog-summary-list"
 
+import * as styles from "./index.module.scss"
+
 const BlogIndex = ({ data, location }) => {
   const siteTitle = data.site.siteMetadata?.title || `Title`
   const posts = data.allMdx.nodes
@@ -58,7 +60,7 @@ const BlogIndex = ({ data, location }) => {
           width={128}
           src="../images/profile-photo-no-bg.png"
         />
-        <p className="title">
+        <p className={`${styles.heroTitle} title`}>
           Hi, I&apos;m <strong>kxxt</strong>
         </p>
         <p className="subtitle">
