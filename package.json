@@ -74,6 +74,8 @@
     "eslint-webpack-plugin": "^3.1.1",
     "gatsby-plugin-eslint": "^4.0.2",
     "gh-pages": "^3.2.3",
+    "husky": ">=6",
+    "lint-staged": ">=10",
     "prettier": "^2.6.2",
     "puppeteer": "^13.5.2",
     "sass": "^1.50.0",
@@ -102,6 +104,11 @@
     "clean": "gatsby clean",
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1",
     "prettier": "prettier --write .",
-    "lint": "eslint src/ --rulesdir ./node_modules/gatsby/dist/utils/eslint-rules"
+    "lint": "eslint src/ --rulesdir ./node_modules/gatsby/dist/utils/eslint-rules",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "*.js": "eslint --cache --fix",
+    "*.{js,jsx,ts,tsx,json,md}": "prettier --write"
   }
 }
