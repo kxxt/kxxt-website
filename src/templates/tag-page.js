@@ -14,7 +14,8 @@ const TagPage = ({ data, location, pageContext }) => {
       <h1 className="title">Tag: {pageContext.tag}</h1>
       <p className="subtitle is-5">
         Found {pageContext.totalCount} page
-        {pageContext.totalCount > 1 ? "s" : ""} with tag &quot;{pageContext.tag}&quot;
+        {pageContext.totalCount > 1 ? "s" : ""} with tag &quot;{pageContext.tag}
+        &quot;
       </p>
       <BlogSummaryList posts={posts} />
     </Layout>

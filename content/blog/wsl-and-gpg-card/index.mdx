@@ -24,7 +24,7 @@ https://justyn.io/blog/using-a-yubikey-for-gpg-in-wsl-windows-subsystem-for-linu
 winget install --interactive --exact dorssel.usbipd-win
 ```
 
-然后进入 wsl, 安装 usbip. 
+然后进入 wsl, 安装 usbip.
 
 读者可以根据自己的需要选择是否安装 `usbutils`, 本文章中主要使用此软件包提供的 `lsusb` 命令来列出 USB 设备。
 
@@ -208,4 +208,3 @@ usbipd wsl detach --busid <智能卡的 Bus ID>
 4. https://github.com/arkane-systems/genie
 5. https://github.com/arkane-systems/genie/wiki/Systemd-units-known-to-be-problematic-under-WSL
 6. https://github.com/arkane-systems/genie/wiki/Waiting-for-the-user-systemd
-
