@@ -69,7 +69,7 @@ const BlogIndex = ({ data, location }) => {
           Hi, I&apos;m <strong>kxxt</strong>
         </p>
         <button className="button is-primary" onClick={() => setTypingSpeed(0)}>
-          <FontAwesomeIcon icon={faFastForward} />
+          <FontAwesomeIcon icon={faFastForward} className="icon" size="xs" />
         </button>
         <p className="subtitle">
           <ReactTyped
