@@ -22,7 +22,6 @@ const BlogIndex = ({ data, location }) => {
   const langs = [
     `<strong style="background: green;">C#</strong>`,
     `<strong style="background: dodgerblue;">Py</strong><strong style="background: gold;color: black;">thon</strong>`,
-    `<strong style="background: purple;">F#</strong>`,
     `<strong style="background: yellow;color: black;">JavaScript</strong>`,
   ]
   const langsLines = langs.map(lang => `${line3}<br/>I use ${lang}.^1000`)
