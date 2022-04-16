@@ -3,5 +3,5 @@
     "prettier --write",
     "eslint --cache --fix --rulesdir ./node_modules/gatsby/dist/utils/eslint-rules"
   ],
-  "*.{css,scss,mdx,md}": "prettier --write",
+  "*.{css,scss}": "prettier --write",
 }
