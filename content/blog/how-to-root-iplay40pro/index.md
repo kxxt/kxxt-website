@@ -78,7 +78,7 @@ python2 vbmeta_pad.py
 接下来，我们用自己的私钥给 `magisk_patched-xxxxx.img` 签名，并把原厂的一些属性加回去：
 
 ```sh
-python2 avbtool add_hash_footer --image magisk_patched-xxxxx.img --partition_name boot --partition_size 67108864 --key modified_fastboot/rsa4096_vbmeta.pem --algorithm SHA256_RSA4096 --prop com.android.build.boot.fingerprint:Alldocube/iPlay_40H/T1020H:11/RP1A.201005.001/8688:user/release-keys --prop com.android.build.boot.os_version:11
+python2 avbtool add_hash_footer --image magisk_patched-xxxxx.img --partition_name boot --partition_size 67108864 --key key.pem --algorithm SHA256_RSA4096 --prop com.android.build.boot.fingerprint:Alldocube/iPlay_40H/T1020H:11/RP1A.201005.001/8688:user/release-keys --prop com.android.build.boot.os_version:11
 ```
 
 # 在 Research Tool 中刷入两个镜像
