@@ -44,6 +44,8 @@ tags: [root, magisk, android]
 
 # 创建自己的 vbmeta-sign-custom.img
 
+**注**： 笔者是在 Manjaro Linux 环境下运行的本小节和下一小节的代码，若要在 Windows 上运行，建议你使用 Powershell 而非 cmd.
+
 请阅读并理解[这一篇教程](https://www.hovatek.com/forum/thread-32664.html)，下载这篇教程里提到的 `avbtool` 和适用于 Android 10 的`vbmeta_pad.py`。
 
 [创建自己的私钥](https://www.hovatek.com/forum/thread-32662.html)或者使用解锁 Bootloader 时使用的 modified_fastboot
