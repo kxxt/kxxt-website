@@ -22,7 +22,7 @@ tags: [root, magisk, android]
 首先，解锁 Bootloader, 请根据[这篇针对 Unisoc 芯片通用的解锁教程](https://www.hovatek.com/forum/thread-32287.html)解锁你的 Bootloader.
 
 然后，不想手动操作的人可以下载[适用于 iPlay40 Pro 的刷机包](https://www.alldocube.com/en/firmware/alldocube-iplay40ht1020h-firmware-download/)
-和这两个文件 [vbmeta-sign-custom.img](https://drive.google.com/file/d/1SHhoZmaatZSH1x0zCseLL2KSlyjax0Ig/view?usp=sharing), [magisk_patched.img](https://drive.google.com/file/d/1S_ZLmTNtbXNYAKXMKIPTXKfxWeuTUOON/view?usp=sharing)，直接跳到[最后一步](#%E5%9C%A8-research-tool-%E4%B8%AD%E5%88%B7%E5%85%A5%E4%B8%A4%E4%B8%AA%E9%95%9C%E5%83%8F)。
+和这两个文件 [vbmeta-sign-custom.img](https://drive.google.com/file/d/1SHhoZmaatZSH1x0zCseLL2KSlyjax0Ig/view?usp=sharing), [magisk_patched.img](https://drive.google.com/file/d/1S_ZLmTNtbXNYAKXMKIPTXKfxWeuTUOON/view?usp=sharing)，直接跳到[最后一步](#在-research-tool-中刷入两个镜像)。
 
 # 提取公钥
 
