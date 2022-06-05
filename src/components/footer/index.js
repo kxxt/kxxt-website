@@ -57,16 +57,16 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="mailto:kxxt@kxxt.me">
+                <a href="mailto:kxxt@kxxt.dev">
                   <IconText color="gold" icon={faAt}>
-                    Personal: kxxt@kxxt.me
+                    Personal: kxxt@kxxt.dev
                   </IconText>
                 </a>
               </li>
               <li>
-                <a href="mailto:kxxt@kxxt.me">
+                <a href="mailto:kxxt@kxxt.dev">
                   <IconText color="pink" icon={faAt}>
-                    Site Admin: admin@kxxt.me
+                    Site Admin: admin@kxxt.dev
                   </IconText>
                 </a>
               </li>
