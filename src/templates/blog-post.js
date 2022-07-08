@@ -1,7 +1,6 @@
 import * as React from "react"
 import { Link, graphql } from "gatsby"
 import { MDXProvider } from "@mdx-js/react"
-import { MDXRenderer } from "gatsby-plugin-mdx"
 import Giscus from "@giscus/react"
 
 import Layout from "../components/layout/layout"
@@ -17,7 +16,7 @@ import "katex/dist/katex.min.css"
 
 const shortcodes = { Link } // Provide common components here
 
-const BlogPostTemplate = ({ data, location }) => {
+const BlogPostTemplate = ({ data, location, children }) => {
   const post = data.mdx
   const { previous, next } = data
   const toc = post.tableOfContents.items ? (
@@ -47,9 +46,7 @@ const BlogPostTemplate = ({ data, location }) => {
           </p>
           <Tags tags={post.frontmatter.tags} />
         </header>
-        <MDXProvider components={shortcodes}>
-          <MDXRenderer frontmatter={post.frontmatter}>{post.body}</MDXRenderer>
-        </MDXProvider>
+        <MDXProvider components={shortcodes}>{children}</MDXProvider>
       </article>
       <Giscus
         repo="kxxt/kxxt-website"
