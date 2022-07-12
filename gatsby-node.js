@@ -13,7 +13,9 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
           node {
             body
             id
-            slug
+            fields {
+              slug
+            }
             frontmatter {
               title
             }
@@ -54,7 +56,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
         index === posts.length - 1 ? null : posts[index + 1].node.id
 
       createPage({
-        path: `blog/${post.node.slug}`,
+        path: `blog${post.node.fields.slug}`,
         component: `${path.resolve(
           "./src/templates/blog-post.js"
         )}?__contentFilePath=${post.node.parent.absolutePath}`,
