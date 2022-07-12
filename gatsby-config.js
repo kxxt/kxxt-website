@@ -1,3 +1,6 @@
+const SegfaultHandler = require("segfault-handler")
+
+SegfaultHandler.registerHandler("crash.log")
 const esmRequire = require("./esm-require")
 
 const path = require("path")
@@ -42,45 +45,51 @@ module.exports = {
     {
       resolve: `gatsby-plugin-mdx`,
       options: {
+        defaultLayouts: {
+          default: path.resolve(`./src/components/blog-post.js`),
+          blog: path.resolve(`./src/components/blog-post.js`),
+        },
         extensions: [`.mdx`, `.md`],
-        remarkPlugins: [
-          require("remark-math"),
-          require("remark-abbr"),
-          esmRequire("remark-emoji").default,
-        ],
-        rehypePlugins: [esmRequire("rehype-katex").default],
+        mdxOptions: {
+          remarkPlugins: [
+            esmRequire("remark-math"),
+            require("remark-abbr"),
+            esmRequire("remark-emoji").default,
+          ],
+          rehypePlugins: [esmRequire("rehype-katex").default],
+        },
         gatsbyRemarkPlugins: [
-          {
-            resolve: `gatsby-remark-mermaid`,
-            options: {
-              mermaidOptions: {
-                // Fix mermaid and bulma css conflicts.
-                // .label styles in bulma will override .label styles in mermaid
-                themeCSS:
-                  ".label { font-size: inherit!important; font-weight: inherit!important; line-height: initial!important; }",
-              },
-            },
-          },
-          `gatsby-remark-graphviz`,
-          `gatsby-remark-autolink-headers`,
-          `gatsby-remark-check-links`,
-          "gatsby-remark-smartypants",
-          `gatsby-remark-copy-linked-files`,
-          `gatsby-remark-responsive-iframe`,
-          `gatsby-remark-images`,
-          {
-            resolve: `gatsby-remark-embed-snippet`,
-            options: {},
-          },
-          {
-            resolve: `gatsby-remark-prismjs`,
-            options: {
-              classPrefix: "language-",
-              inlineCodeMarker: null,
-              showLineNumbers: true,
-              aliases: { sh: "bash" },
-            },
-          },
+          // {
+          //   resolve: `gatsby-remark-mermaid`,
+          //   options: {
+          //     mermaidOptions: {
+          //       // Fix mermaid and bulma css conflicts.
+          //       // .label styles in bulma will override .label styles in mermaid
+          //       themeCSS:
+          //         ".label { font-size: inherit!important; font-weight: inherit!important; line-height: initial!important; }"
+          //     }
+          //   }
+          // },
+          // `gatsby-remark-graphviz`,
+          // `gatsby-remark-autolink-headers`,
+          // `gatsby-remark-check-links`,
+          // "gatsby-remark-smartypants",
+          // `gatsby-remark-copy-linked-files`,
+          // `gatsby-remark-responsive-iframe`,
+          // `gatsby-remark-images`,
+          // {
+          //   resolve: `gatsby-remark-embed-snippet`,
+          //   options: {}
+          // },
+          // {
+          //   resolve: `gatsby-remark-prismjs`,
+          //   options: {
+          //     classPrefix: "language-",
+          //     inlineCodeMarker: null,
+          //     showLineNumbers: true,
+          //     aliases: { sh: "bash" }
+          //   }
+          // }
         ],
       },
     },
@@ -99,7 +108,7 @@ module.exports = {
     // },
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
-    `gatsby-plugin-mdx-embed`,
+    // `gatsby-plugin-mdx-embed`,
     {
       resolve: `gatsby-plugin-google-gtag`,
       options: {

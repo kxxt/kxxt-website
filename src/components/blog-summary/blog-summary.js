@@ -20,7 +20,10 @@ const BlogSummary = ({ post }) => {
           </Link>
         </h2>
         <small>
-          {formatDateAndTimeToRead(post.frontmatter.date, post.timeToRead)}
+          {formatDateAndTimeToRead(
+            post.frontmatter.date,
+            post.timeToRead ?? "unknown"
+          )}
         </small>
         <Tags tags={post.frontmatter.tags} />
       </header>
