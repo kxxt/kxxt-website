@@ -16,7 +16,9 @@ export const blogFields = graphql`
 
 export const blogQuickInfoFields = graphql`
   fragment BlogQuickInfoFields on Mdx {
-    slug
+    fields {
+      slug
+    }
     frontmatter {
       title
       date(formatString: "MMMM DD, YYYY")
@@ -27,7 +29,9 @@ export const blogQuickInfoFields = graphql`
 export const blogSummaryFields = graphql`
   fragment BlogSummaryFields on Mdx {
     excerpt(pruneLength: 160)
-    slug
+    fields {
+      slug
+    }
     frontmatter {
       date(formatString: "MMMM DD, YYYY")
       title

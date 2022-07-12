@@ -15,7 +15,7 @@ const BlogSummary = ({ post }) => {
     >
       <header>
         <h2 className="title is-4">
-          <Link to={`/blog/${post.slug}`} itemProp="url">
+          <Link to={`/blog${post.fields.slug}`} itemProp="url">
             <span itemProp="headline">{title}</span>
           </Link>
         </h2>

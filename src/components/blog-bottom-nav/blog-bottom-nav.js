@@ -20,7 +20,7 @@ const BlogBottomNavContent = ({ post, pos }) => {
   return (
     <li className="box">
       <Link
-        to={`/blog/${post.slug}`}
+        to={`/blog${post.fields.slug}`}
         rel={pos}
         style={{
           flexDirection: navContentConfig[pos].flexDirection,
