@@ -152,7 +152,12 @@ module.exports = {
                   date: node.frontmatter.date,
                   url: `${site.siteMetadata.siteUrl}/blog${node.fields.slug}`,
                   guid: node.slug,
-                  custom_elements: [{ "content:encoded": node.html }],
+                  // TODO: Add back rss content
+                  custom_elements: [
+                    {
+                      "content:encoded": `${site.siteMetadata.siteUrl}/blog${node.fields.slug}`,
+                    },
+                  ],
                 })
               })
             },
@@ -163,8 +168,9 @@ module.exports = {
                 ) {
                   nodes {
                     excerpt
-                    html
-                    slug
+                    fields {
+                      slug
+                    }
                     frontmatter {
                       title
                       date
