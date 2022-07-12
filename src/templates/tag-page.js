@@ -30,7 +30,9 @@ export const pageQuery = graphql`
     ) {
       totalCount
       nodes {
-        slug
+        fields {
+          slug
+        }
         excerpt
         frontmatter {
           title

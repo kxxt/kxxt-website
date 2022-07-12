@@ -13,7 +13,7 @@ const ArchiveItem = ({ post, date }) => (
           day: "numeric",
         })}
       </span>
-      <Link to={`/blog/${post.slug}`}>{post.frontmatter.title}</Link>
+      <Link to={`/blog${post.fields.slug}`}>{post.frontmatter.title}</Link>
     </h4>
     <p>
       Tags: <Tags tags={post.frontmatter.tags} fontSize="12px" inline={true} />

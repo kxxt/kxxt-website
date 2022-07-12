@@ -59,7 +59,9 @@ export const pageQuery = graphql`
     allMdx(sort: { fields: [frontmatter___date], order: DESC }) {
       nodes {
         id
-        slug
+        fields {
+          slug
+        }
         frontmatter {
           date(formatString: "YYYY-MM-DD")
           title
