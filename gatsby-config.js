@@ -1,7 +1,7 @@
 const SegfaultHandler = require("segfault-handler")
 
 SegfaultHandler.registerHandler("crash.log")
-const esmRequire = require("./esm-require")
+// const esmRequire = require("./esm-require")
 
 const path = require("path")
 
@@ -52,11 +52,11 @@ module.exports = {
         extensions: [`.mdx`, `.md`],
         mdxOptions: {
           remarkPlugins: [
-            esmRequire("remark-math"),
-            require("remark-abbr"),
-            esmRequire("remark-emoji").default,
+            // esmRequire("remark-math"),
+            // require("remark-abbr"),
+            // esmRequire("remark-emoji").default,
           ],
-          rehypePlugins: [esmRequire("rehype-katex").default],
+          // rehypePlugins: [esmRequire("rehype-katex").default],
         },
         gatsbyRemarkPlugins: [
           // {
