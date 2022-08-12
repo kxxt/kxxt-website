@@ -63,7 +63,7 @@
     "remark-abbr": "^1.4.1",
     "remark-emoji": "^3.0.2",
     "remark-gfm": "^1",
-    "remark-math": "^3.0.0",
+    "remark-math": "^4.0.0",
     "segfault-handler": "^1.3.0",
     "typeface-merriweather": "1.1.13",
     "typeface-montserrat": "1.1.13"
