@@ -5,6 +5,15 @@ SegfaultHandler.registerHandler("crash.log")
 
 const path = require("path")
 
+const wrapESMPlugin = name =>
+  function wrapESM(opts) {
+    return async (...args) => {
+      const mod = await import(name)
+      const plugin = mod.default(opts)
+      return plugin(...args)
+    }
+  }
+
 // Get paths of Gatsby's required rules, which as of writing is located at:
 // https://github.com/gatsbyjs/gatsby/tree/fbfe3f63dec23d279a27b54b4057dd611dce74bb/packages/
 // gatsby/src/utils/eslint-rules
@@ -52,44 +61,49 @@ module.exports = {
         extensions: [`.mdx`, `.md`],
         mdxOptions: {
           remarkPlugins: [
-            // esmRequire("remark-math"),
+            require("remark-gfm"),
+            require("remark-math"),
             // require("remark-abbr"),
             // esmRequire("remark-emoji").default,
           ],
-          // rehypePlugins: [esmRequire("rehype-katex").default],
+          rehypePlugins: [
+            wrapESMPlugin("rehype-katex"),
+            require("rehype-slug"),
+            require("rehype-autolink-headings"),
+          ],
         },
         gatsbyRemarkPlugins: [
-          // {
-          //   resolve: `gatsby-remark-mermaid`,
-          //   options: {
-          //     mermaidOptions: {
-          //       // Fix mermaid and bulma css conflicts.
-          //       // .label styles in bulma will override .label styles in mermaid
-          //       themeCSS:
-          //         ".label { font-size: inherit!important; font-weight: inherit!important; line-height: initial!important; }"
-          //     }
-          //   }
-          // },
-          // `gatsby-remark-graphviz`,
+          {
+            resolve: `gatsby-remark-mermaid`,
+            options: {
+              mermaidOptions: {
+                // Fix mermaid and bulma css conflicts.
+                // .label styles in bulma will override .label styles in mermaid
+                themeCSS:
+                  ".label { font-size: inherit!important; font-weight: inherit!important; line-height: initial!important; }",
+              },
+            },
+          },
+          `gatsby-remark-graphviz`,
           // `gatsby-remark-autolink-headers`,
-          // `gatsby-remark-check-links`,
+          `gatsby-remark-check-links`,
           // "gatsby-remark-smartypants",
-          // `gatsby-remark-copy-linked-files`,
-          // `gatsby-remark-responsive-iframe`,
-          // `gatsby-remark-images`,
+          `gatsby-remark-copy-linked-files`,
+          `gatsby-remark-responsive-iframe`,
+          `gatsby-remark-images`,
           // {
           //   resolve: `gatsby-remark-embed-snippet`,
           //   options: {}
           // },
-          // {
-          //   resolve: `gatsby-remark-prismjs`,
-          //   options: {
-          //     classPrefix: "language-",
-          //     inlineCodeMarker: null,
-          //     showLineNumbers: true,
-          //     aliases: { sh: "bash" }
-          //   }
-          // }
+          {
+            resolve: `gatsby-remark-prismjs`,
+            options: {
+              classPrefix: "language-",
+              inlineCodeMarker: null,
+              showLineNumbers: true,
+              aliases: { sh: "bash" },
+            },
+          },
         ],
       },
     },
