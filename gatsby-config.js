@@ -1,9 +1,5 @@
 const { remarkCodeHike } = require("@code-hike/mdx")
-const theme = require("shiki/themes/github-dark.json")
-const SegfaultHandler = require("segfault-handler")
-
-SegfaultHandler.registerHandler("crash.log")
-// const esmRequire = require("./esm-require")
+const theme = require("shiki/themes/dracula.json")
 
 const path = require("path")
 
@@ -65,14 +61,27 @@ module.exports = {
           remarkPlugins: [
             require("remark-gfm"),
             require("remark-math"),
-            [remarkCodeHike, { theme, lineNumbers: true }],
+            [
+              remarkCodeHike,
+              {
+                theme,
+                lineNumbers: true,
+                showCopyButton: true,
+                skipLanguages: ["mermaid", "dot"],
+              },
+            ],
             // require("remark-abbr"),
-            // esmRequire("remark-emoji").default,
+            wrapESMPlugin("remark-emoji"),
           ],
           rehypePlugins: [
             wrapESMPlugin("rehype-katex"),
             require("rehype-slug"),
-            require("rehype-autolink-headings"),
+            [
+              require("rehype-autolink-headings"),
+              {
+                behavior: "append",
+              },
+            ],
           ],
         },
         gatsbyRemarkPlugins: [
@@ -88,25 +97,11 @@ module.exports = {
             },
           },
           `gatsby-remark-graphviz`,
-          // `gatsby-remark-autolink-headers`,
-          `gatsby-remark-check-links`,
-          // "gatsby-remark-smartypants",
+          // `gatsby-remark-check-links`,
+          "gatsby-remark-smartypants",
           `gatsby-remark-copy-linked-files`,
           `gatsby-remark-responsive-iframe`,
           `gatsby-remark-images`,
-          // {
-          //   resolve: `gatsby-remark-embed-snippet`,
-          //   options: {}
-          // },
-          // {
-          //   resolve: `gatsby-remark-prismjs`,
-          //   options: {
-          //     classPrefix: "language-",
-          //     inlineCodeMarker: null,
-          //     showLineNumbers: true,
-          //     aliases: { sh: "bash" },
-          //   },
-          // },
         ],
       },
     },
