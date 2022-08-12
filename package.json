@@ -8,6 +8,7 @@
     "url": "https://github.com/kxxt/kxxt.github.io/issues"
   },
   "dependencies": {
+    "@code-hike/mdx": "^0.7.3",
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
     "@fortawesome/free-brands-svg-icons": "^6.1.1",
     "@fortawesome/free-solid-svg-icons": "^6.1.1",

@@ -1,6 +1,7 @@
 @charset "utf-8";
 
 @import "~bulma/bulma";
+@import "@code-hike/mdx/dist/index.css";
 
 #main-container {
   margin-top: 1rem;
@@ -14,115 +15,4 @@
 
 html {
   scroll-behavior: smooth;
-}
-
-.gatsby-highlight {
-  background-color: #fdf6e3;
-  border-radius: 0.3em;
-  margin: 0.5em 0;
-  padding: 1.9rem 1.5rem 1.5rem;
-  overflow: auto;
-  position: relative;
-
-  & pre[class*="language-"] {
-    /**
-     * Remove the default PrismJS theme background-color, border-radius, margin,
-     * padding and overflow.
-     * 1. Make the element just wide enough to fit its content.
-     * 2. Always fill the visible space in .gatsby-highlight.
-     * 3. Adjust the position of the line numbers
-     */
-    display: flex;
-    background-color: transparent;
-    margin: 0;
-    padding: 0;
-    flex-direction: row-reverse;
-    justify-content: flex-end;
-    overflow: initial;
-    float: left; /* 1 */
-    min-width: 100%; /* 2 */
-    & > code {
-      padding-left: 1rem;
-    }
-
-    &.line-numbers {
-      padding: 0;
-
-      & .line-numbers-rows {
-        position: unset;
-        float: unset;
-        z-index: 1;
-      }
-
-      overflow: initial;
-    }
-
-    // Fix CSS conflicts with Bulma `.section` class
-    & > code .section {
-      padding: unset !important;
-      color: red;
-      //margin: unset;
-      //border-radius: unset;
-    }
-  }
-
-  &::before {
-    content: attr(data-language);
-    margin-bottom: -1.5rem;
-    min-width: 2rem;
-    text-align: center;
-    border-radius: 0 0 5px 5px;
-    font-size: 0.9rem;
-    background-color: cyan;
-    padding: 0.1rem 0.4rem;
-    position: absolute;
-    left: 2rem;
-    top: 0;
-  }
-
-  // Fix CSS conflicts with Bulma `.number` class
-  & .token.number {
-    display: inline;
-    background-color: unset;
-    font-size: unset;
-    padding: unset;
-    vertical-align: unset;
-    text-align: unset;
-    margin-right: unset;
-    border-radius: unset;
-  }
-}
-
-.gatsby-highlight-code-line {
-  background-color: #feb;
-  display: block;
-  margin-left: -1.2rem;
-  padding-left: 1rem;
-  border-left: 0.2rem solid #f99;
-}
-
-.command-line-prompt > span:before {
-  color: #999;
-  content: " ";
-  display: block;
-  padding-right: 0.8em;
-}
-
-/* Prompt for all users */
-.command-line-prompt > span[data-user]:before {
-  content: "[" attr(data-user) "@" attr(data-host) "] $";
-}
-
-/* Prompt for root */
-.command-line-prompt > span[data-user="root"]:before {
-  content: "[" attr(data-user) "@" attr(data-host) "] #";
-}
-
-.command-line-prompt > span[data-prompt]:before {
-  content: attr(data-prompt);
-}
-
-.blog-post code[class*="language-"],
-pre[class*="language-"] {
-  color: #444;
 }

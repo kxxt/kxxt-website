@@ -1,3 +1,5 @@
+const { remarkCodeHike } = require("@code-hike/mdx")
+const theme = require("shiki/themes/github-dark.json")
 const SegfaultHandler = require("segfault-handler")
 
 SegfaultHandler.registerHandler("crash.log")
@@ -63,6 +65,7 @@ module.exports = {
           remarkPlugins: [
             require("remark-gfm"),
             require("remark-math"),
+            [remarkCodeHike, { theme, lineNumbers: true }],
             // require("remark-abbr"),
             // esmRequire("remark-emoji").default,
           ],
@@ -95,15 +98,15 @@ module.exports = {
           //   resolve: `gatsby-remark-embed-snippet`,
           //   options: {}
           // },
-          {
-            resolve: `gatsby-remark-prismjs`,
-            options: {
-              classPrefix: "language-",
-              inlineCodeMarker: null,
-              showLineNumbers: true,
-              aliases: { sh: "bash" },
-            },
-          },
+          // {
+          //   resolve: `gatsby-remark-prismjs`,
+          //   options: {
+          //     classPrefix: "language-",
+          //     inlineCodeMarker: null,
+          //     showLineNumbers: true,
+          //     aliases: { sh: "bash" },
+          //   },
+          // },
         ],
       },
     },
