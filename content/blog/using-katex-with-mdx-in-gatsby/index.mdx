@@ -17,7 +17,7 @@ description: 我在给我的 Gatsby 站点(使用 MDX)添加 KaTeX 支持时踩�
 
 下面是我的站点的 `package.json` 的一部分，其中高亮出来的是和配置 $\KaTeX$ 相关的依赖项。
 
-```json
+```json focus=9:13
 {
     ...
   "dependencies": {
@@ -26,13 +26,11 @@ description: 我在给我的 Gatsby 站点(使用 MDX)添加 KaTeX 支持时踩�
       "@mdx-js/react": "^1.6.22",
       "bulma": "^0.9.3",
       "gatsby-source-filesystem": "^4.2.0",
-#highlight-start
       "esm": "^3.2.25",
       "gatsby-plugin-mdx": "^3.3.0",
       "katex": "^0.15.1",
       "rehype-katex": "^6.0.2",
       "remark-math": "^3.0.0",
-#highlight-end
     }
     ...
 }
@@ -40,14 +38,14 @@ description: 我在给我的 Gatsby 站点(使用 MDX)添加 KaTeX 支持时踩�
 
 注意，因为在我撰写本文的时候，`gatsby-plugin-mdx` 的使用 `mdx.js` v2.0 的版本还没有发布，所以 `gatsby-plugin-mdx` 内部使用的是第一代 `mdx`, 这导致 `gatsby-plugin-mdx` 使用的 `remark` 版本比较低(^10.0.1)，而 `remark` 在 v13.0 中作出了[重大改动(micromark)](https://github.com/remarkjs/remark/releases/tag/13.0.0)，因此很多新版本插件和新插件只兼容 v13 及以上的版本，无法和 `gatsby-plugin-mdx` 一起使用，我们用到的 `remark-math` 就是其中之一。
 
-```yaml
+```yaml yarn.lock focus=7
 gatsby-plugin-mdx@^3.3.0:
   version "3.3.0"
   resolved "https://registry.npmjs.org/gatsby-plugin-mdx/-/gatsby-plugin-mdx-3.3.0.tgz#18b3f5d2eab02e5bdd8264560c850473ce772039"
   integrity sha512-4uYcNXVLnx0jgfjp3iyrGjVJr/D5gItfZxrUgVKtrsy2LhtR9gtQgLFZgGONnqDoPn+26kAlBsqTOORN3m88bQ==
   dependencies:
   	...
-    remark "^10.0.1"#highlight-line
+    remark "^10.0.1"
     remark-retext "^3.1.3"
 ```
 
@@ -58,7 +56,7 @@ gatsby-plugin-mdx@^3.3.0:
 
 使用你最喜欢的 JavaScript 包管理器安装好依赖之后，我们来修改一下 `gatsby-config.js`:
 
-```javascript{11-16}
+```javascript gatsby-config.js focus=11:16
 esmRequire = require("./esm-require")
 
 module.exports = {
