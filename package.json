@@ -62,7 +62,7 @@
   },
   "homepage": "https://www.kxxt.dev",
   "keywords": [
-    "gatsby",
+    "nextjs",
     "blog",
     "personal website"
   ],
@@ -73,16 +73,14 @@
     "url": "git+https://github.com/kxxt/kxxt-website.git"
   },
   "scripts": {
-    "build": "gatsby build",
-    "develop": "gatsby develop",
+    "build": "next build",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
-    "deploy": "gatsby build && gh-pages -d public -r https://github.com/kxxt/kxxt.github.io",
-    "start": "gatsby develop",
-    "serve": "gatsby serve",
-    "clean": "gatsby clean",
-    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1",
+    "deploy": "next build && gh-pages -d public -r https://github.com/kxxt/kxxt.github.io",
+    "start": "next start",
+    "dev": "next dev",
+    "lint": "next lint",
+    "test": "echo \"Write tests!\" && exit 1",
     "prettier": "prettier --write .",
-    "lint": "eslint src/ --rulesdir ./node_modules/gatsby/dist/utils/eslint-rules",
     "prepare": "husky install"
   }
 }
