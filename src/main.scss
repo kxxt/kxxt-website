@@ -3,6 +3,19 @@
 @import "~bulma/bulma";
 @import "@code-hike/mdx/dist/index.css";
 
+@function headings($before: "", $from: 1, $to: 6, $after: "") {
+  @if $from == $to {
+    @return "#{$before} h#{$from}#{$after}";
+  } @else {
+    @return "#{$before} h#{$from}#{$after}, "+headings(
+        $before,
+        $from + 1,
+        $to,
+        $after
+      );
+  }
+}
+
 #main-container {
   margin-top: 1rem;
 }
@@ -21,4 +34,12 @@ html {
   margin-left: 0.5em;
   background: url("/link-solid.svg") no-repeat center center;
   background-size: auto auto;
+}
+
+.header-anchor {
+  visibility: hidden;
+}
+
+#{headings($after:':hover .header-anchor')} {
+  visibility: visible;
 }

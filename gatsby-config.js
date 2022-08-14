@@ -72,6 +72,7 @@ module.exports = {
             ],
             // require("remark-abbr"),
             wrapESMPlugin("remark-emoji"),
+            // wrapESMPlugin("remark-directive"),
           ],
           rehypePlugins: [
             wrapESMPlugin("rehype-katex"),
@@ -80,6 +81,11 @@ module.exports = {
               require("rehype-autolink-headings"),
               {
                 behavior: "append",
+                properties: {
+                  className: "header-anchor",
+                  ariaHidden: true,
+                  tabIndex: -1,
+                },
               },
             ],
           ],
