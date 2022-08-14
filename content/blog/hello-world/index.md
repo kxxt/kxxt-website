@@ -38,17 +38,10 @@ const saltyDuckEgg = "chinese preserved food product"
 
 This is a paragraph.
 
-    This is a paragraph.
-
 # Header 1
 
 ## Header 2
 
-    Header 1
-    ========
-
-    Header 2
-    --------
 
 # Header 1
 
@@ -62,12 +55,6 @@ This is a paragraph.
 
 ###### Header 6
 
-    # Header 1
-    ## Header 2
-    ### Header 3
-    #### Header 4
-    ##### Header 5
-    ###### Header 6
 
 # Header 1
 
@@ -81,16 +68,8 @@ This is a paragraph.
 
 ###### Header 6
 
-    # Header 1 #
-    ## Header 2 ##
-    ### Header 3 ###
-    #### Header 4 ####
-    ##### Header 5 #####
-    ###### Header 6 ######
 
 > Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.
-
-    > Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.
 
 > ## This is a header.
 >
@@ -99,15 +78,17 @@ This is a paragraph.
 >
 > Here's some example code:
 >
->     Markdown.generate();
-
-    > ## This is a header.
-    > 1. This is the first list item.
-    > 2. This is the second list item.
-    >
-    > Here's some example code:
-    >
-    >     Markdown.generate();
+>   ```markdown example.md
+>   Markdown.generate();
+>
+>   > ## This is a header.
+>   > 1. This is the first list item.
+>   > 2. This is the second list item.
+>   >
+>   > Here's some example code:
+>   >
+>   >     Markdown.generate();
+>   ```
 
 - Red
 - Green
@@ -144,8 +125,8 @@ This is a paragraph.
 ```
 
 1. Buy flour and salt
-1. Mix together with water
-1. Bake
+2. Mix together with water
+3. Bake
 
 ```markdown
 1. Buy flour and salt
