@@ -1,4 +1,5 @@
-// @import "~bulma/sass/base/generic";
+@import "~bulma/sass/utilities/functions";
+@import "~bulma/sass/utilities/derived-variables";
 
 .tags-inline {
   display: inline;
@@ -6,5 +7,5 @@
 
 // TODO: fix bluma import or replace bluma
 .tag {
-  background-color: black; // bulmaLighten($primary, 10%) !important;
+  background-color: bulmaLighten($primary, 10%) !important;
 }

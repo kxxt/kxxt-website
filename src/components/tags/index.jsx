@@ -3,14 +3,14 @@ import styles from "./tags.module.scss"
 
 const TagLink = ({ tag, totalCount = 0, fontSize }) => {
   return (
-    <Link
-      key={tag}
-      href={`/tags/${tag}/`}
-      className={`tag ${styles.tag}`}
-      style={{ fontSize }}
-      itemProp="keywords"
-    >
-      <a>{totalCount ? `${tag} (${totalCount})` : tag}</a>
+    <Link key={tag} href={`/tags/${tag}/`}>
+      <a
+        className={`tag ${styles.tag}`}
+        style={{ fontSize }}
+        itemProp="keywords"
+      >
+        {totalCount ? `${tag} (${totalCount})` : tag}
+      </a>
     </Link>
   )
 }
