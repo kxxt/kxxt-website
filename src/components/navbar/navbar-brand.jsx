@@ -1,7 +1,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import React from "react"
-import profilePhoto from "../../images/profile-pic.png"
+import profilePhoto from "@/images/profile-pic.png"
 
 const NavbarBrand = ({ children }) => {
   return (

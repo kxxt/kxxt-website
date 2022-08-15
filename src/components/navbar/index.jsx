@@ -1,10 +1,10 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import NavbarLinkButton from "./navbar-link-button"
 import NavbarTitle from "./navbar-title"
 import NavbarStart from "./navbar-start"
 import NavbarContainer from "./navbar-container"
 import NavbarEnd from "./navbar-end"
-import NavbarMobileMenu from "./navbar-burger"
+import NavbarBurger from "./navbar-burger"
 import NavbarBrand from "./navbar-brand"
 import { faGithub } from "@fortawesome/free-brands-svg-icons"
 import IconText from "../icon-text"
@@ -23,7 +23,7 @@ const Navbar = ({ centerLinks, title }) => {
     <NavbarContainer>
       <NavbarBrand>
         <NavbarTitle title={title} />
-        <NavbarMobileMenu toggle={toggleActive} links={centerLinks} />
+        <NavbarBurger toggle={toggleActive} links={centerLinks} />
       </NavbarBrand>
 
       <div

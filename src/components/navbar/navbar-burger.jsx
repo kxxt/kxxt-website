@@ -1,5 +1,3 @@
-import React from "react"
-
 const NavbarBurger = ({ toggle }) => (
   // eslint-disable-next-line jsx-a11y/anchor-is-valid
   <a

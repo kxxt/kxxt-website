@@ -1,5 +1,4 @@
-import React from "react"
-import * as styles from "./table-of-contents.module.scss"
+import styles from "./table-of-contents.module.scss"
 
 import TOCLink from "./toc-link"
 import ActiveIdChainContext from "./active-id-chain-context"

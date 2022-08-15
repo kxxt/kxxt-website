@@ -4,7 +4,7 @@ import Footer from "../footer"
 import { Helmet } from "react-helmet"
 
 import SidebarContext from "./sidebar-context"
-import * as styles from "./layout.module.scss"
+import styles from "./layout.module.scss"
 
 const Layout = ({
   location,

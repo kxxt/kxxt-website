@@ -1,5 +1,3 @@
-import React from "react"
-
 const NavbarContainer = ({ children }) => (
   <nav
     className="navbar is-fixed-top-desktop has-shadow"

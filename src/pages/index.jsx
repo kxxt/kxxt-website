@@ -9,7 +9,7 @@ import ReactTyped from "react-typed-component"
 import Image from "next/image"
 import BlogSummaryList from "../components/blog-summary/blog-summary-list"
 
-import * as styles from "./index.module.scss"
+import styles from "./index.module.scss"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faFastForward } from "@fortawesome/free-solid-svg-icons"
 
@@ -64,6 +64,7 @@ export default function BlogIndex({ location }) {
         <Image
           alt="kxxt profile picture"
           width={128}
+          height={128}
           placeholder="blur"
           src={profilePhoto}
         />

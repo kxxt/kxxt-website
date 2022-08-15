@@ -1,6 +1,4 @@
-import React from "react"
-
-import * as styles from "./toc-link.module.scss"
+import styles from "./toc-link.module.scss"
 
 const TOCLink = ({ item, isActive, ended }) => {
   const active = isActive ? styles.active : null
