@@ -24,8 +24,9 @@ import "katex/dist/katex.min.css"
 
 // const shortcodes = { Link } // Provide common components here
 
-const BlogPost = ({ location, source, frontmatter }) => {
+const BlogPost = ({ location, source, frontMatter }) => {
   const { previous, next } = {}
+  const frontmatter = JSON.parse(frontMatter)
   const toc = null
   // const toc = post.tableOfContents.items ? (
   //   <TableOfContents toc={post.tableOfContents.items} />
@@ -94,13 +95,13 @@ export async function getStaticProps({ params }) {
   const { content, data } = matter(source)
   const mdxSource = await serialize(content, {
     mdxOptions,
-    scope: data,
+    // scope: data,
   })
 
   return {
     props: {
       source: mdxSource,
-      frontmatter: data,
+      frontMatter: JSON.stringify(data),
     },
   }
 }
