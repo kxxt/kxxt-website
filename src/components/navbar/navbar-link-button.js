@@ -1,9 +1,9 @@
 import React from "react"
-import { Link } from "gatsby"
+import { Link } from "next/link"
 
 const NavbarLinkButton = ({ children, to }) => (
-  <Link to={to} className="navbar-item">
-    {children}
+  <Link href={to} className="navbar-item">
+    <a>{children}</a>
   </Link>
 )
 

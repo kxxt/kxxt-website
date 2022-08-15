@@ -1,6 +1,6 @@
 import React from "react"
 import { faGithub, faTelegram } from "@fortawesome/free-brands-svg-icons"
-import { StaticImage } from "gatsby-plugin-image"
+import { Image } from "next/image"
 import { faAt, faRss } from "@fortawesome/free-solid-svg-icons"
 import IconText from "../icon-text"
 import * as styles from "./footer.module.scss"
@@ -22,7 +22,7 @@ const Footer = () => {
               rel="license"
               href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
             >
-              <StaticImage
+              <Image
                 alt="Creative Commons License"
                 style={{
                   borderWidth: 0,

@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Link, graphql } from "gatsby"
+import { Link } from "next/link"
 import { MDXProvider } from "@mdx-js/react"
 import Giscus from "@giscus/react"
 

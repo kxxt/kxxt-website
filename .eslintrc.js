@@ -24,9 +24,10 @@ module.exports = {
   extends: ["eslint:recommended", "plugin:react/recommended", "prettier"],
   plugins: ["react", "react-hooks", "jsx-a11y"],
   rules: {
-    // Gatsby's required rules
-    "no-anonymous-exports-page-templates": "warn",
-    "limited-exports-page-templates": "warn",
     "react/prop-types": 0,
+    // suppress errors for missing 'import React' in files
+    "react/react-in-jsx-scope": "off",
+    // allow jsx syntax in js files (for next.js project)
+    "react/jsx-filename-extension": [1, { extensions: [".js", ".jsx"] }],
   },
 }

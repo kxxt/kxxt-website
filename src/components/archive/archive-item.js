@@ -1,5 +1,5 @@
 import React from "react"
-import { Link } from "gatsby"
+import { Link } from "next/link"
 import Tags from "../tags/tags"
 import * as styles from "./archive-item.module.scss"
 
@@ -13,7 +13,7 @@ const ArchiveItem = ({ post, date }) => (
           day: "numeric",
         })}
       </span>
-      <Link to={`/blog${post.fields.slug}`}>{post.frontmatter.title}</Link>
+      <Link href={`/blog${post.fields.slug}`}><a>{post.frontmatter.title}</a></Link>
     </h4>
     <p>
       Tags: <Tags tags={post.frontmatter.tags} fontSize="12px" inline={true} />

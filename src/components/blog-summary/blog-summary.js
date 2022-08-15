@@ -1,5 +1,5 @@
 import React from "react"
-import { Link } from "gatsby"
+import { Link } from "next/link"
 import * as styles from "./blog-summary.module.scss"
 import Tags from "../tags/tags"
 import formatDateAndTimeToRead from "../../utils/date-and-time-to-read"
@@ -15,8 +15,8 @@ const BlogSummary = ({ post }) => {
     >
       <header>
         <h2 className="title is-4">
-          <Link to={`/blog${post.fields.slug}`} itemProp="url">
-            <span itemProp="headline">{title}</span>
+          <Link href={`/blog${post.fields.slug}`} itemProp="url">
+            <a><span itemProp="headline">{title}</span></a>
           </Link>
         </h2>
         <small>

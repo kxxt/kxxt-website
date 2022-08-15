@@ -5,7 +5,7 @@ import { useState } from "react"
 import Layout from "../components/layout/layout"
 import Seo from "../components/seo"
 import ReactTyped from "react-typed-component"
-import { StaticImage } from "gatsby-plugin-image"
+import { Image } from "next/image"
 import BlogSummaryList from "../components/blog-summary/blog-summary-list"
 
 import * as styles from "./index.module.scss"
@@ -60,9 +60,10 @@ const BlogIndex = ({ data, location }) => {
       className={`${styles.indexHero} hero is-link is-fullheight-with-navbar`}
     >
       <div className="hero-body">
-        <StaticImage
+        <Image
           alt="kxxt profile picture"
           width={128}
+          placeholder="blur"
           src="../images/profile-photo-no-bg.png"
         />
         <p className="title">
