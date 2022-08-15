@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import config from '../config'
+import config from '../pages/data'
 
 export default function Seo({ description, title }) {
   const siteTitle = config.title
@@ -13,7 +13,7 @@ export default function Seo({ description, title }) {
       <meta property="og:description" content={description} />
       <meta property="og:site_name" content={siteTitle} />
       <meta property="twitter:card" content="summary" />
-      <meta property="twitter:creator" content={config.social.twitter} />
+      {/* <meta property="twitter:creator" content={config.social.twitter} /> */}
       <meta property="twitter:title" content={title} />
       <meta property="twitter:description" content={description} />
     </Head>

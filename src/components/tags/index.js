@@ -1,5 +1,5 @@
 import React from "react"
-import { Link } from "next/link"
+import Link from "next/link"
 import * as styles from "./tags.module.scss"
 
 const TagLink = ({ tag, totalCount = 0, fontSize }) => {

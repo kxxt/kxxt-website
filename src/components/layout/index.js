@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import Navbar from "../navbar"
 import Footer from "../footer"
 import { Helmet } from "react-helmet"
@@ -9,13 +9,14 @@ import * as styles from "./layout.module.scss"
 const Layout = ({
   location,
   children,
-  hero = null,
+  Hero = ()=>{},
   sidebar = null,
   bottom = null,
 }) => {
   const [isSidebarExpanded, setIsSidebarExpanded] = React.useState(true)
-  const rootPath = `${__PATH_PREFIX__}/`
-  const isRootPath = location.pathname === rootPath
+  // TODO: rootPath
+  const rootPath = `/`
+  const isRootPath = location === rootPath
   const toggleSidebar = () => {
     setIsSidebarExpanded(!isSidebarExpanded)
   }
@@ -25,7 +26,7 @@ const Layout = ({
         <body className="has-navbar-fixed-top-desktop" />
       </Helmet>
       <Navbar title="kxxt" />
-      {hero}
+      {Hero()}
       <div id="main-container" className="container">
         <div className="columns" data-is-root-path={isRootPath}>
           <main

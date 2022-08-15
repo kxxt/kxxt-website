@@ -1,7 +1,5 @@
-import React from "react"
-import Layout from "../components/layout/layout"
+import Layout from "../components/layout"
 import Seo from "../components/seo"
-import { graphql } from "gatsby"
 import ArchiveItem from "../components/archive/archive-item"
 
 const months = [
@@ -19,9 +17,10 @@ const months = [
   "December",
 ]
 
-const ArchivePage = ({ data, location }) => {
+const ArchivePage = ({ location }) => {
   const title = "Archive"
-  const posts = data.allMdx.nodes
+  // TODO: Get POSTS
+  const posts = []
   let currentYear = null,
     currentMonth = null,
     list = []
@@ -53,21 +52,3 @@ const ArchivePage = ({ data, location }) => {
 }
 
 export default ArchivePage
-
-export const pageQuery = graphql`
-  query {
-    allMdx(sort: { fields: [frontmatter___date], order: DESC }) {
-      nodes {
-        id
-        fields {
-          slug
-        }
-        frontmatter {
-          date(formatString: "YYYY-MM-DD")
-          title
-          tags
-        }
-      }
-    }
-  }
-`

@@ -1,21 +1,22 @@
-import * as React from "react"
-import { graphql } from "gatsby"
 import { useState } from "react"
 
-import Layout from "../components/layout/layout"
-import Seo from "../components/seo"
+import profilePhoto from "@/images/profile-photo-no-bg.png"
+
+import data from "./data"
+import Layout from "@/components/layout"
+import Seo from "@/components/seo"
 import ReactTyped from "react-typed-component"
-import { Image } from "next/image"
+import Image from "next/image"
 import BlogSummaryList from "../components/blog-summary/blog-summary-list"
 
 import * as styles from "./index.module.scss"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faFastForward } from "@fortawesome/free-solid-svg-icons"
 
-const BlogIndex = ({ data, location }) => {
+export default function BlogIndex({ location }) {
   let [typingSpeed, setTypingSpeed] = useState(70)
-  const siteTitle = data.site.siteMetadata?.title || `Title`
-  const posts = data.allMdx.nodes
+  const siteTitle = data.title
+  // const posts = data.allMdx.nodes
   const line1 = `Welcome to my <strong style="color: orangered;">personal website</strong>!<br/>`
   const line2 = `${line1}I'm a <strong style="color: cyan;">software developer</strong>.`
   const line3 = `${line2}<br/>I speak <em style="color: cornflowerblue;">English</em> and <em style="color: palevioletred;">Chinese</em>.`
@@ -55,7 +56,7 @@ const BlogIndex = ({ data, location }) => {
     softwareLine,
     websiteLine,
   ]
-  const hero = (
+  const Hero = () => (
     <section
       className={`${styles.indexHero} hero is-link is-fullheight-with-navbar`}
     >
@@ -64,7 +65,7 @@ const BlogIndex = ({ data, location }) => {
           alt="kxxt profile picture"
           width={128}
           placeholder="blur"
-          src="../images/profile-photo-no-bg.png"
+          src={profilePhoto}
         />
         <p className="title">
           Hi, I&apos;m <strong>kxxt</strong>
@@ -103,27 +104,10 @@ const BlogIndex = ({ data, location }) => {
   )
 
   return (
-    <Layout location={location} title={siteTitle} hero={hero}>
+    <Layout location={location} title={siteTitle} Hero={Hero}>
       <Seo title="Home" />
 
-      <BlogSummaryList posts={posts} />
+      <BlogSummaryList posts={[]} />
     </Layout>
   )
 }
-
-export default BlogIndex
-
-export const pageQuery = graphql`
-  query {
-    site {
-      siteMetadata {
-        title
-      }
-    }
-    allMdx(sort: { fields: [frontmatter___date], order: DESC }) {
-      nodes {
-        ...BlogSummaryFields
-      }
-    }
-  }
-`

@@ -1,6 +1,6 @@
 import React from "react"
 import { Link } from "next/link"
-import Tags from "../tags/tags"
+import Tags from "../tags"
 import * as styles from "./archive-item.module.scss"
 
 const ArchiveItem = ({ post, date }) => (

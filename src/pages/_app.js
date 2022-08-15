@@ -1,5 +1,5 @@
 import React from "react"
-import "main.scss"
+import "../main.scss"
 
 function App({Component, pageProps}) {
   return <Component {...pageProps} />

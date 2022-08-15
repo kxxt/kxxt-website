@@ -58,37 +58,6 @@ module.exports = {
         },
         extensions: [`.mdx`, `.md`],
         mdxOptions: {
-          remarkPlugins: [
-            require("remark-gfm"),
-            require("remark-math"),
-            [
-              remarkCodeHike,
-              {
-                theme,
-                lineNumbers: true,
-                showCopyButton: true,
-                skipLanguages: ["mermaid", "dot"],
-              },
-            ],
-            // require("remark-abbr"),
-            wrapESMPlugin("remark-emoji"),
-            // wrapESMPlugin("remark-directive"),
-          ],
-          rehypePlugins: [
-            wrapESMPlugin("rehype-katex"),
-            require("rehype-slug"),
-            [
-              require("rehype-autolink-headings"),
-              {
-                behavior: "append",
-                properties: {
-                  className: "header-anchor",
-                  ariaHidden: true,
-                  tabIndex: -1,
-                },
-              },
-            ],
-          ],
         },
         gatsbyRemarkPlugins: [
           {

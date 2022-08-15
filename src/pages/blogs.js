@@ -1,12 +1,10 @@
-import * as React from "react"
-import { graphql } from "gatsby"
-
-import Layout from "../components/layout/layout"
+import Layout from "../components/layout"
 import Seo from "../components/seo"
 import BlogSummaryList from "../components/blog-summary/blog-summary-list"
 
-const BlogsPage = ({ data, location }) => {
-  const posts = data.allMdx.nodes
+const BlogsPage = ({ location }) => {
+  // TODO: get POSTS
+  const posts = []
   const title = "Blogs"
 
   return (
@@ -19,18 +17,3 @@ const BlogsPage = ({ data, location }) => {
 }
 
 export default BlogsPage
-
-export const pageQuery = graphql`
-  query {
-    site {
-      siteMetadata {
-        title
-      }
-    }
-    allMdx(sort: { fields: [frontmatter___date], order: DESC }) {
-      nodes {
-        ...BlogSummaryFields
-      }
-    }
-  }
-`

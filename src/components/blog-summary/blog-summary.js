@@ -1,7 +1,7 @@
 import React from "react"
 import { Link } from "next/link"
 import * as styles from "./blog-summary.module.scss"
-import Tags from "../tags/tags"
+import Tags from "../tags"
 import formatDateAndTimeToRead from "../../utils/date-and-time-to-read"
 
 const BlogSummary = ({ post }) => {

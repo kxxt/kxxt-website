@@ -1,9 +1,10 @@
 import React from "react"
 import { faGithub, faTelegram } from "@fortawesome/free-brands-svg-icons"
-import { Image } from "next/image"
+import Image from "next/image"
 import { faAt, faRss } from "@fortawesome/free-solid-svg-icons"
 import IconText from "../icon-text"
 import * as styles from "./footer.module.scss"
+import creativeCommonsImage from "../../images/cc-by-nc-sa-4.png"
 
 const Footer = () => {
   return (
@@ -27,10 +28,10 @@ const Footer = () => {
                 style={{
                   borderWidth: 0,
                   marginTop: "1rem",
-                  width: 88,
-                  height: 31,
+                  // width: 88,
+                  // height: 31,
                 }}
-                src="../../images/cc-by-nc-sa-4.png"
+                src={creativeCommonsImage}
               />
             </a>
             <br />
