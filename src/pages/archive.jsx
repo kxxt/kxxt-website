@@ -1,6 +1,9 @@
-import Layout from "../components/layout"
-import Seo from "../components/seo"
-import ArchiveItem from "../components/archive/archive-item"
+import Layout from "@/components/layout"
+import Seo from "@/components/seo"
+import ArchiveItem from "@/components/archive/archive-item"
+
+import { postFilePaths } from "@/utils/blog/posts"
+import getMetaData from "@/utils/blog/get-metadata"
 
 const months = [
   "January",
@@ -17,30 +20,33 @@ const months = [
   "December",
 ]
 
-const ArchivePage = ({ location }) => {
+const ArchivePage = ({ posts }) => {
   const title = "Archive"
-  // TODO: Get POSTS
-  const posts = []
   let currentYear = null,
     currentMonth = null,
     list = []
+  posts = posts.map(({ date, ...others }) => ({
+    date: new Date(date),
+    ...others,
+  }))
+  posts.sort((a, b) => b.date - a.date)
   for (let post of posts) {
-    let date = new Date(post.frontmatter.date)
+    let date = new Date(post.date)
     const year = date.getFullYear(),
       month = date.getMonth()
     if (currentYear !== year) {
       currentYear = year
       currentMonth = null
-      list.push(<h2>{year}</h2>)
+      list.push(<h2 key={year}>{year}</h2>)
     }
     if (currentMonth !== month) {
       currentMonth = month
-      list.push(<h3>{months[month - 1]}</h3>)
+      list.push(<h3 key={`${year}-${month}`}>{months[month - 1]}</h3>)
     }
-    list.push(<ArchiveItem post={post} date={date} />)
+    list.push(<ArchiveItem post={post} date={date} key={post.path} />)
   }
   return (
-    <Layout title={title} location={location}>
+    <Layout title={title}>
       <Seo title={title} />
       <h1 className="title">{title}</h1>
       <p className="subtitle is-6">
@@ -52,3 +58,14 @@ const ArchivePage = ({ location }) => {
 }
 
 export default ArchivePage
+
+export async function getStaticProps() {
+  const promises = postFilePaths.map(getMetaData)
+  const posts = await Promise.all(promises)
+
+  return {
+    props: {
+      posts,
+    },
+  }
+}

@@ -5,7 +5,7 @@ const BlogSummaryList = ({ posts }) => (
   <ol style={{ listStyle: `none` }}>
     {posts.map(post => {
       return (
-        <li key={post.slug}>
+        <li key={post.path}>
           <BlogSummary post={post} />
         </li>
       )

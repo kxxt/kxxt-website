@@ -22,8 +22,9 @@ const Tags = ({
   inline = false,
 }) => {
   if (!tags) return null
+  const Component = inline ? "span" : "div"
   return (
-    <div className={`tags ${inline ? styles.tagsInline : ""}`}>
+    <Component className={`tags ${inline ? styles.tagsInline : ""}`}>
       {withCount
         ? tags.map(({ tag, totalCount }) => (
             <TagLink
@@ -34,7 +35,7 @@ const Tags = ({
             />
           ))
         : tags.map(tag => <TagLink key={tag} tag={tag} fontSize={fontSize} />)}
-    </div>
+    </Component>
   )
 }
 
