@@ -1,9 +1,8 @@
 import Layout from "@/components/layout"
 import Seo from "@/components/seo"
 import ArchiveItem from "@/components/archive/archive-item"
-
-import { postFilePaths } from "@/utils/blog/posts"
-import getMetaData from "@/utils/blog/get-metadata"
+import { preprocessAllMetaData } from "@/utils/blog/get-metadata"
+import { deserializeMetaData } from "@/utils/blog/metadata"
 
 const months = [
   "January",
@@ -25,11 +24,7 @@ const ArchivePage = ({ posts }) => {
   let currentYear = null,
     currentMonth = null,
     list = []
-  posts = posts.map(({ date, ...others }) => ({
-    date: new Date(date),
-    ...others,
-  }))
-  posts.sort((a, b) => b.date - a.date)
+  posts = posts.map(deserializeMetaData)
   for (let post of posts) {
     let date = new Date(post.date)
     const year = date.getFullYear(),
@@ -60,9 +55,7 @@ const ArchivePage = ({ posts }) => {
 export default ArchivePage
 
 export async function getStaticProps() {
-  const promises = postFilePaths.map(getMetaData)
-  const posts = await Promise.all(promises)
-
+  const posts = await preprocessAllMetaData()
   return {
     props: {
       posts,

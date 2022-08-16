@@ -1,8 +1,7 @@
 import Layout from "@/components/layout"
 import Seo from "@/components/seo"
 import BlogSummaryList from "@/components/blog-summary/blog-summary-list"
-import getMetaData from "@/utils/blog/get-metadata"
-import { postFilePaths } from "@/utils/blog/posts"
+import { preprocessAllMetaData } from "@/utils/blog/get-metadata"
 
 const BlogsPage = ({ posts }) => {
   const title = "Blogs"
@@ -18,8 +17,7 @@ const BlogsPage = ({ posts }) => {
 export default BlogsPage
 
 export async function getStaticProps() {
-  const promises = postFilePaths.map(getMetaData)
-  const posts = await Promise.all(promises)
+  const posts = await preprocessAllMetaData()
 
   return {
     props: {
