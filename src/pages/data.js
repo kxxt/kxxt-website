@@ -1,4 +1,4 @@
-export default {
+const data = {
   title: `kxxt`,
   author: {
     name: `kxxt`,
@@ -7,3 +7,4 @@ export default {
   description: `kxxt's personal website`,
   siteUrl: `https://www.kxxt.dev`,
 }
+export default data
