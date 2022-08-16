@@ -2,12 +2,16 @@ import { remarkCodeHike } from "@code-hike/mdx"
 import theme from "shiki/themes/dracula.json"
 import remarkEmoji from "remark-emoji"
 import rehypeKaTeX from "rehype-katex"
+import remarkGfm from "remark-gfm"
+import rehypeSlug from "rehype-slug"
+import rehypeAutolinkHeadings from "rehype-autolink-headings"
+import remarkMath from "remark-math"
 
 export const mdxOptions = {
   useDynamicImport: true,
   remarkPlugins: [
-    require("remark-gfm"),
-    require("remark-math"),
+    remarkGfm,
+    remarkMath,
     [
       remarkCodeHike,
       {
@@ -24,9 +28,9 @@ export const mdxOptions = {
   ],
   rehypePlugins: [
     rehypeKaTeX,
-    require("rehype-slug"),
+    rehypeSlug,
     [
-      require("rehype-autolink-headings"),
+      rehypeAutolinkHeadings,
       {
         behavior: "append",
         properties: {
