@@ -16,8 +16,6 @@ const Layout = ({
   useEffect(() => document.body.classList.add("has-navbar-fixed-top-desktop"))
   const router = useRouter()
   const [isSidebarExpanded, setIsSidebarExpanded] = React.useState(true)
-  // TODO: rootPath
-  console.log(router.pathname)
   const isRootPath = router.pathname === "/"
   const toggleSidebar = () => {
     setIsSidebarExpanded(!isSidebarExpanded)
