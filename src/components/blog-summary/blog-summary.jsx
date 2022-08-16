@@ -1,12 +1,11 @@
 import React from "react"
-import { Link } from "next/link"
-import * as styles from "./blog-summary.module.scss"
+import Link from "next/link"
+import styles from "./blog-summary.module.scss"
 import Tags from "../tags"
 import formatDateAndTimeToRead from "../../utils/date-and-time-to-read"
 
 const BlogSummary = ({ post }) => {
-  const title =
-    post.frontmatter.title || post?.headings?.[0]?.value || post.slug
+  const title = post.title
   return (
     <article
       className={`${styles.blogSummary} box`}
@@ -15,23 +14,22 @@ const BlogSummary = ({ post }) => {
     >
       <header>
         <h2 className="title is-4">
-          <Link href={`/blog${post.fields.slug}`} itemProp="url">
-            <a><span itemProp="headline">{title}</span></a>
+          <Link href={`/blog/${post.path}`}>
+            <a itemProp="url">
+              <span itemProp="headline">{title}</span>
+            </a>
           </Link>
         </h2>
         <small>
-          {formatDateAndTimeToRead(
-            post.frontmatter.date,
-            post.timeToRead ?? "unknown"
-          )}
+          {formatDateAndTimeToRead(post.date, post.timeToRead ?? "unknown")}
         </small>
-        <Tags tags={post.frontmatter.tags} />
+        <Tags tags={post.tags} />
       </header>
       <section>
         <p
           className="content"
           dangerouslySetInnerHTML={{
-            __html: post.frontmatter.description || post.excerpt,
+            __html: post.description || post.excerpt,
           }}
           itemProp="description"
         />
