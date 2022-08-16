@@ -1,30 +1,29 @@
 import React from "react"
 import Navbar from "../navbar"
 import Footer from "../footer"
-import { Helmet } from "react-helmet"
+import { useEffect } from "react"
+import { useRouter } from "next/router"
 
 import SidebarContext from "./sidebar-context"
 import styles from "./layout.module.scss"
 
 const Layout = ({
-  location,
   children,
-  Hero = ()=>{},
+  Hero = () => {},
   sidebar = null,
   bottom = null,
 }) => {
+  useEffect(() => document.body.classList.add("has-navbar-fixed-top-desktop"))
+  const router = useRouter()
   const [isSidebarExpanded, setIsSidebarExpanded] = React.useState(true)
   // TODO: rootPath
-  const rootPath = `/`
-  const isRootPath = location === rootPath
+  console.log(router.pathname)
+  const isRootPath = router.pathname === "/"
   const toggleSidebar = () => {
     setIsSidebarExpanded(!isSidebarExpanded)
   }
   return (
     <>
-      <Helmet>
-        <body className="has-navbar-fixed-top-desktop" />
-      </Helmet>
       <Navbar title="kxxt" />
       {Hero()}
       <div id="main-container" className="container">

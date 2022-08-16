@@ -1,6 +1,6 @@
 import assert from "assert"
 import path, { join } from "path"
-import fs from "fs"
+import { promises as fs, existsSync } from "fs"
 import matter from "gray-matter"
 
 import Link from "next/link"
@@ -13,24 +13,20 @@ import Layout from "@/components/layout"
 import Seo from "@/components/seo"
 import Tags from "@/components/tags"
 import BlogBottomNav from "@/components/blog-bottom-nav"
-// import TableOfContents from "@/components/table-of-contents"
+import TableOfContents from "@/components/table-of-contents"
 
 import formatDateAndTimeToRead from "@/utils/date-and-time-to-read"
-import { postsDir, postFilePaths } from "../../utils/blog/posts"
+import { postsDir, postFilePaths } from "@/utils/blog/posts"
+import processor from "@/utils/mdx/parse"
 import { mdxOptions, allowedMdxFileExtensions } from "../../config"
 
-import * as styles from "./[...path].module.scss"
+import styles from "./[...path].module.scss"
 import "katex/dist/katex.min.css"
 
-// const shortcodes = { Link } // Provide common components here
-
-const BlogPost = ({ location, source, frontMatter }) => {
+const BlogPost = ({ location, source, frontMatter, meta }) => {
   const { previous, next } = {}
   const frontmatter = JSON.parse(frontMatter)
-  const toc = null
-  // const toc = post.tableOfContents.items ? (
-  //   <TableOfContents toc={post.tableOfContents.items} />
-  // ) : null
+  const toc = meta.toc.items ? <TableOfContents toc={meta.toc.items} /> : null
   const bottom = (
     <>
       <hr />
@@ -88,20 +84,24 @@ export async function getStaticProps({ params }) {
   let fullName
   for (const ext of allowedMdxFileExtensions) {
     fullName = `${fileName}${ext}`
-    if (fs.existsSync(fullName)) break
+    if (existsSync(fullName, fs.constants.R_OK)) break
   }
 
-  const source = fs.readFileSync(fullName)
+  const source = await fs.readFile(fullName)
   const { content, data } = matter(source)
+  // TODO: remove double compilation of MDX
+  await processor.process(content)
   const mdxSource = await serialize(content, {
     mdxOptions,
     // scope: data,
   })
-
+  const meta = processor.data("mdxMetadata")
+  console.log(meta)
   return {
     props: {
       source: mdxSource,
       frontMatter: JSON.stringify(data),
+      meta,
     },
   }
 }
