@@ -1,5 +1,5 @@
 import assert from "assert"
-import path, { join } from "path"
+import { join } from "path"
 import { promises as fs, existsSync } from "fs"
 import matter from "gray-matter"
 
@@ -17,6 +17,7 @@ import TableOfContents from "@/components/table-of-contents"
 
 import formatDateAndTimeToRead from "@/utils/date-and-time-to-read"
 import { postsDir, postFilePaths } from "@/utils/blog/posts"
+import { getBlogPathSegments } from "@/utils/blog/path"
 import processor from "@/utils/mdx/parse"
 import { mdxOptions, allowedMdxFileExtensions } from "../../config"
 
@@ -108,10 +109,7 @@ export async function getStaticProps({ params }) {
 export async function getStaticPaths() {
   const paths = postFilePaths.map(([dir, file]) => ({
     params: {
-      path:
-        path.parse(file).name == "index"
-          ? [dir]
-          : [dir, file.replace(/\.[^/.]+$/, "")],
+      path: getBlogPathSegments(dir, file),
     },
   }))
   return {
