@@ -96,7 +96,6 @@ export async function getStaticProps({ params }) {
     // scope: data,
   })
   const meta = processor.data("mdxMetadata")
-  console.log(meta)
   return {
     props: {
       source: mdxSource,
