@@ -1,5 +1,5 @@
+import React from "react"
 import styles from "./table-of-contents.module.scss"
-
 import TOCLink from "./toc-link"
 import ActiveIdChainContext from "./active-id-chain-context"
 import { getIds, getIdPaths } from "./logic"
