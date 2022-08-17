@@ -28,6 +28,7 @@ const BlogPost = ({ source, frontMatter, meta }) => {
   const { previous, next } = {}
   const frontmatter = JSON.parse(frontMatter)
   const toc = meta.toc.items ? <TableOfContents toc={meta.toc.items} /> : null
+  const resDir = "/content/blog/" + meta.dir
   const bottom = (
     <>
       <hr />
@@ -44,10 +45,40 @@ const BlogPost = ({ source, frontMatter, meta }) => {
       >
         <header className={styles.postHeader}>
           <h1 itemProp="headline">{frontmatter.title}</h1>
-          <p>{formatDateAndTimeToRead(frontmatter.date, meta.timeToRead)}</p>
+          <p>
+            {formatDateAndTimeToRead(frontmatter.date, meta.timeToRead)} |{" "}
+            <a href={resDir + "/" + meta.fileName}>MDX Source Code</a>
+          </p>
           <Tags tags={frontmatter.tags} />
         </header>
-        <MDXRemote {...source} components={{ CH, Link }}></MDXRemote>
+        <MDXRemote
+          {...source}
+          components={{
+            CH,
+            Link,
+            img: ({ src, alt, ...rest }) => {
+              const path = resDir + "/" + src
+
+              return (
+                <div
+                  style={{
+                    width: "80%",
+                    margin: "0 auto",
+                  }}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    alt={alt}
+                    src={path}
+                    height={"100%"}
+                    width={"100%"}
+                    {...rest}
+                  />
+                </div>
+              )
+            },
+          }}
+        ></MDXRemote>
       </article>
       <Giscus
         repo="kxxt/kxxt-website"
@@ -75,13 +106,12 @@ export async function getStaticProps({ params }) {
   if (path.length == 1) path.push("index")
   fileName = join(postsDir, ...path)
 
-  let fullName
-  for (const ext of allowedMdxFileExtensions) {
-    fullName = `${fileName}${ext}`
-    if (existsSync(fullName, fs.constants.R_OK)) break
+  let ext
+  for (ext of allowedMdxFileExtensions) {
+    if (existsSync(`${fileName}${ext}`, fs.constants.R_OK)) break
   }
 
-  const source = await fs.readFile(fullName)
+  const source = await fs.readFile(`${fileName}${ext}`, "utf8")
   const { content, data } = matter(source)
   const {
     data: { meta },
@@ -94,7 +124,12 @@ export async function getStaticProps({ params }) {
     props: {
       source: mdxSource,
       frontMatter: JSON.stringify(data),
-      meta: { ...meta, timeToRead: readingTime(content).text, dir: path[0] },
+      meta: {
+        ...meta,
+        timeToRead: readingTime(content).text,
+        dir: path[0],
+        fileName: path[1] + ext,
+      },
     },
   }
 }

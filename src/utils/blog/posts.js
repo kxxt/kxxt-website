@@ -2,7 +2,7 @@ import fs from "fs"
 import path from "path"
 import { allowedMdxFileExtensions } from "../../config"
 
-export const postsDir = path.join(process.cwd(), "content", "blog")
+export const postsDir = path.join(process.cwd(), "public", "content", "blog")
 export const postFilePaths = fs
   .readdirSync(postsDir, { withFileTypes: true })
   .filter(obj => obj.isDirectory())
