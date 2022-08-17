@@ -24,7 +24,7 @@ import { mdxOptions, allowedMdxFileExtensions } from "../../config"
 import styles from "./[...path].module.scss"
 import "katex/dist/katex.min.css"
 
-const BlogPost = ({ location, source, frontMatter, meta }) => {
+const BlogPost = ({ source, frontMatter, meta }) => {
   const { previous, next } = {}
   const frontmatter = JSON.parse(frontMatter)
   const toc = meta.toc.items ? <TableOfContents toc={meta.toc.items} /> : null
