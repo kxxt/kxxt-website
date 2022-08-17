@@ -35,7 +35,7 @@ const BlogPost = ({ source, frontMatter, meta }) => {
     </>
   )
   return (
-    <Layout location={location} sidebar={toc} bottom={bottom}>
+    <Layout sidebar={toc} bottom={bottom}>
       <Seo title={frontmatter.title} description={frontmatter.description} />
       <article
         className="blog-post content"
@@ -44,14 +44,7 @@ const BlogPost = ({ source, frontMatter, meta }) => {
       >
         <header className={styles.postHeader}>
           <h1 itemProp="headline">{frontmatter.title}</h1>
-          <p>
-            {
-              formatDateAndTimeToRead(
-                frontmatter.date,
-                "Unknown"
-              ) /* TODO: Time to read */
-            }
-          </p>
+          <p>{formatDateAndTimeToRead(frontmatter.date, meta.timeToRead)}</p>
           <Tags tags={frontmatter.tags} />
         </header>
         <MDXRemote {...source} components={{ CH, Link }}></MDXRemote>
