@@ -13,7 +13,7 @@ const ArchiveItem = ({ post, date }) => (
           day: "numeric",
         })}
       </span>
-      <Link href={`/blog${post.path}`}>
+      <Link href={`/blog/${post.path}`}>
         <a>{post.title}</a>
       </Link>
     </h4>

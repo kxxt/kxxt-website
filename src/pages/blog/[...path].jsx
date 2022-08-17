@@ -28,7 +28,7 @@ const BlogPost = ({ source, frontMatter, meta }) => {
   const { previous, next } = {}
   const frontmatter = JSON.parse(frontMatter)
   const toc = meta.toc.items ? <TableOfContents toc={meta.toc.items} /> : null
-  const resDir = "/content/blog/" + meta.dir
+  const resDir = "/blog/" + meta.dir
   const bottom = (
     <>
       <hr />
