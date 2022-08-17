@@ -18,16 +18,18 @@
     "@mdx-js/react": "^2.1.2",
     "bulma": "^0.9.4",
     "eslint-config-prettier": "^8.5.0",
+    "file-loader": "^6.2.0",
     "gray-matter": "^4.0.3",
     "katex": "^0.16.0",
     "lodash": "^4.17.21",
     "mdast-util-toc": "^6.1.0",
     "mdx-embed": "^1.0.0",
     "next": "^12.2.5",
-    "next-mdx-remote": "^4.1.0",
+    "next-mdx-remote": "kxxt/next-mdx-remote",
     "react": "^18",
     "react-dom": "^18",
     "react-typed-component": "^1.0.4",
+    "reading-time": "^1.5.0",
     "rehype-autolink-headings": "^6.1.1",
     "rehype-katex": "^6.0.2",
     "rehype-slug": "^5.0.1",
@@ -36,6 +38,7 @@
     "remark-emoji": "^3.0.2",
     "remark-gfm": "^3",
     "remark-math": "^5.1.1",
+    "remark-unwrap-images": "^3.0.1",
     "typeface-merriweather": "1.1.13",
     "typeface-montserrat": "1.1.13"
   },
@@ -79,6 +82,7 @@
     "lint": "next lint",
     "test": "echo \"Write tests!\" && exit 1",
     "prettier": "prettier --write .",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "postinstall": "cd node_modules/next-mdx-remote && npm i && npm run build && rm -rf node_modules"
   }
 }

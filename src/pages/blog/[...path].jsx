@@ -2,6 +2,7 @@ import assert from "assert"
 import { join } from "path"
 import { promises as fs, existsSync } from "fs"
 import matter from "gray-matter"
+import readingTime from "reading-time"
 
 import Link from "next/link"
 import { MDXRemote } from "next-mdx-remote"
@@ -18,7 +19,6 @@ import TableOfContents from "@/components/table-of-contents"
 import formatDateAndTimeToRead from "@/utils/date-and-time-to-read"
 import { postsDir, postFilePaths } from "@/utils/blog/posts"
 import { getBlogPathSegments } from "@/utils/blog/path"
-import processor from "@/utils/mdx/parse"
 import { mdxOptions, allowedMdxFileExtensions } from "../../config"
 
 import styles from "./[...path].module.scss"
@@ -90,18 +90,18 @@ export async function getStaticProps({ params }) {
 
   const source = await fs.readFile(fullName)
   const { content, data } = matter(source)
-  // TODO: remove double compilation of MDX
-  await processor.process(content)
-  const mdxSource = await serialize(content, {
+  const {
+    data: { meta },
+    ...mdxSource
+  } = await serialize(content, {
     mdxOptions,
     // scope: data,
   })
-  const meta = processor.data("mdxMetadata")
   return {
     props: {
       source: mdxSource,
       frontMatter: JSON.stringify(data),
-      meta,
+      meta: { ...meta, timeToRead: readingTime(content).text, dir: path[0] },
     },
   }
 }
