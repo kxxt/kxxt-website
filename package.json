@@ -25,6 +25,7 @@
     "mdast-util-toc": "^6.1.0",
     "mdx-embed": "^1.0.0",
     "next": "^12.2.5",
+    "next-image-export-optimizer": "^0.12.1",
     "next-mdx-remote": "kxxt/next-mdx-remote",
     "react": "^18",
     "react-dom": "^18",
@@ -76,7 +77,7 @@
   "scripts": {
     "build": "next build",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
-    "deploy": "next build && gh-pages -d public -r https://github.com/kxxt/kxxt.github.io",
+    "gen": "next build && next export",
     "start": "next start",
     "dev": "next dev",
     "lint": "next lint",
