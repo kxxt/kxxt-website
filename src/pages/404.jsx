@@ -1,11 +1,10 @@
-import Layout from "../components/layout"
-import Seo from "../components/seo"
-import {siteTitle} from "./data"
+import Layout from "@/components/layout"
+import Seo from "@/components/seo"
+import data from "../data"
 
-export default function NotFoundPage({ location }) {
-
+export default function NotFoundPage() {
   return (
-    <Layout location={location} title={siteTitle}>
+    <Layout title={data.title}>
       <Seo title="404: Not Found" />
       <h1>404: Not Found</h1>
       <p>You just hit a route that doesn&#39;t exist... the sadness.</p>
