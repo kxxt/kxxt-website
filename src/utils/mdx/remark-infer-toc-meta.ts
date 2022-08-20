@@ -26,10 +26,7 @@ const remarkInferTocMeta: Plugin<[IRemarkTocOptions]> = options => {
     ...options,
   }
 
-  const processToC = (
-    node: TocNodeType,
-    current: Partial<TocNodeType>
-  ): Partial<TocNodeType> => {
+  const processToC = (node: any, current: any): Partial<TocNodeType> => {
     if (!node) {
       return {}
     } else if (node.type === `paragraph`) {
