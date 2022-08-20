@@ -1,5 +1,5 @@
-import Head from 'next/head'
-import config from '@/pages/data'
+import Head from "next/head"
+import config from "../data"
 
 export default function Seo({ description, title }) {
   const siteTitle = config.title

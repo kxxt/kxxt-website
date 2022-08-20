@@ -2,11 +2,11 @@ import { useState } from "react"
 
 import profilePhoto from "@/images/profile-photo-no-bg.png"
 
-import data from "./data"
+import data from "../data"
 import Layout from "@/components/layout"
 import Seo from "@/components/seo"
 import ReactTyped from "react-typed-component"
-import Image from "next/image"
+import Image from "next-image-export-optimizer"
 import BlogSummaryList from "../components/blog-summary/blog-summary-list"
 
 import styles from "./index.module.scss"

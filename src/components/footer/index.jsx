@@ -1,6 +1,6 @@
 import React from "react"
 import { faGithub, faTelegram } from "@fortawesome/free-brands-svg-icons"
-import Image from "next/image"
+import Image from "next-image-export-optimizer"
 import { faAt, faRss } from "@fortawesome/free-solid-svg-icons"
 import IconText from "../icon-text"
 import * as styles from "./footer.module.scss"
