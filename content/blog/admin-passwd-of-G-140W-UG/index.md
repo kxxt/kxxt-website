@@ -62,6 +62,49 @@ X-XSS-Protection: 1; mode=block
 
 如果你没有看到设置成功的消息，而是 `302 Found` 的话，大概率是你的 Cookie 过期了，请重新登录光猫，获取新的 Cookie。
 
+## 这个漏洞是如何被发现的
+
+登录普通账户之后查看 `login.cgi` 页面的源代码，可以发现普通的密码设置和管理员密码的设置过程都写在里面。
+
+```js
+$("#edit").click(function(){
+    $("#edit").prop("disabled",true);
+    var p1=$.trim($(":input[name='pswdNewSuper']").val())
+    var p2=$.trim($(":input[name='pswdConfirmSuper']").val())
+    if(p1!=p2){
+        alert("密码不匹配");
+        $("#edit").prop("disabled",false);
+        return false;
+    }
+    if(!p1 && !p2){
+        alert("新密码不能为空");
+        $("#edit").prop("disabled",false);
+        return false;
+    }
+    if(p1.length<8){
+        alert("密码需要大于等于八位");
+        $("#edit").prop("disabled",false);
+        return false;
+    }
+    $.post(location.pathname+"?set_super",$("form").serialize(),null,'json')
+        .done(function(data){
+            alert(data.msg);
+        })
+        .always(function(){
+            window.location.href=window.location.href;
+        })
+})
+```
+- `$.post(location.pathname+"?set_super",$("form").serialize(),null,'json')` 这行代码指出了设置管理员密码的 URL。
+- ```js
+  var p1=$.trim($(":input[name='pswdNewSuper']").val())
+  var p2=$.trim($(":input[name='pswdConfirmSuper']").val())
+  ```
+  指出了设置管理员密码需要的表单字段。
+
+随后，经过测试，我发现使用普通用户的 Cookie 值就能调用此接口重设超级管理员密码。
+
+
 # 开启 telnet
 
 前往光猫登录页面，使用刚才重设的密码登录管理员账户。
