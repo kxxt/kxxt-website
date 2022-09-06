@@ -42,7 +42,10 @@ const BlogPostTemplate = ({ data, location, children }) => {
         <header className={styles.postHeader}>
           <h1 itemProp="headline">{post.frontmatter.title}</h1>
           <p>
-            {formatDateAndTimeToRead(post.frontmatter.date, post.timeToRead)}
+            {formatDateAndTimeToRead(
+              post.frontmatter.date,
+              post.fields.timeToRead
+            )}
           </p>
           <Tags tags={post.frontmatter.tags} />
         </header>

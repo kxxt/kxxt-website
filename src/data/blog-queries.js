@@ -5,6 +5,9 @@ export const blogFields = graphql`
     excerpt(pruneLength: 160)
     body
     tableOfContents
+    fields {
+      timeToRead
+    }
     frontmatter {
       title
       tags
@@ -18,6 +21,7 @@ export const blogQuickInfoFields = graphql`
   fragment BlogQuickInfoFields on Mdx {
     fields {
       slug
+      timeToRead
     }
     frontmatter {
       title
@@ -31,6 +35,7 @@ export const blogSummaryFields = graphql`
     excerpt(pruneLength: 160)
     fields {
       slug
+      timeToRead
     }
     frontmatter {
       date(formatString: "MMMM DD, YYYY")

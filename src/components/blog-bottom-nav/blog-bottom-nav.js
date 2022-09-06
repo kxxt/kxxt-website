@@ -37,7 +37,7 @@ const BlogBottomNavContent = ({ post, pos }) => {
           <p>
             <small>{post.frontmatter.date}</small>
           </p>
-          <p>{post.timeToRead} min read</p>
+          <p>{post.fields.timeToRead} min read</p>
         </div>
       </Link>
     </li>

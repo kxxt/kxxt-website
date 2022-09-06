@@ -99,7 +99,7 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
     createNodeField({
       node,
       name: `timeToRead`,
-      value: readingTime(node.body).minutes,
+      value: Math.ceil(readingTime(node.body).minutes),
     })
   }
 }

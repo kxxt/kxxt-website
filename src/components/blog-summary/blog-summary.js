@@ -22,7 +22,7 @@ const BlogSummary = ({ post }) => {
         <small>
           {formatDateAndTimeToRead(
             post.frontmatter.date,
-            post.timeToRead ?? "unknown"
+            post.fields.timeToRead ?? "unknown"
           )}
         </small>
         <Tags tags={post.frontmatter.tags} />
