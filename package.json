@@ -108,7 +108,6 @@
     "clean": "gatsby clean",
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1",
     "prettier": "prettier --write .",
-    "lint": "eslint src/ --rulesdir ./node_modules/gatsby/dist/utils/eslint-rules",
     "prepare": "husky install"
   }
 }
