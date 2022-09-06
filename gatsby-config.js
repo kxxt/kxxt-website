@@ -1,5 +1,5 @@
 const { remarkCodeHike } = require("@code-hike/mdx")
-const theme = require("shiki/themes/dracula.json")
+const theme = require("shiki/themes/solarized-light.json")
 
 const path = require("path")
 
