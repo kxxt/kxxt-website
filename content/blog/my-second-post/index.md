@@ -1,6 +1,6 @@
 ---
 title: My Second Post!
-date: "2017-02-06T23:46:37.121Z"
+date: 2017-02-06T23:46:37.121Z
 tags: [foo, bar]
 ---
 
