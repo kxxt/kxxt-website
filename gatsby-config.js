@@ -60,6 +60,7 @@ module.exports = {
             ],
             // require("remark-abbr"),
             wrapESMPlugin("remark-emoji"),
+            wrapESMPlugin("remark-unwrap-images"),
             // wrapESMPlugin("remark-directive"),
           ],
           rehypePlugins: [
