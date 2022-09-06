@@ -39,7 +39,7 @@ const BlogIndex = ({ data, location }) => {
   const learningsSummaryLine = `${langsSummaryLine}<br/>I'm learning ${learnings.join(
     ", "
   )}.`
-  const softwareLine = `${learningsSummaryLine}<br/>I'm the creator and maintainer of <a href="https://github.com/kxxt/WSLDiskShrinker"><strong style="background: darkturquoise;color: palegoldenrod;text-decoration-line: underline;">WSL Disk Shrinker</strong></a>.`
+  const softwareLine = `${learningsSummaryLine}<br/>I'm the creator and maintainer of <a href="https://github.com/kxxt/WSLDiskShrinker"><strong style="background: darkolivegreen;color: azure;text-decoration-line: underline;">aspeak</strong></a> and <a href="https://github.com/kxxt/WSLDiskShrinker"><strong style="background: darkturquoise;color: palegoldenrod;text-decoration-line: underline;">WSL Disk Shrinker</strong></a>.`
   const websiteLine = `${softwareLine}<br/>I built this site with <strong style="color: mediumpurple;">Gatsby.js</strong> and <strong style="color: cyan;">Bulma.</strong>`
   const strings = [
     line1,
