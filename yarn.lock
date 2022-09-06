@@ -7674,13 +7674,6 @@ gatsby-parcel-config@0.13.0:
     "@parcel/transformer-raw" "2.6.2"
     "@parcel/transformer-react-refresh-wrap" "2.6.2"
 
-gatsby-plugin-eslint@^4.0.2:
-  version "4.0.2"
-  resolved "https://registry.npmjs.org/gatsby-plugin-eslint/-/gatsby-plugin-eslint-4.0.2.tgz#a963d03c851e299d407becec8c9b5e4386d2223e"
-  integrity sha512-fNLmtu8zgkrdifF9tnbtzmraJzSulhLo868FObCkArfjXB4PLxguxfBWKuJ6PMeZcSIIA4SgouCXHo2hoA12Pw==
-  dependencies:
-    webpack-merge "^5.8.0"
-
 gatsby-plugin-exclude@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/gatsby-plugin-exclude/-/gatsby-plugin-exclude-1.0.2.tgz#eaf889fcb177553e3fa548d5bac02e1926dad113"
@@ -13070,6 +13063,11 @@ readdirp@~3.6.0:
   integrity sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==
   dependencies:
     picomatch "^2.2.1"
+
+reading-time@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.npmjs.org/reading-time/-/reading-time-1.5.0.tgz#d2a7f1b6057cb2e169beaf87113cc3411b5bc5bb"
+  integrity sha512-onYyVhBNr4CmAxFsKS7bz+uTLRakypIe4R+5A824vBSkQy/hB3fZepoVEf8OVAxzLvK+H/jm9TzpI3ETSm64Kg==
 
 recursive-readdir@^2.2.2:
   version "2.2.2"
