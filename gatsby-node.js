@@ -9,7 +9,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   // Get all markdown blog posts sorted by date
   const result = await graphql(`
     {
-      allMdx(sort: { fields: [frontmatter___date], order: ASC }) {
+      allMdx(sort: { fields: [frontmatter___date], order: DESC }) {
         edges {
           node {
             body
@@ -52,8 +52,8 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
 
   if (posts.length > 0) {
     posts.forEach((post, index) => {
-      const previousPostId = index === 0 ? null : posts[index - 1].node.id
-      const nextPostId =
+      const nextPostId = index === 0 ? null : posts[index - 1].node.id
+      const previousPostId =
         index === posts.length - 1 ? null : posts[index + 1].node.id
 
       createPage({
