@@ -16,7 +16,8 @@ const useActiveId = items => {
     )
     // console.log("START")
     items.forEach(item => {
-      observer.observe(document.getElementById(item.id))
+      let ele = document.getElementById(item.id)
+      if (ele != null) observer.observe(ele)
     })
     // console.log("END")
     return () => {

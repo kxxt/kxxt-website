@@ -1,20 +1,31 @@
 const path = require(`path`)
 const { createFilePath } = require(`gatsby-source-filesystem`)
 const _ = require(`lodash`)
+const readingTime = require(`reading-time`)
 
 exports.createPages = async ({ graphql, actions, reporter }) => {
   const { createPage } = actions
 
-  // Define a template for blog post
-  const blogPost = path.resolve(`./src/templates/blog-post.js`)
-
   // Get all markdown blog posts sorted by date
   const result = await graphql(`
     {
-      allMdx(sort: { fields: [frontmatter___date], order: ASC }) {
-        nodes {
-          id
-          slug
+      allMdx(sort: { fields: [frontmatter___date], order: DESC }) {
+        edges {
+          node {
+            body
+            id
+            fields {
+              slug
+            }
+            frontmatter {
+              title
+            }
+            parent {
+              ... on File {
+                absolutePath
+              }
+            }
+          }
         }
 
         group(field: frontmatter___tags) {
@@ -33,7 +44,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     return
   }
 
-  const posts = result.data.allMdx.nodes
+  const posts = result.data.allMdx.edges
 
   // Create blog posts pages
   // But only if there's at least one markdown file found at "content/blog" (defined in gatsby-config.js)
@@ -41,14 +52,17 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
 
   if (posts.length > 0) {
     posts.forEach((post, index) => {
-      const previousPostId = index === 0 ? null : posts[index - 1].id
-      const nextPostId = index === posts.length - 1 ? null : posts[index + 1].id
+      const nextPostId = index === 0 ? null : posts[index - 1].node.id
+      const previousPostId =
+        index === posts.length - 1 ? null : posts[index + 1].node.id
 
       createPage({
-        path: `blog/${post.slug}`,
-        component: blogPost,
+        path: `blog${post.node.fields.slug}`,
+        component: `${path.resolve(
+          "./src/templates/blog-post.js"
+        )}?__contentFilePath=${post.node.parent.absolutePath}`,
         context: {
-          id: post.id,
+          id: post.node.id,
           previousPostId,
           nextPostId,
         },
@@ -81,6 +95,11 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
       name: `slug`,
       node,
       value,
+    })
+    createNodeField({
+      node,
+      name: `timeToRead`,
+      value: Math.ceil(readingTime(node.body).minutes),
     })
   }
 }

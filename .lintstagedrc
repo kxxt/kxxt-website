@@ -1,7 +1,6 @@
 {
   "*{.js,jsx,ts,tsx}": [
-    "prettier --write",
-    "eslint --cache --fix --rulesdir ./node_modules/gatsby/dist/utils/eslint-rules"
+    "prettier --write"
   ],
-  "*.{css,scss}": "prettier --write",
+  "*.{css,scss}": "prettier --write"
 }

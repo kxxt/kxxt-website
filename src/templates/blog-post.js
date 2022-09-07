@@ -1,7 +1,6 @@
 import * as React from "react"
 import { Link, graphql } from "gatsby"
 import { MDXProvider } from "@mdx-js/react"
-import { MDXRenderer } from "gatsby-plugin-mdx"
 import Giscus from "@giscus/react"
 
 import Layout from "../components/layout/layout"
@@ -14,10 +13,12 @@ import formatDateAndTimeToRead from "../utils/date-and-time-to-read"
 
 import * as styles from "./blog-post.module.scss"
 import "katex/dist/katex.min.css"
+import "@code-hike/mdx/dist/index.css"
+import "../admonition.scss"
 
 const shortcodes = { Link } // Provide common components here
 
-const BlogPostTemplate = ({ data, location }) => {
+const BlogPostTemplate = ({ data, location, children }) => {
   const post = data.mdx
   const { previous, next } = data
   const toc = post.tableOfContents.items ? (
@@ -43,13 +44,14 @@ const BlogPostTemplate = ({ data, location }) => {
         <header className={styles.postHeader}>
           <h1 itemProp="headline">{post.frontmatter.title}</h1>
           <p>
-            {formatDateAndTimeToRead(post.frontmatter.date, post.timeToRead)}
+            {formatDateAndTimeToRead(
+              post.frontmatter.date,
+              post.fields.timeToRead
+            )}
           </p>
           <Tags tags={post.frontmatter.tags} />
         </header>
-        <MDXProvider components={shortcodes}>
-          <MDXRenderer frontmatter={post.frontmatter}>{post.body}</MDXRenderer>
-        </MDXProvider>
+        <MDXProvider components={shortcodes}>{children}</MDXProvider>
       </article>
       <Giscus
         repo="kxxt/kxxt-website"
@@ -71,11 +73,7 @@ const BlogPostTemplate = ({ data, location }) => {
 export default BlogPostTemplate
 
 export const pageQuery = graphql`
-  query BlogPostById(
-    $id: String!
-    $previousPostId: String
-    $nextPostId: String
-  ) {
+  query ($id: String!, $previousPostId: String, $nextPostId: String) {
     site {
       siteMetadata {
         title

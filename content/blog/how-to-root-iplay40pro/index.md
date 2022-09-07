@@ -5,19 +5,27 @@ description: "本文讲述了如何在酷比魔方 iPlay40 Pro 上安装 Magisk.
 tags: [root, magisk, android]
 ---
 
-> :warning: **注意**
->
-> Root/刷机有风险，继续阅读即表示你了解 Root/刷机造成的风险，且本人不对你的行为承担任何责任
+:::danger
+
+Root/刷机有风险，继续阅读即表示你了解 Root/刷机造成的风险，且本人不对你的行为承担任何责任
+
+:::
 
 # 解锁
 
 解锁前请先开启开发者模式，并在开发者模式菜单选择允许解锁。
 
-> :warning: **警告**
->
-> 解锁将清除设备上的所有数据！请务必先备份好重要数据。
+:::danger
 
-**注意**：本文中的所有操作全部基于国际版系统，如果你使用的是国内版系统，可以下载国际版刷机包并按照本文操作。切忌将本文提供的两个镜像文件与国内版混用！YOU HAVE BEEN WARNED!
+解锁将清除设备上的所有数据！请务必先备份好重要数据。
+
+:::
+
+:::warning
+
+本文中的所有操作全部基于国际版系统，如果你使用的是国内版系统，可以下载国际版刷机包并按照本文操作。切忌将本文提供的两个镜像文件与国内版混用！YOU HAVE BEEN WARNED!
+
+:::
 
 首先，解锁 Bootloader, 请根据[这篇针对 Unisoc 芯片通用的解锁教程](https://www.hovatek.com/forum/thread-32287.html)解锁你的 Bootloader.
 
@@ -44,7 +52,11 @@ tags: [root, magisk, android]
 
 # 创建自己的 vbmeta-sign-custom.img
 
-**注**： 笔者是在 Manjaro Linux 环境下运行的本小节和下一小节的代码，若要在 Windows 上运行，建议你使用 Powershell 而非 cmd.
+:::tip
+
+笔者是在 Manjaro Linux 环境下运行的本小节和下一小节的代码，若要在 Windows 上运行，建议你使用 Powershell 而非 cmd.
+
+:::
 
 请阅读并理解[这一篇教程](https://www.hovatek.com/forum/thread-32664.html)，下载这篇教程里提到的 `avbtool` 和适用于 Android 10 的`vbmeta_pad.py`。
 

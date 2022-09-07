@@ -1,18 +1,16 @@
-const esmRequire = require("./esm-require")
+const { remarkCodeHike } = require("@code-hike/mdx")
+const theme = require("shiki/themes/solarized-light.json")
 
 const path = require("path")
 
-// Get paths of Gatsby's required rules, which as of writing is located at:
-// https://github.com/gatsbyjs/gatsby/tree/fbfe3f63dec23d279a27b54b4057dd611dce74bb/packages/
-// gatsby/src/utils/eslint-rules
-const gatsbyRequiredRules = path.join(
-  process.cwd(),
-  "node_modules",
-  "gatsby",
-  "dist",
-  "utils",
-  "eslint-rules"
-)
+const wrapESMPlugin = name =>
+  function wrapESM(opts) {
+    return async (...args) => {
+      const mod = await import(name)
+      const plugin = mod.default(opts)
+      return plugin(...args)
+    }
+  }
 
 module.exports = {
   siteMetadata: {
@@ -29,7 +27,8 @@ module.exports = {
     //   resolve: "gatsby-plugin-exclude",
     //   options: { paths: ["/content/**"] }
     // },
-    `gatsby-plugin-sass`,
+    "gatsby-plugin-sass",
+
     `gatsby-plugin-image`,
     {
       resolve: `gatsby-source-filesystem`,
@@ -42,13 +41,46 @@ module.exports = {
     {
       resolve: `gatsby-plugin-mdx`,
       options: {
+        defaultLayouts: {
+          default: path.resolve(`./src/components/blog-post.js`),
+          blog: path.resolve(`./src/components/blog-post.js`),
+        },
         extensions: [`.mdx`, `.md`],
-        remarkPlugins: [
-          require("remark-math"),
-          require("remark-abbr"),
-          esmRequire("remark-emoji").default,
-        ],
-        rehypePlugins: [esmRequire("rehype-katex").default],
+        mdxOptions: {
+          remarkPlugins: [
+            require("remark-gfm"),
+            require("remark-math"),
+            [
+              remarkCodeHike,
+              {
+                theme,
+                lineNumbers: false,
+                showCopyButton: true,
+                skipLanguages: ["mermaid", "dot"],
+              },
+            ],
+            // require("remark-abbr"),
+            wrapESMPlugin("remark-emoji"),
+            wrapESMPlugin("remark-unwrap-images"),
+            require("remark-directive"),
+            require("./src/utils/remark-mkdocs-material-admonition.js"),
+          ],
+          rehypePlugins: [
+            wrapESMPlugin("rehype-katex"),
+            require("rehype-slug"),
+            [
+              require("rehype-autolink-headings"),
+              {
+                behavior: "append",
+                properties: {
+                  className: "header-anchor",
+                  ariaHidden: true,
+                  tabIndex: -1,
+                },
+              },
+            ],
+          ],
+        },
         gatsbyRemarkPlugins: [
           {
             resolve: `gatsby-remark-mermaid`,
@@ -62,25 +94,11 @@ module.exports = {
             },
           },
           `gatsby-remark-graphviz`,
-          `gatsby-remark-autolink-headers`,
-          `gatsby-remark-check-links`,
+          // `gatsby-remark-check-links`,
           "gatsby-remark-smartypants",
           `gatsby-remark-copy-linked-files`,
           `gatsby-remark-responsive-iframe`,
           `gatsby-remark-images`,
-          {
-            resolve: `gatsby-remark-embed-snippet`,
-            options: {},
-          },
-          {
-            resolve: `gatsby-remark-prismjs`,
-            options: {
-              classPrefix: "language-",
-              inlineCodeMarker: null,
-              showLineNumbers: true,
-              aliases: { sh: "bash" },
-            },
-          },
         ],
       },
     },
@@ -99,7 +117,7 @@ module.exports = {
     // },
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
-    `gatsby-plugin-mdx-embed`,
+    // `gatsby-plugin-mdx-embed`,
     {
       resolve: `gatsby-plugin-google-gtag`,
       options: {
@@ -141,9 +159,14 @@ module.exports = {
                 return Object.assign({}, node.frontmatter, {
                   description: node.excerpt,
                   date: node.frontmatter.date,
-                  url: `${site.siteMetadata.siteUrl}/blog/${node.slug}`,
+                  url: `${site.siteMetadata.siteUrl}/blog${node.fields.slug}`,
                   guid: node.slug,
-                  custom_elements: [{ "content:encoded": node.html }],
+                  // TODO: Add back rss content
+                  custom_elements: [
+                    {
+                      "content:encoded": `${site.siteMetadata.siteUrl}/blog${node.fields.slug}`,
+                    },
+                  ],
                 })
               })
             },
@@ -154,8 +177,9 @@ module.exports = {
                 ) {
                   nodes {
                     excerpt
-                    html
-                    slug
+                    fields {
+                      slug
+                    }
                     frontmatter {
                       title
                       date
@@ -195,18 +219,5 @@ module.exports = {
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     // `gatsby-plugin-offline`,
-    {
-      resolve: "gatsby-plugin-eslint",
-      options: {
-        // Gatsby required rules directory
-        rulePaths: [gatsbyRequiredRules],
-        // Default settings that may be omitted or customized
-        stages: ["develop"],
-        extensions: ["js", "jsx", "ts", "tsx"],
-        exclude: ["node_modules", "bower_components", ".cache", "public"],
-        // Any additional eslint-webpack-plugin options below
-        // ...
-      },
-    },
   ],
 }

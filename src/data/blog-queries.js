@@ -3,9 +3,11 @@ import { graphql } from "gatsby"
 export const blogFields = graphql`
   fragment BlogFields on Mdx {
     excerpt(pruneLength: 160)
-    timeToRead
     body
     tableOfContents
+    fields {
+      timeToRead
+    }
     frontmatter {
       title
       tags
@@ -17,8 +19,10 @@ export const blogFields = graphql`
 
 export const blogQuickInfoFields = graphql`
   fragment BlogQuickInfoFields on Mdx {
-    slug
-    timeToRead
+    fields {
+      slug
+      timeToRead
+    }
     frontmatter {
       title
       date(formatString: "MMMM DD, YYYY")
@@ -29,16 +33,15 @@ export const blogQuickInfoFields = graphql`
 export const blogSummaryFields = graphql`
   fragment BlogSummaryFields on Mdx {
     excerpt(pruneLength: 160)
-    slug
-    timeToRead
+    fields {
+      slug
+      timeToRead
+    }
     frontmatter {
       date(formatString: "MMMM DD, YYYY")
       title
       description
       tags
-    }
-    headings {
-      value
     }
   }
 `
