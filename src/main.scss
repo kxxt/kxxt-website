@@ -1,7 +1,6 @@
 @charset "utf-8";
 
 @import "~bulma/bulma";
-@import "@code-hike/mdx/dist/index.css";
 
 @function headings($before: "", $from: 1, $to: 6, $after: "") {
   @if $from == $to {
