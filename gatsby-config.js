@@ -81,7 +81,7 @@ module.exports = {
               remarkCodeHike,
               {
                 theme,
-                lineNumbers: true,
+                lineNumbers: false,
                 showCopyButton: true,
                 skipLanguages: ["mermaid", "dot"],
               },
