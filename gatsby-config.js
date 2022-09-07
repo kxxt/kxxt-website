@@ -12,6 +12,33 @@ const wrapESMPlugin = name =>
     }
   }
 
+function remarkMkdocsMaterialAdmonition() {
+  const visit = require("unist-util-visit")
+  const h = require("hastscript")
+  return tree => {
+    visit(tree, node => {
+      if (node.type === "containerDirective") {
+        const data = node.data || (node.data = {})
+        data.hName = "div"
+        data.hProperties = h("div", node.attributes).properties
+        data.hProperties.className ??= []
+        data.hProperties.className.unshift("admonition", node.name)
+        node.children ??= []
+        node.children.unshift({
+          type: "paragraph",
+          children: [
+            {
+              type: "text",
+              value: node.name.charAt(0).toUpperCase() + node.name.slice(1),
+            },
+          ],
+          data: { hProperties: { className: "admonition-title" } },
+        })
+      }
+    })
+  }
+}
+
 module.exports = {
   siteMetadata: {
     title: `kxxt`,
@@ -27,7 +54,8 @@ module.exports = {
     //   resolve: "gatsby-plugin-exclude",
     //   options: { paths: ["/content/**"] }
     // },
-    `gatsby-plugin-sass`,
+    "gatsby-plugin-sass",
+
     `gatsby-plugin-image`,
     {
       resolve: `gatsby-source-filesystem`,
@@ -61,7 +89,8 @@ module.exports = {
             // require("remark-abbr"),
             wrapESMPlugin("remark-emoji"),
             wrapESMPlugin("remark-unwrap-images"),
-            // wrapESMPlugin("remark-directive"),
+            require("remark-directive"),
+            remarkMkdocsMaterialAdmonition,
           ],
           rehypePlugins: [
             wrapESMPlugin("rehype-katex"),

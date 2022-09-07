@@ -13,6 +13,7 @@ import formatDateAndTimeToRead from "../utils/date-and-time-to-read"
 
 import * as styles from "./blog-post.module.scss"
 import "katex/dist/katex.min.css"
+import "../admonition.scss"
 
 const shortcodes = { Link } // Provide common components here
 
