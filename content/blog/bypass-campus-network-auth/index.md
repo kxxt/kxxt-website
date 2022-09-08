@@ -2,6 +2,7 @@
 title: 绕过校园网登录认证的一种方法
 date: 2022-06-24
 tags: [networking, work-around]
+published: true
 ---
 
 :::warning
