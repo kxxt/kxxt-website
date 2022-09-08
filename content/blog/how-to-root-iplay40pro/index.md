@@ -3,6 +3,7 @@ title: Alldocube iPlay40 Pro Root 教程
 date: 2022-05-10
 description: "本文讲述了如何在酷比魔方 iPlay40 Pro 上安装 Magisk."
 tags: [root, magisk, android]
+published: true
 ---
 
 :::danger

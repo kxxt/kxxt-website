@@ -2,6 +2,7 @@
 title: 联通 G-140W-UG 光猫管理员密码
 date: 2022-08-30
 tags: [networking, hack]
+published: true
 ---
 
 # 利用权限漏洞重设超级管理员密码
