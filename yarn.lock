@@ -14217,10 +14217,10 @@ typeface-montserrat@1.1.13:
   resolved "https://registry.yarnpkg.com/typeface-montserrat/-/typeface-montserrat-1.1.13.tgz#2a16729c174dd1a8c3fec05a851b7725412606cc"
   integrity sha512-Pklkyj0e+K+6I/t0M6JBDBphpfJkF1k+3qd8qDnp9aVtCC7oGBQWTAcL6+5eArfGe7h73uPwyal73hEkf9YCUA==
 
-typescript@^4.8.2:
-  version "4.8.2"
-  resolved "https://registry.npmjs.org/typescript/-/typescript-4.8.2.tgz#e3b33d5ccfb5914e4eeab6699cf208adee3fd790"
-  integrity sha512-C0I1UsrrDHo2fYI5oaCGbSejwX4ch+9Y5jTQELvovfmFkK3HHSZJB8MSJcWLmCUBzQBchCrZ9rMRV6GuNrvGtw==
+typescript@^4.9.0-dev.20220907:
+  version "4.9.0-dev.20220907"
+  resolved "https://registry.npmjs.org/typescript/-/typescript-4.9.0-dev.20220907.tgz#bf59fe29dd9803b045cdaa941730c4ce36d6fdea"
+  integrity sha512-wRH/8rol9ktq6cQ6NxT7fsaa7bcVBSl7KcE27AGfzlbvq6c1/KlOOXywzhtsCHFtNLPBucsirHBZxFx3gdfpBg==
 
 ua-parser-js@^0.7.30:
   version "0.7.31"
