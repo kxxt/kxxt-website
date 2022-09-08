@@ -1,11 +1,11 @@
-const { remarkCodeHike } = require("@code-hike/mdx")
+import { remarkCodeHike } from "@code-hike/mdx"
 const theme = require("shiki/themes/solarized-light.json")
 
-const path = require("path")
+import path from "path"
 
-const wrapESMPlugin = name =>
-  function wrapESM(opts) {
-    return async (...args) => {
+const wrapESMPlugin = (name: string) =>
+  function wrapESM(opts: any) {
+    return async (...args: any) => {
       const mod = await import(name)
       const plugin = mod.default(opts)
       return plugin(...args)
