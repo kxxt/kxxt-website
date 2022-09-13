@@ -55,8 +55,11 @@ const ArchivePage = ({ data, location }) => {
 export default ArchivePage
 
 export const pageQuery = graphql`
-  query {
-    allMdx(sort: { fields: [frontmatter___date], order: DESC }) {
+  query ($published: [Boolean!]!) {
+    allMdx(
+      sort: { fields: [frontmatter___date], order: DESC }
+      filter: { frontmatter: { published: { in: $published } } }
+    ) {
       nodes {
         id
         fields {

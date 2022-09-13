@@ -112,7 +112,7 @@ exports.onCreatePage = ({ page, actions }) => {
   const { createPage, deletePage } = actions
   const newPage = Object.assign({}, page)
 
-  if (page.path === "/" || page.path === "/blogs/") {
+  if ([`/`, `/blogs/`, `/archive/`].includes(page.path)) {
     deletePage(page)
 
     newPage.context = {
