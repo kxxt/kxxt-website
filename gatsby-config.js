@@ -2,6 +2,9 @@ const { remarkCodeHike } = require("@code-hike/mdx")
 const theme = require("shiki/themes/solarized-light.json")
 
 const path = require("path")
+const {
+  onlySelectPublishedArticlesInProd,
+} = require("./src/data/conditional.js")
 
 const wrapESMPlugin = name =>
   function wrapESM(opts) {
@@ -174,6 +177,7 @@ module.exports = {
               {
                 allMdx(
                   sort: { order: DESC, fields: [frontmatter___date] },
+                  ${onlySelectPublishedArticlesInProd}
                 ) {
                   nodes {
                     excerpt
