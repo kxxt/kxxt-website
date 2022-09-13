@@ -21,7 +21,7 @@ const BlogsPage = ({ data, location }) => {
 export default BlogsPage
 
 export const pageQuery = graphql`
-  query {
+  query ($published: [Boolean!]!) {
     site {
       siteMetadata {
         title
