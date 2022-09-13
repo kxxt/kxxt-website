@@ -1,7 +1,6 @@
 const { remarkCodeHike } = require("@code-hike/mdx")
 const theme = require("shiki/themes/solarized-light.json")
 
-const path = require("path")
 const {
   onlySelectPublishedArticlesInProd,
 } = require("./src/data/conditional.js")
