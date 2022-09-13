@@ -41,10 +41,6 @@ module.exports = {
     {
       resolve: `gatsby-plugin-mdx`,
       options: {
-        defaultLayouts: {
-          default: path.resolve(`./src/components/blog-post.js`),
-          blog: path.resolve(`./src/components/blog-post.js`),
-        },
         extensions: [`.mdx`, `.md`],
         mdxOptions: {
           remarkPlugins: [
