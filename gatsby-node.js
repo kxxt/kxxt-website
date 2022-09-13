@@ -2,9 +2,9 @@ const path = require(`path`)
 const { createFilePath } = require(`gatsby-source-filesystem`)
 const _ = require(`lodash`)
 const readingTime = require(`reading-time`)
-const process = require("process")
-
-const DEBUG = process.env.NODE_ENV !== "production"
+const {
+  onlySelectPublishedArticlesInProd,
+} = require(`./src/data/conditional.js`)
 
 exports.createPages = async ({ graphql, actions, reporter }) => {
   const { createPage } = actions
@@ -12,9 +12,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   // Get all markdown blog posts sorted by date
   const result = await graphql(`
     {
-      allMdx(sort: { fields: [frontmatter___date], order: DESC }${
-        DEBUG ? "" : " ,filter: {frontmatter: {published: {eq: true}}}"
-      }) {
+      allMdx(sort: { fields: [frontmatter___date], order: DESC }${onlySelectPublishedArticlesInProd}) {
         edges {
           node {
             body
@@ -51,7 +49,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   }
 
   let posts = result.data.allMdx.edges
-  if (!DEBUG) posts = posts.filter(({ node }) => node.frontmatter.published)
+
   // Create blog posts pages
   // But only if there's at least one markdown file found at "content/blog" (defined in gatsby-config.js)
   // `context` is available in the template as a prop and as a variable in GraphQL
@@ -107,6 +105,21 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
       name: `timeToRead`,
       value: Math.ceil(readingTime(node.body).minutes),
     })
+  }
+}
+
+exports.onCreatePage = ({ page, actions }) => {
+  const { createPage, deletePage } = actions
+  const newPage = Object.assign({}, page)
+
+  if (page.path === "/" || page.path === "/blogs/") {
+    deletePage(page)
+
+    newPage.context = {
+      published: process.env.NODE_ENV !== "production" ? [true, false] : [true],
+    }
+
+    createPage(newPage)
   }
 }
 
