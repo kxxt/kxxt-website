@@ -113,13 +113,16 @@ const BlogIndex = ({ data, location }) => {
 export default BlogIndex
 
 export const pageQuery = graphql`
-  query {
+  query ($published: [Boolean!]!) {
     site {
       siteMetadata {
         title
       }
     }
-    allMdx(sort: { fields: [frontmatter___date], order: DESC }) {
+    allMdx(
+      sort: { fields: [frontmatter___date], order: DESC }
+      filter: { frontmatter: { published: { in: $published } } }
+    ) {
       nodes {
         ...BlogSummaryFields
       }
