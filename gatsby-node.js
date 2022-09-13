@@ -107,12 +107,12 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
     })
   }
 }
-
+const pagesToAddContext = [`/`, `/blogs/`, `/archive/`, `/tags/`]
 exports.onCreatePage = ({ page, actions }) => {
   const { createPage, deletePage } = actions
   const newPage = Object.assign({}, page)
 
-  if ([`/`, `/blogs/`, `/archive/`].includes(page.path)) {
+  if (pagesToAddContext.includes(page.path)) {
     deletePage(page)
 
     newPage.context = {

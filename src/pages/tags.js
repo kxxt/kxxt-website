@@ -18,8 +18,8 @@ const TagsPage = ({ data, location }) => {
 }
 
 export const pageQuery = graphql`
-  query {
-    allMdx {
+  query ($published: [Boolean!]!) {
+    allMdx(filter: { frontmatter: { published: { in: $published } } }) {
       group(field: frontmatter___tags) {
         tag: fieldValue
         totalCount
