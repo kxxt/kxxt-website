@@ -245,9 +245,13 @@ mkdir ~/.config/Yubico
 pamu2fcfg -N -o pam://laptop -i pam://laptop > ~/.config/Yubico/u2f_keys
 ```
 
-> 注意这里 `laptop` 是我的主机名，读者可能需要把它换掉
->
-> 另外，这里加上 `-N` 表示需要输入 Pin, 若不需要，可以把 `-N` 去掉
+:::warning
+
+注意这里 `laptop` 是我的主机名，读者需要把它换成自己的主机名
+
+另外，这里加上 `-N` 表示需要输入 Pin, 若不需要，可以把 `-N` 去掉
+
+:::
 
 ### Sudo
 
@@ -280,7 +284,11 @@ auth            sufficient      pam_u2f.so cue origin=pam://laptop appid=pam://l
 
 然后注销再重新登录来测试一下。
 
-> 注意： 在 sufficient 的情况下设置 nouserok 会造成安全漏洞，导致不使用 u2f 的用户（比如 root）可以不经认证的登录！
+:::attention
+
+注意： 在 sufficient 的情况下设置 nouserok 会造成安全漏洞，导致不使用 u2f 的用户（比如 root）可以不经认证的登录！
+
+:::
 
 以上设置是针对的既可以使用密码登录，又可以使用 YubiKey 登录这种情形配置的。
 
@@ -354,35 +362,39 @@ gpg-connect-agent /bye
 
 现在 Git 的 SSH 协议 也可以通过 gpg 来使用了
 
-> 注: 我在使用时发现第一次连接时无法选择接受 server 的 fingerprint,
->
-> 即，在如下状态出现是否要将 key 储存在 cache 中时，无论是按 <kbd>y</kbd> 还是按 <kbd>n</kbd> 抑或是加上 <kbd>Enter</kbd> 都没有反应
->
-> ```powershell
-> git clone git@github.com:kxxt/kxxt
-> Cloning into 'kxxt'...https://github.com/Yubico/pam-u2f/issues/144
-> The server's host key is not cached. You have no guarantee
-> that the server is the computer you think it is.
-> The server's ssh-ed25519 key fingerprint is:
-> ssh-ed25519 255 SHA256:+DiY3wvvV6TuJJhbpZisF/zLDA0zPMSvHdkr4UvCOqU
-> If you trust this host, enter "y" to add the key to
-> PuTTY's cache and carry on connecting.
-> If you want to carry on connecting just once, without
-> adding the key to the cache, enter "n".
-> If you do not trust this host, press Return to abandon the
-> connection.
-> Store key in cache? (y/n, Return cancels connection, i for more info) fatal: Could not read from remote repository.
-> ```
->
-> 这个问题可以通过以下方式解决：
->
-> 先直接使用 plink 连接 GitHub 一次
->
-> ```powershell
-> & 'C:\Program Files\PuTTY\plink.exe' git@github.com
-> ```
->
-> 这时选择 <kbd>y</kbd> 是有效的，之后再使用 Git 就可以了
+:::tip
+
+我在使用时发现第一次连接时无法选择接受 server 的 fingerprint,
+
+即，在如下状态出现是否要将 key 储存在 cache 中时，无论是按 <kbd>y</kbd> 还是按 <kbd>n</kbd> 抑或是加上 <kbd>Enter</kbd> 都没有反应
+
+```powershell
+git clone git@github.com:kxxt/kxxt
+Cloning into 'kxxt'...https://github.com/Yubico/pam-u2f/issues/144
+The server's host key is not cached. You have no guarantee
+that the server is the computer you think it is.
+The server's ssh-ed25519 key fingerprint is:
+ssh-ed25519 255 SHA256:+DiY3wvvV6TuJJhbpZisF/zLDA0zPMSvHdkr4UvCOqU
+If you trust this host, enter "y" to add the key to
+PuTTY's cache and carry on connecting.
+If you want to carry on connecting just once, without
+adding the key to the cache, enter "n".
+If you do not trust this host, press Return to abandon the
+connection.
+Store key in cache? (y/n, Return cancels connection, i for more info) fatal: Could not read from remote repository.
+```
+
+这个问题可以通过以下方式解决：
+
+先直接使用 plink 连接 GitHub 一次
+
+```powershell
+& 'C:\Program Files\PuTTY\plink.exe' git@github.com
+```
+
+这时选择 <kbd>y</kbd> 是有效的，之后再使用 Git 就可以了
+
+:::
 
 如果要在 WSL 中使用 GPG 智能卡, 可以参考我的下一篇文章：https://kxxt.me/blog/wsl-and-gpg-card/
 
