@@ -198,6 +198,7 @@ module.exports = {
       options: {
         output: `/sitemap`,
         createLinkInHead: true,
+        excludes: ["/tags/*"],
       },
     },
     {
