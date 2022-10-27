@@ -81,10 +81,6 @@ module.exports = {
         },
         gatsbyRemarkPlugins: [
           {
-            resolve: "gatsby-remark-copy-relative-linked-files",
-            options: { prefix: "public/blog" },
-          },
-          {
             resolve: `gatsby-remark-mermaid`,
             options: {
               mermaidOptions: {
@@ -100,6 +96,10 @@ module.exports = {
           "gatsby-remark-smartypants",
           `gatsby-remark-responsive-iframe`,
           `gatsby-remark-images`,
+          {
+            resolve: "gatsby-remark-copy-relative-linked-files",
+            options: { prefix: "public/blog" },
+          },
         ],
       },
     },
