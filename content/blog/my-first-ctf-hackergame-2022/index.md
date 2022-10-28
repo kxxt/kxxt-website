@@ -595,7 +595,7 @@ private record State(Token token, int passed, int talented, double number, Optio
 </CH.Code>
 然后又是大大的面向对象的 [_`GuessNumber`_ 类](focus://GuessNumber#1:30). 还有为什么要用三个空格缩进。。。
 
-我们在 _`State`_ 类的 [_`collect`_ 方法](focus://State.collect#22:33) (你可以把鼠标放在加下划虚线的文字上，kxxt 会自动给您高亮相关代码)和 [_`update`_ 方法](focus://State.update#21:32)中可以发现一个致命的漏洞：
+我们在 _`State`_ 类的 [_`collect`_ 方法](focus://State.collect#22:33) (你可以把鼠标放在加下划虚线的文字上或者触摸它们，kxxt 会自动给您高亮相关代码)和 [_`update`_ 方法](focus://State.update#21:32)中可以发现一个致命的漏洞：
 
 它们判断一个数和被猜数字是否相等的逻辑是：如果这个数既不大于被猜数也不小于被猜数，那么就通过。
 
@@ -750,11 +750,576 @@ mkdir wiki && docker run -d \
 
 ## 安全的在线测评
 
+:::question
+
+传说科大新的在线测评系统（Online Judge）正在锐意开发中。然而，新 OJ 迟迟不见踪影，[旧的 OJ](https://oj.ustc.edu.cn/) 和[更旧的 OJ](http://acm.ustc.edu.cn/ustcoj/) 却都已经停止了维护。某 2022 级计算机系的新生小 L 等得不耐烦了，当即表示不就是 OJ 吗，他 10 分钟就能写出来一个。
+
+**无法 AC 的题目**
+
+为了验证他写的新 OJ 的安全性，他决定在 OJ 上出一道不可能完成的题目——大整数分解，并且放出豪言：只要有人能 AC 这道题，就能得到传说中的 flag。当然，因为目前 OJ 只能运行 C 语言代码，即使请来一位[少年班学院的天才](https://github.com/ustclug/hackergame2018-writeups/tree/master/official/RSA_of_Z#解法-1)恐怕也无济于事。
+
+**动态数据**
+
+为了防止数据意外泄露，小 L 还给 OJ 加入了动态数据生成功能，每次测评会随机生成一部分测试数据。这样，即使 OJ 测试数据泄露，攻击者也没办法通过所有测试样例了吧！（也许吧？）
+
+判题脚本：[下载](https://hack.lug.ustc.edu.cn/media/0fd509cd-9f1a-588a-b45e-a11331006a3f/online_judge.py)
+
+你可以通过 `nc 202.38.93.111 10027` 来连接题目，或者点击下面的 "打开/下载题目" 按钮通过网页终端与远程交互。
+
+:::
+
 ### 无法 AC 的题目
+
+阅读 `online_judge.py` 可以发现 OJ 最终使用 `runner` 账户来运行我们的代码。然而它只把动态数据的输入输出文件的权限改成了 700，却（故意）忘记把 `static.out` 的权限改成 700 了。
+
+```python online_judge.py
+for i in range(N):
+    inpaths.append(os.path.join(DATA, f'dynamic{i}.in'))
+    outpaths.append(os.path.join(DATA, f'dynamic{i}.out'))
+
+    p, q = generate_data()
+    n = p * q
+
+    with open(inpaths[i], 'w') as f:
+        f.write(f'{n}\n')
+    with open(outpaths[i], 'w') as f:
+        f.write(f'{p}\n{q}\n')
+
+    os.chmod(inpaths[i], 0o700)
+    os.chmod(outpaths[i], 0o700)
+```
+
+于是我们可以直接一个 `cat` 过掉静态数据。
+
+```c static.c
+#include<stdlib.h>
+
+int main() {
+    system("cat data/static.out");
+    return 0;
+}
+```
 
 ### 动态数据
 
+再仔细阅读一下 OJ 的代码，发现它并没有用 `runner` 账户来编译我们的代码。所以如果我们的代码能在编译期把答案都读进来，我们就能过掉这道题了。
+
+可是，`dynamic{i}.out` 文件里存了两个高精大整数，我直接把她们 `#include` 进来的话是会出编译错误的呀！
+
+诶？编译错误！我为什么不能直接 `#include "../flag.py"` 然后靠编译器的错误输出拿到 flag 呢？
+
+```c failed_attempt.c
+请输入你的代码（以两个空行作为结尾）：
+
+#include "../flag.py"
+
+
+In file included from ./temp/code.c:1:
+./temp/../flag.py:1:1: error: unknown type name ‘import’
+    1 | import os
+      | ^~~~~~
+./temp/../flag.py:3:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘flag1’
+    3 | flag1 = "fake{test1}"
+      | ^~~~~
+静态数据测试： Compile Error
+
+Connection closed
+```
+
+草，出题人还是想到了这一点的。你看它在 `flag.py` 的第三行放了个假 flag 来嘲讽你。
+
+那嘛，我该怎么办呢？
+
+后来我[从 StackOverflow 上](https://stackoverflow.com/questions/410980/include-a-text-file-in-a-c-program-as-a-char)找到了一条汇编指令 `.incbin` (那条回答有点惨，只有一个 upvote，也就是说没人给它点过upvote)
+
+下面代码里的 `gcc_header` 是这个 StackOverflow 帖子里提到的动态 `#include` 文件的一个方法。
+
+为了惜字如金，我定义了一大堆宏来简化代码。
+
+:::hint
+
+下面是一个 Code Hike 的 `Scrollycoding` 组件，为了获得更好的阅读体验，我建议您在较大的屏幕上查看。
+
+如果您觉得右侧的目录树占用了较大的空间，您可以点击 `TABLE OF CONTENTS` 来隐藏/显示右侧的目录树（目录树暂时不会在小屏设备上显示，其实理论上在小屏设备上目录应该显示在文章开头，但是我太懒了，还没做，还请移动端用户多多包容🥹🥹🥹🥹）。
+
+在大屏设备上，您可以点击各个步骤的内容，kxxt 会自动给您更新右侧的代码。
+
+:::
+
+<CH.Scrollycoding lineNumbers={true} style={{'--ch-scrollycoding-sticker-width': '50%' }} rows={20}>
+
+#### Step 1
+
+```c hack.c
+#define __gcc_header(x) #x
+#define _gcc_header(x) __gcc_header(data/dynamic##x.out)
+#define gcc_header(x) _gcc_header(x)
+
+
+
+
+
+// 我是可爱的注释
+```
+
+我们先定义 _`gcc_header`_ 宏。这个宏的作用是把 _`gcc_header(i)`_ 转化成字符串 _`"data/dynamici.out"`_. 如果你看不懂这个宏在干什么，可以回去复习一下 C 语言。
+
+:::warning
+
+不要用 VSCode 的格式化文档功能，格式化文档会在 _`data/dynamic`_ 的分隔符两边加上空格导致编译失败。
+
+:::
+
+---
+
+#### Step 2
+
+```c hack.c focus=4:8
+#define __gcc_header(x) #x
+#define _gcc_header(x) __gcc_header(data/dynamic##x.out)
+#define gcc_header(x) _gcc_header(x)
+#define var_start(x) \
+  asm("out" __gcc_header(x) ":.incbin \"" gcc_header(x) "\"")
+#define var_end(x) asm(".byte 0x00")
+
+// 我往上挪了一行
+```
+
+然后我们定义把答案文件包括进来的宏 _`var_start`_ 和 _`var_end`_.
+
+- _`var_start`_ 利用汇编的 _`.incbin`_ 指令把答案文件 _`data/dynamicx.out`_  作为二进制文件包括到编译结果中.
+- 除此之外，_`var_start`_ 还在汇编中为包括进来的数据的起始地址添加了标签 _`outx`_
+- 注意：因为文件是作为二进制包括进来的，所以文件末尾并不以 _`'\0'`_ 结尾。
+- 所以我们定义 _`var_end`_ 宏来补上一个 0 字节。
+
+---
+
+#### Step 3
+
+```c hack.c focus=7:18
+#define __gcc_header(x) #x
+#define _gcc_header(x) __gcc_header(data/dynamic##x.out)
+#define gcc_header(x) _gcc_header(x)
+#define var_start(x) \
+  asm("out" __gcc_header(x) ":.incbin \"" gcc_header(x) "\"")
+#define var_end(x) asm(".byte 0x00")
+// 当然要惜字如金了
+#define declar_var(x) extern char out##x[]
+#define include_str(x) \
+  var_start(x);        \
+  var_end(x);          \
+  declar_var(x)
+
+include_str(0);
+include_str(1);
+include_str(2);
+include_str(3);
+include_str(4);
+```
+
+- 然后我们定义一个定义  _`external`_ 变量的宏，她的作用就是告诉 C 语言我们在别处定义了一个名字叫 _`outx`_ 的 _`char`_ 数组。
+- 我们再定义  _`include_str`_ 宏，它将完成嵌入答案文件和声明外部变量的工作合二为一
+- 然后就运行宏呗。没啥好讲的
+
+---
+
+#### Step 4
+
+```c hack.c focus=18:24
+#define __gcc_header(x) #x
+#define _gcc_header(x) __gcc_header(data/dynamic##x.out)
+#define gcc_header(x) _gcc_header(x)
+#define var_start(x) \
+  asm("out" __gcc_header(x) ":.incbin \"" gcc_header(x) "\"")
+#define var_end(x) asm(".byte 0x00")
+// 当然要惜字如金了
+#define declar_var(x) extern char out##x[]
+#define include_str(x) \
+  var_start(x);        \
+  var_end(x);          \
+  declar_var(x)
+
+include_str(0);
+include_str(1);
+include_str(2);
+include_str(3);
+include_str(4);
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+char buffer[512];
+```
+
+- 照例，引入库文件
+- 声明个数组做缓冲区
+- 我管它会不会溢出呢，死去的 OJ 又不会跳起来攻击我的代码
+
+---
+
+#### Step 5
+
+```c hack.c focus=25:32
+#define __gcc_header(x) #x
+#define _gcc_header(x) __gcc_header(data/dynamic##x.out)
+#define gcc_header(x) _gcc_header(x)
+#define var_start(x) \
+  asm("out" __gcc_header(x) ":.incbin \"" gcc_header(x) "\"")
+#define var_end(x) asm(".byte 0x00")
+// 当然要惜字如金了
+#define declar_var(x) extern char out##x[]
+#define include_str(x) \
+  var_start(x);        \
+  var_end(x);          \
+  declar_var(x)
+
+include_str(0);
+include_str(1);
+include_str(2);
+include_str(3);
+include_str(4);
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+char buffer[512];
+
+int main() {
+  if (access("./temp/dsa", F_OK) == -1) {
+    system("echo 0 > ./temp/dsa");
+    system("cat ./data/static.out");
+  }
+  return 0;
+}
+```
+
+- 终于到了 _`main`_ 函数了
+- 我们的程序需要保存一个状态，记录我们接下来要输出那个文件
+- 所以我们就把接下来要输出的文件的标号存到 _`./temp/dsa`_ 这个文件里。
+- 如果没有这个文件，我们就输出静态数据的答案并将 _`0`_ 写入状态文件
+
+---
+
+#### Step 6
+
+```c hack.c focus=30:37
+#define __gcc_header(x) #x
+#define _gcc_header(x) __gcc_header(data/dynamic##x.out)
+#define gcc_header(x) _gcc_header(x)
+#define var_start(x) \
+  asm("out" __gcc_header(x) ":.incbin \"" gcc_header(x) "\"")
+#define var_end(x) asm(".byte 0x00")
+// 当然要惜字如金了
+#define declar_var(x) extern char out##x[]
+#define include_str(x) \
+  var_start(x);        \
+  var_end(x);          \
+  declar_var(x)
+
+include_str(0);
+include_str(1);
+include_str(2);
+include_str(3);
+include_str(4);
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+char buffer[512];
+
+int main() {
+  if (access("./temp/dsa", F_OK) == -1) {
+    system("echo 0 > ./temp/dsa");
+    system("cat ./data/static.out");
+  } else {
+    freopen("./temp/dsa", "r", stdin);
+    int n;
+    scanf("%d", &n);
+    sprintf(buffer, "echo %d > ./temp/dsa", n + 1);
+    system(buffer);
+    // 未完待续，请看下一步
+  }
+  return 0;
+}
+```
+
+- 若状态文件存在，我们就读入状态
+- 然后把下一个状态写入状态文件
+
+---
+
+```c hack.c focus=36:40
+#define __gcc_header(x) #x
+#define _gcc_header(x) __gcc_header(data/dynamic##x.out)
+#define gcc_header(x) _gcc_header(x)
+#define var_start(x) \
+  asm("out" __gcc_header(x) ":.incbin \"" gcc_header(x) "\"")
+#define var_end(x) asm(".byte 0x00")
+// 当然要惜字如金了
+#define declar_var(x) extern char out##x[]
+#define include_str(x) \
+  var_start(x);        \
+  var_end(x);          \
+  declar_var(x)
+
+include_str(0);
+include_str(1);
+include_str(2);
+include_str(3);
+include_str(4);
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+char buffer[512];
+
+int main() {
+  if (access("./temp/dsa", F_OK) == -1) {
+    system("echo 0 > ./temp/dsa");
+    system("cat ./data/static.out");
+  } else {
+    freopen("./temp/dsa", "r", stdin);
+    int n;
+    scanf("%d", &n);
+    sprintf(buffer, "echo %d > ./temp/dsa", n + 1);
+    system(buffer);
+    switch (n) {
+      #define out_case(x) \
+        case x:           \
+          puts(out##x);   \
+    	  break
+      out_case(0);
+      out_case(1);
+      out_case(2);
+      out_case(3);
+      out_case(4);
+      // 嘻， default 被我吃了
+    }
+  }
+  return 0;
+}
+```
+
+#### Last Step
+
+- 我们定义一个宏来惜字如金，减少代码字数
+- 用一个 _`switch`_ statement 来输出动态数据对应的答案
+- 撒花 :tada: , 完结
+
+---
+
+#### 完整代码
+
+- 桌面端用户点我显示完整代码。
+- 当然你也可以点击代码块右上角的按钮
+
+```c hack.c
+#define __gcc_header(x) #x
+#define _gcc_header(x) __gcc_header(data/dynamic##x.out)
+#define gcc_header(x) _gcc_header(x)
+#define var_start(x) \
+  asm("out" __gcc_header(x) ":.incbin \"" gcc_header(x) "\"")
+#define var_end(x) asm(".byte 0x00")
+// 当然要惜字如金了
+#define declar_var(x) extern char out##x[]
+#define include_str(x) \
+  var_start(x);        \
+  var_end(x);          \
+  declar_var(x)
+
+include_str(0);
+include_str(1);
+include_str(2);
+include_str(3);
+include_str(4);
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+char buffer[512];
+
+int main() {
+  if (access("./temp/dsa", F_OK) == -1) {
+    system("echo 0 > ./temp/dsa");
+    system("cat ./data/static.out");
+  } else {
+    freopen("./temp/dsa", "r", stdin);
+    int n;
+    scanf("%d", &n);
+    sprintf(buffer, "echo %d > ./temp/dsa", n + 1);
+    system(buffer);
+    switch (n) {
+      #define out_case(x) \
+        case x:           \
+          puts(out##x);   \
+    	  break
+      out_case(0);
+      out_case(1);
+      out_case(2);
+      out_case(3);
+      out_case(4);
+      // 嘻， default 被我吃了
+    }
+  }
+  return 0;
+}
+```
+
+</CH.Scrollycoding>
+
 ## 线路板
+
+:::question
+
+中午起床，看到室友的桌子上又多了一个正方形的盒子。快递标签上一如既往的写着：线路板。和往常一样，你“帮”室友拆开快递并抢先把板子把玩一番。可是突然，你注意到板子表面似乎写着些东西……看起来像是……flag？
+
+![circuit_boards](circuit_boards.png)
+
+可是只有开头的几个字母可以看清楚。你一时间不知所措。
+
+幸运的是，你通过盒子上的联系方式找到了制作厂家，通过板子丝印上的序列号查出了室友的底细，并以放弃每月两次免费 PCB 打样包邮的机会为代价要来了这批带有 flag 的板子的生产文件。那这些文件里会不会包含着更多有关 flag 的信息呢？
+
+:::
+
+随意用文本编辑器打开一个 `gbr` 文件，发现它是由 `KiCad` 生成的。
+
+```bat *.gbr
+%TF.GenerationSoftware,KiCad,Pcbnew,(6.0.6)*%
+%TF.CreationDate,2022-08-23T23:43:20+09:00*%
+%TF.ProjectId,ebaz_sdr,6562617a-5f73-4647-922e-6b696361645f,rev?*%
+%TF.SameCoordinates,Original*%
+%TF.FileFunction,Soldermask,Bot*%
+%TF.FilePolarity,Negative*%
+%FSLAX46Y46*%
+G04 Gerber Fmt 4.6, Leading zero omitted, Abs format (unit mm)*
+G04 Created by KiCad (PCBNEW (6.0.6)) date 2022-08-23 23:43:20*
+%MOMM*%
+...
+```
+
+于是我就用 `pacman` 装了个 KiCad, KiCad 的 Gerber Viewer 可以查看这些文件。
+
+选择文件菜单，`Open Gerber Job File...` , 打开题目给的那个 `gbrjob` 文件.
+
+![image-20221028221347910](gbrjob.png)
+
+然后我们确定 flag 图案在哪一层上，把不需要的层隐藏。
+
+![image-20221028221517024](onelayer-gbr.png)
+
+嗯，我们还是没能看到心心念念的 flag. 直觉告诉我这堆遮挡物体是用画图指令覆盖上去的，只要我把它们去掉，再打开这个文件，我就能看到 flag.
+
+经过几次尝试，下面的修改成功使 flag 显示了出来。
+
+```diff ebaz_sdr-F_Cu.patch
+114,207d113
+< G04 APERTURE END LIST*
+< D10*
+< X169900974Y-112903000D02*
+< G75*
+< G03*
+< X169900974Y-112903000I-1955987J0D01*
+< G01*
+< X152807810Y-113284000D02*
+< G75*
+< G03*
+< X152807810Y-113284000I-915810J0D01*
+< G01*
+< X181229001Y-112522000D02*
+< G75*
+< G03*
+< X181229001Y-112522000I-1529283J0D01*
+< G01*
+< X172378841Y-114935000D02*
+< G75*
+< G03*
+< X172378841Y-114935000I-1436841J0D01*
+< G01*
+< X150521810Y-112268000D02*
+< G75*
+< G03*
+< X150521810Y-112268000I-915810J0D01*
+< G01*
+< X177165000Y-113538000D02*
+< G75*
+< G03*
+< X177165000Y-113538000I-1143000J0D01*
+< G01*
+< X149979923Y-114681000D02*
+< G75*
+< G03*
+< X149979923Y-114681000I-1135923J0D01*
+< G01*
+< X173771574Y-113411000D02*
+< G75*
+< G03*
+< X173771574Y-113411000I-924574J0D01*
+< G01*
+< X178358987Y-115011013D02*
+< G75*
+< G03*
+< X178358987Y-115011013I-2463987J0D01*
+< G01*
+< X156007023Y-115189000D02*
+< G75*
+< G03*
+< X156007023Y-115189000I-1448023J0D01*
+< G01*
+< X156921387Y-111836387D02*
+< G75*
+< G03*
+< X156921387Y-111836387I-1727387J0D01*
+< G01*
+< X182118000Y-114427000D02*
+< G75*
+< G03*
+< X182118000Y-114427000I-915810J0D01*
+< G01*
+< X162840810Y-112776000D02*
+< G75*
+< G03*
+< X162840810Y-112776000I-1423810J0D01*
+< G01*
+< X167589387Y-112217387D02*
+< G75*
+< G03*
+< X167589387Y-112217387I-1727387J0D01*
+< G01*
+< X158649810Y-113665000D02*
+< G75*
+< G03*
+< X158649810Y-113665000I-915810J0D01*
+< G01*
+< X160147000Y-114046000D02*
+< G75*
+< G03*
+< X160147000Y-114046000I-635000J0D01*
+< G01*
+< X164338000Y-114554000D02*
+< G75*
+< G03*
+< X164338000Y-114554000I-1727387J0D01*
+< G01*
+< X168682810Y-114681000D02*
+< G75*
+< G03*
+< X168682810Y-114681000I-915810J0D01*
+< G01*
+< D11*
+< D12*
+
+```
+
+然后就顺利的拿到 flag 了 （这 flag 不就是相当于白送吗。。。）
+
+![image-20221028223304658](gbr-flag.png)
+
+
 
 ## Flag 自动机
 
