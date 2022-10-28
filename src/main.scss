@@ -42,3 +42,7 @@ html {
 #{headings($after:':hover .header-anchor')} {
   visibility: visible;
 }
+
+code {
+  overflow-wrap: break-word;
+}
