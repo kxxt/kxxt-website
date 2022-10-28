@@ -13,7 +13,9 @@ import AsciinemaPlayer from "../../../src/components/mdx/asciinema-player.tsx"
 <AsciinemaPlayer src="./figlet.cast" rows={20} cols={90}/>
 [](figlet.cast)
 
-# Write Up
+# Write Up Part I
+
+我把 Write Up 分成好几个部分写只是为了防止右边导航栏溢出而已，没别的意思。一个小节里面标题堆得太多了会导致右边导航栏显示不下。
 
 ## 签到
 
@@ -544,6 +546,7 @@ public final class GuessNumber {
 
 ```java State.update
 private record State(Token token, int passed, int talented, double number, OptionalDouble previous) {
+    ...
 	private State update(XMLEventReader reader) throws XMLStreamException {
         var result = Optional.<State>empty();
         var nameStack = new Stack<String>();
@@ -592,7 +595,7 @@ private record State(Token token, int passed, int talented, double number, Optio
 </CH.Code>
 然后又是大大的面向对象的 [_`GuessNumber`_ 类](focus://GuessNumber#1:30). 还有为什么要用三个空格缩进。。。
 
-我们在 _`State`_ 类的 [_`collect`_ 方法](focus://State.collect#22:33) (你可以把鼠标放在加下滑虚线的文字上，kxxt 会自动给您高亮相关代码)和 [_`update`_ 方法](focus://State.update#21:32)中可以发现一个致命的漏洞：
+我们在 _`State`_ 类的 [_`collect`_ 方法](focus://State.collect#22:33) (你可以把鼠标放在加下划虚线的文字上，kxxt 会自动给您高亮相关代码)和 [_`update`_ 方法](focus://State.update#21:32)中可以发现一个致命的漏洞：
 
 它们判断一个数和被猜数字是否相等的逻辑是：如果这个数既不大于被猜数也不小于被猜数，那么就通过。
 
@@ -623,11 +626,127 @@ Date: Fri, 28 Oct 2022 09:16:08 GMT
 </state>
 ```
 
-
+# Write Up Part II
 
 ## LaTeX 机器人
 
+:::question
+
+在网上社交群组中交流数学和物理问题时，总是免不了输入公式。而显然大多数常用的聊天软件并不能做到这一点。为了方便大家在水群和卖弱之余能够高效地进行学术交流，G 社的同学制作了一个简单易用的将 LaTeX 公式代码转换成图片的网站，并通过聊天机器人在群里实时将群友发送的公式转换成图片发出。
+
+这个网站的思路也很直接：把用户输入的 LaTeX 插入到一个写好头部和尾部的 TeX 文件中，将文件编译成 PDF，再将 PDF 裁剪成大小合适的图片。
+
+“LaTeX 又不是被编译执行的代码，这种东西不会有事的。”
+
+物理出身的开发者们明显不是太在意这个网站的安全问题，也没有对用户的输入做任何检查。
+
+那你能想办法获得服务器上放在根目录下的 flag 吗？
+
+**纯文本**
+
+第一个 flag 位于 `/flag1`，flag 花括号内的内容由纯文本组成（即只包含大写小写字母和数字 0-9）。
+
+**特殊字符混入**
+
+第二个 flag 位于 `/flag2`，这次，flag 花括号内的内容除了字母和数字之外，还混入了两种特殊字符：下划线（`_`）和井号（`#`）。你可能需要想些其他办法了。
+
+:::
+
+### flag1
+
+flag1 很简单，直接用 `\input` 宏把 `/flag1` 文件读进来就行。
+
+![image-20221028182843721](latex-flag1.png)
+
+花括号被 $\LaTeX$ 吃掉了，填 flag 的时候自己补上就行。
+
+### flag2
+
+flag2 卡了我很久。后来 Google 搜索 `latex raw text` 得到的[第一个结果](https://tex.stackexchange.com/questions/422197/latex-environment-to-write-in-plain-text-mode) 中提到了一个定义新的 environment 使得 `$`, `&`, `#`, `^`, `_`, `~`, `%` 这些特殊字符能够被显示出来的方法。
+
+<CH.Section>
+
+根据 `base.tex`, `latex_to_image_converter.sh`  的内容，我们可以确定[加入了我们的输入之后 `tex` 文件的样子](focus://result.tex#3:5)：
+
+<CH.Code style={{height: 300}}>
+
+```tex base.tex
+\documentclass[preview]{standalone}
+\begin{document}
+$$
+$$
+\end{document}
+```
+
+```shell latex_to_image_converter.sh
+#!/bin/bash
+set -xe
+head -n 3 /app/base.tex > /dev/shm/result.tex
+cat /dev/shm/input.tex >> /dev/shm/result.tex
+tail -n 2 /app/base.tex >> /dev/shm/result.tex
+cd /dev/shm
+pdflatex -interaction=nonstopmode -halt-on-error -no-shell-escape result.tex
+pdfcrop result.pdf
+mv result-crop.pdf result.pdf
+pdftoppm -r 300 result.pdf > result.ppm
+pnmtopng result.ppm > $1
+OMP_NUM_THREADS=1 convert $1 -trim $1
+```
+
+```tex result.tex
+\documentclass[preview]{standalone}
+\begin{document}
+$$
+我们的输入
+$$
+\end{document}
+```
+
+</CH.Code>
+
+</CH.Section>
+
+那么我们把下面的 payload 交给 $\LaTeX$ 机器人就可以得到 flag2(可怜的花括号还是照样会被吃掉。。。)
+
+```tex payload.tex
+\newenvironment{simplechar}{\catcode`\$=12    \catcode`\&=12    \catcode`\#=12    \catcode`\^=12    \catcode`\_=12    \catcode`\~=12    \catcode`\%=12 }{} \begin{simplechar}\input{/flag2}\end{simplechar}
+```
+
+![image-20221028185652228](latex-flag2.png)
+
 ## Flag 的痕迹
+
+:::question
+
+小 Z 听说 Dokuwiki 配置很简单，所以在自己的机器上整了一份。可是不巧的是，他一不小心把珍贵的 flag 粘贴到了 wiki 首页提交了！他赶紧改好，并且也把历史记录（revisions）功能关掉了。
+
+「这样就应该就不会泄漏 flag 了吧」，小 Z 如是安慰自己。
+
+然而事实真的如此吗？
+
+> （题目 Dokuwiki 版本基于 2022-07-31a "Igor"）
+
+:::
+
+从自己电脑上运行一个 Dokuwiki  复现一下小 Z 的操作。
+
+```shell
+mkdir wiki && docker run -d \
+    --name=dokuwiki \
+    -e PUID=1000 \
+    -e PGID=1000 \
+    -e TZ=Europe/London \
+    -p 8080:80 \
+    -v "$(pwd)/wiki":/config \
+    --restart unless-stopped \
+    lscr.io/linuxserver/dokuwiki:latest
+```
+
+然后进 localhost:8080 编辑首页，再做第二次编辑
+
+我们进入到 revisions 页面，发现它有一个 diff 功能，可以显示改动，而且右边有一个链接 `Link to this comparison view`, 点击之后 url 里的 `do=revisions` 变成了 `do=diff` 。我们可以合理的怀疑小 Z 的 Dokuwiki 没有关掉 diff 功能。我们直接访问 http://202.38.93.111:15004/doku.php?id=start&do=diff 发现我们能够看到小Z 作出的历史改动，便拿到了 flag。
+
+![image-20221028191152405](dokuwiki.png)
 
 ## 安全的在线测评
 
