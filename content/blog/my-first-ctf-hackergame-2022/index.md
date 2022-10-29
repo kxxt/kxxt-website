@@ -1811,6 +1811,8 @@ with open("data.pt", "wb") as f:
 
 调用 `payload.py` 生成的 `data.pt` 并不是最终结果，最后还要写个 shell 脚本把生成的 payload 重新打包：
 
+</CH.Section>
+
 ```shell
 #/bin/bash
 
@@ -1820,8 +1822,6 @@ zip -r payload.pt archive
 ```
 
 把 `payload.pt` 传上去就通过了
-
-</CH.Section>
 
 ## 光与影
 
