@@ -859,7 +859,7 @@ In file included from ./temp/code.c:1:
 Connection closed
 ```
 
-草，出题人还是想到了这一点的。你看它在 `flag.py` 的第三行放了个假 flag 来嘲讽你。
+草，出题人还是想到了这一点的。你看他在 `flag.py` 的第三行放了个假 flag 来嘲讽你。
 
 那嘛，我该怎么办呢？
 
