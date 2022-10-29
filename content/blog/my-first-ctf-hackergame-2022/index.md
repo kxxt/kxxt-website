@@ -1826,7 +1826,7 @@ flag 提到了 ptrace, 看来我的解法是非预期解法
 
 Google 搜索一下 `linux ipc`, 点进[第一个搜索结果](https://tldp.org/LDP/tlk/ipc/ipc.html)， 发现这道题似乎只能用信号来通信了，那就用信号来写一个吧。
 
-<CH.Scrollycoding lineNumbers={true} style={{'--ch-scrollycoding-sticker-width': '50%' }} rows={20}>
+<CH.Scrollycoding lineNumbers={true} style={{'--ch-scrollycoding-sticker-width': '50%' }} rows={27}>
 
 <CH.Code>
 
@@ -2300,7 +2300,7 @@ pid_t self;
 ```
 
 - 照例，引入一大堆头文件
-- 定义 _`pid`_ 变量存储 Bob 的 PID
+- 定义 _`pid`_ 变量，其实用不到
 - 定义 _`success`_ 变量存储是否已经全部读完
 - 定义个 _`write_low`_ 来存接下来要读的是高两位还是低两位
 - 定义 _`cnt`_ 来存储已经读入的字数
@@ -2367,7 +2367,7 @@ int main() {
 
 --- 
 
-```c bob.c focus=20:50
+```c bob.c focus=20:41
 #include <ctype.h>
 #include <signal.h>
 #include <stdbool.h>
@@ -2386,6 +2386,29 @@ volatile int buffer[64];
 pid_t self;
 
 // 未完待续
+
+void handler(int sig, siginfo_t* info, void* context) {
+  switch (sig) {
+    case SIGWINCH:
+      pid = info->si_pid;
+      break;
+    case SIG00:
+      read_half_hex(0b00);
+      break;
+    case SIG01:
+      read_half_hex(0b01);
+      break;
+    case SIG10:
+      read_half_hex(0b10);
+      break;
+    case SIG11:
+      read_half_hex(0b11);
+      break;
+    default:
+      exit(222);
+      break;
+  }
+}
 
 int main() {
   self = getpid();
@@ -2416,7 +2439,329 @@ int main() {
 }
 ```
 
-WriteUp 还没写完。。。待续
+#### Bob's Signal Handler
+
+- 处理信号
+- 调用函数把信号翻译成半个16进制数
+
+---
+
+```c bob.c focus=18:37
+#include <ctype.h>
+#include <signal.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include "common.h"
+
+volatile pid_t pid = 0;
+volatile bool success = false;
+volatile bool write_low = true;
+volatile int cnt = 0;
+volatile int buffer[64];
+pid_t self;
+
+void read_half_hex(int val) {
+  if (write_low) {
+    buffer[cnt] = val;
+    write_low = false;
+  } else {
+    write_low = true;
+    buffer[cnt] += val << 2;
+    ++cnt;
+    if (cnt == 64)
+      success = true;
+  }
+}
+
+void output() {
+  for (int i = 0; i < 64; i++) {
+    char ch = buffer[i] >= 10 ? buffer[i] - 10 + 'a' : buffer[i] + '0';
+    putchar(ch);
+  }
+  puts("");
+}
+
+void handler(int sig, siginfo_t* info, void* context) {
+  switch (sig) {
+    case SIGWINCH:
+      pid = info->si_pid;
+      break;
+    case SIG00:
+      read_half_hex(0b00);
+      break;
+    case SIG01:
+      read_half_hex(0b01);
+      break;
+    case SIG10:
+      read_half_hex(0b10);
+      break;
+    case SIG11:
+      read_half_hex(0b11);
+      break;
+    default:
+      exit(222);
+      break;
+  }
+}
+
+int main() {
+  self = getpid();
+  // we need to set it to \0 manually
+  //   buffer[64] = '\0';
+  memset((void*)buffer, 0, sizeof(buffer));
+  // register action
+  struct sigaction act = {0};
+  act.sa_sigaction = &handler;
+  act.sa_flags = SA_SIGINFO;
+  sigaction(SIGWINCH, &act, NULL);
+  sigaction(SIG00, &act, NULL);
+  sigaction(SIG01, &act, NULL);
+  sigaction(SIG10, &act, NULL);
+  sigaction(SIG11, &act, NULL);
+  // broadcast SIGWINCH
+  pid_t i = PID_START;
+  while (!success) {
+    if (i != self)
+      kill(i, SIGWINCH);
+    i++;
+    if (i > PID_END)
+      i = PID_START;
+  }
+  // output
+  output();
+  return 0;
+}
+```
+
+#### Bob's Decoder & Output
+
+- 把读入的数字按照 _`write_low`_ 写到 _`buffer[cnt]`_ 的高两位/低两位中去
+- 记得反转 _`write_low`_
+- 如果本次写的是高两位，_`++cnt`_
+- 如果写了 64 个数字了，就成功 :tada:
+
+---
+
+#### Full Code
+
+<CH.Code>
+
+```c bob.c
+#include <ctype.h>
+#include <signal.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include "common.h"
+
+volatile pid_t pid = 0;
+volatile bool success = false;
+volatile bool write_low = true;
+volatile int cnt = 0;
+volatile int buffer[64];
+pid_t self;
+
+void read_half_hex(int val) {
+  if (write_low) {
+    buffer[cnt] = val;
+    write_low = false;
+  } else {
+    write_low = true;
+    buffer[cnt] += val << 2;
+    ++cnt;
+    if (cnt == 64)
+      success = true;
+  }
+}
+
+void handler(int sig, siginfo_t* info, void* context) {
+  switch (sig) {
+    case SIGWINCH:
+      pid = info->si_pid;
+      break;
+    case SIG00:
+      read_half_hex(0b00);
+      break;
+    case SIG01:
+      read_half_hex(0b01);
+      break;
+    case SIG10:
+      read_half_hex(0b10);
+      break;
+    case SIG11:
+      read_half_hex(0b11);
+      break;
+    default:
+      exit(222);
+      break;
+  }
+}
+
+void output() {
+  for (int i = 0; i < 64; i++) {
+    char ch = buffer[i] >= 10 ? buffer[i] - 10 + 'a' : buffer[i] + '0';
+    putchar(ch);
+  }
+  puts("");
+}
+
+int main() {
+  self = getpid();
+  // we need to set it to \0 manually
+  //   buffer[64] = '\0';
+  memset((void*)buffer, 0, sizeof(buffer));
+  // register action
+  struct sigaction act = {0};
+  act.sa_sigaction = &handler;
+  act.sa_flags = SA_SIGINFO;
+  sigaction(SIGWINCH, &act, NULL);
+  sigaction(SIG00, &act, NULL);
+  sigaction(SIG01, &act, NULL);
+  sigaction(SIG10, &act, NULL);
+  sigaction(SIG11, &act, NULL);
+  // broadcast SIGWINCH
+  pid_t i = PID_START;
+  while (!success) {
+    if (i != self)
+      kill(i, SIGWINCH);
+    i++;
+    if (i > PID_END)
+      i = PID_START;
+  }
+  // output
+  output();
+  return 0;
+}
+```
+
+```c alice.c
+#include <ctype.h>
+#include <signal.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include "common.h"
+
+volatile pid_t pid = 0;
+volatile bool start = false;
+
+char buffer[65];
+
+void handler(int sig, siginfo_t* info, void* context) {
+  if (sig == SIGWINCH) {
+    if (pid == 0) {
+      pid = info->si_pid;
+      start = true;
+    }
+  }
+}
+
+void send_hex(int hex);
+void send_half_hex(int val);
+
+int main() {
+  // register actions
+  struct sigaction act = {0};
+  act.sa_sigaction = &handler;
+  act.sa_flags = SA_SIGINFO;
+  if (0 != sigaction(SIGWINCH, &act, NULL)) {
+    return -1;
+  }
+  // read secret
+  FILE* file;
+  file = fopen("./secret", "r");  // assume success
+  fread(buffer, 64, 1, file);
+  printf("Read");
+  // wait for bob
+  while (!start) {
+    // do nothing
+  }
+  // send data
+  for (int i = 0, hex; i < 64; i++) {
+    // get the hex digit
+    char ch = buffer[i];
+    if (isalpha(ch)) {
+      hex = ch - 'a' + 10;
+    } else {
+      hex = ch - '0';
+    }
+    printf("send hex %d\n", hex);
+    fflush(stdout);
+    send_hex(hex);
+  }
+  return 0;
+}
+
+void send_hex(int hex) {
+  int low = hex & 0b0011;
+  int high = hex >> 2;
+  // send low first
+  send_half_hex(low);
+  usleep(100);
+  send_half_hex(high);
+  usleep(100);
+}
+
+void send_half_hex(int val) {
+  switch (val) {
+    case 0b00:
+      kill(pid, SIG00);
+      break;
+    case 0b01:
+      kill(pid, SIG01);
+      break;
+    case 0b10:
+      kill(pid, SIG10);
+      break;
+    case 0b11:
+      kill(pid, SIG11);
+      break;
+    default:
+      break;
+  }
+}
+```
+
+```c common.h
+#define PID_START 1
+#define PID_END 800
+
+// to send one hex digit 0bxyzw
+// send zw
+// send xy
+
+#define SIG00 SIGUSR1
+#define SIG01 SIGUSR2
+#define SIG10 SIGURG
+#define SIG11 SIGCHLD
+```
+
+</CH.Code>
+
+- 代码里其实还有很多可以改进的地方
+	- 比如好多没用到的变量我没删
+	- 有几处没用到的分支
+	- Bob 会一直发 _`SIGWINCH`_ 信号，其实可以让他在收到第一个数字时停下来。
+
+:::danger
+
+如果你和我一样，使用带有较高版本的 GLIBC 的 Linux 操作系统
+
+那么你提交时会看到这个报错：`/lib/x86_64-linux-gnu/libc.so.6: version 'GLIBC_2.34' not found (required by )`
+
+你可以开一个容器来编译，题目已经提供了 `Dockerfile`.
+
+:::
 
 </CH.Scrollycoding>
 
