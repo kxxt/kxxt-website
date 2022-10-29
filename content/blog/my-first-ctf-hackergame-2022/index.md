@@ -2761,6 +2761,8 @@ void send_half_hex(int val) {
 
 你可以开一个容器来编译，题目已经提供了 `Dockerfile`.
 
+**Update**: 经 CSL 大佬提醒，静态链接就行，我是傻X。
+
 :::
 
 </CH.Scrollycoding>
