@@ -1615,7 +1615,7 @@ SimpleGenerativeModel(
 
 ### 初始想法
 
-
+还没写完
 
 ### 失败的尝试
 
@@ -2365,7 +2365,7 @@ int main() {
 - 广播 _`SIGWINCH`_ 信号
 - 如果成功，调用 _`output`_ 输出结果
 
---- 
+---
 
 ```c bob.c focus=20:41
 #include <ctype.h>
@@ -2767,5 +2767,8 @@ void send_half_hex(int val) {
 
 ## 量子藏宝图
 
+还没写完
+
 ## 企鹅拼盘（Level 1-2）
 
+还没写完
