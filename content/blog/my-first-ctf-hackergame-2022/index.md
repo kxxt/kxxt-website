@@ -958,7 +958,7 @@ include_str(4);
 
 #### Step 4
 
-```c hack.c focus=18:24
+```c hack.c focus=20:24
 #define __gcc_header(x) #x
 #define _gcc_header(x) __gcc_header(data/dynamic##x.out)
 #define gcc_header(x) _gcc_header(x)
