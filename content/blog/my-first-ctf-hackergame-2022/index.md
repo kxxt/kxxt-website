@@ -865,7 +865,7 @@ Connection closed
 
 后来我[从 StackOverflow 上](https://stackoverflow.com/questions/410980/include-a-text-file-in-a-c-program-as-a-char)找到了一条汇编指令 `.incbin` (那条回答有点惨，只有一个 upvote，也就是说没人给它点过upvote)
 
-下面代码里的 `gcc_header` 是这个 StackOverflow 帖子里提到的动态 `#include` 文件的一个方法。
+下面代码里的 `gcc_header` 是[这个 StackOverflow 帖子](https://stackoverflow.com/questions/5873722/c-macro-dynamic-include)里提到的动态 `#include` 文件的一个方法。
 
 为了惜字如金，我定义了一大堆宏来简化代码。
 
