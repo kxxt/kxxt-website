@@ -300,6 +300,8 @@ import re
 
 def process_line(line):
     r = re.match('^a\[([\d\|\s]+)\] = (\d+)$', line)
+    if r is None:
+        return [line]
     splited = r.group(1).split(' | ')
     rhs = r.group(2)
     return [f'a[{i}]={rhs}' for i in splited]
