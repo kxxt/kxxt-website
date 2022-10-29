@@ -31,7 +31,7 @@ import AsciinemaPlayer from "../../../src/components/mdx/asciinema-player.tsx"
 
 量子藏宝图那道题考察了一些需要现学现卖的新知识，出的不是很难，所以我这种混子得以在纸上计算来把 `128 - 4 * 8 ` 个 bit 翻译成 12 个字符。
 
-明年如果我还有时间，一定会再次参加 Hackergame 的!
+明年我如果还有时间，一定会再次参加 Hackergame 的!
 
 # 比赛体验
 
