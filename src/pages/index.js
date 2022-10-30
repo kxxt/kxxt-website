@@ -40,11 +40,12 @@ const BlogIndex = ({ data, location }) => {
     ", "
   )}.`
   const softwareLine = `${learningsSummaryLine}<br/>I'm the creator and maintainer of <a href="https://github.com/kxxt/WSLDiskShrinker"><strong style="background: darkolivegreen;color: azure;text-decoration-line: underline;">aspeak</strong></a> and <a href="https://github.com/kxxt/WSLDiskShrinker"><strong style="background: darkturquoise;color: palegoldenrod;text-decoration-line: underline;">WSL Disk Shrinker</strong></a>.`
-  const websiteLine = `${softwareLine}<br/>I built this site with <strong style="color: mediumpurple;">Gatsby.js</strong> and <strong style="color: cyan;">Bulma.</strong>`
+  const websiteLine = `${learningsSummaryLine}<br/>I built this site with <strong style="color: mediumpurple;">Gatsby.js</strong> and <strong style="color: cyan;">Bulma.</strong>`
+  const osLine = `${learningsSummaryLine}<br>Proudly using <span style="color: #26a0ef">Garuda Linux</span> and <span style="color: #f75c2e">Firefox</span>.`
   const strings = [
     line1,
     line2,
-    `${line1}I'm a sophomore from <strong>Shandong University</strong>.`,
+    `${line1}I'm a junior from <strong>Shandong University</strong>.`,
     `${line1}I'm a student majoring in <span style="color: hotpink;">data science</span> and <span style="color: lightseagreen;">artificial intelligence.</span>`,
     `${line2}<br/>`,
     line3,
@@ -54,6 +55,7 @@ const BlogIndex = ({ data, location }) => {
     learningsSummaryLine,
     softwareLine,
     websiteLine,
+    osLine,
   ]
   const hero = (
     <section
