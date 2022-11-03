@@ -1,9 +1,9 @@
 import React from "react"
 import { graphql } from "gatsby"
 
-import Layout from "../components/layout/layout"
-import Seo from "../components/seo"
-import BlogSummaryList from "../components/blog-summary/blog-summary-list"
+import Layout from "@/components/layout/layout"
+import Seo from "@/components/seo"
+import BlogSummaryList from "@/components/blog-summary/blog-summary-list"
 
 const TagPage = ({ data, location, pageContext }) => {
   const title = `Tag ${pageContext.tag}`

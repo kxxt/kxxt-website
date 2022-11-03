@@ -7,7 +7,7 @@ import NavbarEnd from "./navbar-end"
 import NavbarMobileMenu from "./navbar-burger"
 import NavbarBrand from "./navbar-brand"
 import { faGithub } from "@fortawesome/free-brands-svg-icons"
-import IconText from "../icon-text"
+import IconText from "@/components/icon-text"
 import {
   faArchive,
   faAt,
