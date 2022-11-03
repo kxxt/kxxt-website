@@ -3006,4 +3006,136 @@ void send_half_hex(int val) {
 
 ## 企鹅拼盘（Level 1-2）
 
-还没写完
+:::question
+
+这是一个可爱的企鹅滑块拼盘。（觉得不可爱的同学可以换可爱的题做）
+
+和市面上只能打乱之后拼回的普通滑块拼盘不同，这个拼盘是自动打乱拼回的。一次游戏可以帮助您体验到 `16/256/4096` 次普通拼盘的乐趣。
+
+每一步的打乱的方式有两种，选择哪一种则由您的输入（长度为 `4/16/64` 的 `0/1` 序列）的某一位决定。如果您在最后能成功打乱这个拼盘，您就可以获取到 flag 啦，快来试试吧wwwwww
+
+:::
+
+第一问直接手工枚举就能找到答案是 `0b1000`.
+
+第二问也就 `2^16=65536` 种情况，写个程序暴力破解一下就可以。
+
+<CH.Section>
+
+我们把 `textual` 这层 UI 从代码里抽掉，然后把所有的逻辑都整合到 _`Board`_ 这个类里。
+
+```python BPBrute.py
+import json
+from tqdm import tqdm
+import sys
+
+
+class Board:
+    def __init__(self,  bitlength=1, branches=[[0, '', 'U']]):
+        self.b = [[i*4+j for j in range(4)] for i in range(4)]
+        self.bitlength = bitlength
+        self.branches = branches
+        self.inbits = [0]*bitlength
+        self.pc = 0
+
+    def _blkpos(self):
+        for i in range(4):
+            for j in range(4):
+                if self.b[i][j] == 15:
+                    return (i, j)
+
+    def reset(self):
+        for i in range(4):
+            for j in range(4):
+                self.b[i][j] = i*4 + j
+
+    def move(self, moves):
+        for m in moves:
+            i, j = self._blkpos()
+            if m == 'L':
+                self.b[i][j] = self.b[i][j-1]
+                self.b[i][j-1] = 15
+            elif m == 'R':
+                self.b[i][j] = self.b[i][j+1]
+                self.b[i][j+1] = 15
+            elif m == 'U':
+                self.b[i][j] = self.b[i-1][j]
+                self.b[i-1][j] = 15
+            else:
+                self.b[i][j] = self.b[i+1][j]
+                self.b[i+1][j] = 15
+
+    def __bool__(self):
+        for i in range(4):
+            for j in range(4):
+                if self.b[i][j] != i*4 + j:
+                    return True
+        return False
+
+    def update_pc(self, index):
+        self.reset()
+        for branch in self.branches[:index]:
+            self.move(branch[1] if self.inbits[branch[0]] else branch[2])
+        return {'bT': self.branches[index][1] if index < len(self.branches) else '',
+                'bF': self.branches[index][2] if index < len(self.branches) else '',
+                'inbits': self.inbits,
+                'ib': self.branches[index][0] if index < len(self.branches) else -1,
+                'scrambled': bool(self),
+                'pc': index,
+                'lb': len(self.branches),
+                'hl': -1}
+        self.pc = index
+
+    def last(self):
+        return self.update_pc(len(self.branches))
+
+    def bruteforce(self, begin, end):
+        for i in tqdm(range(begin, end)):
+            self.inbits = [int(x) for x in bin(i)[2:].zfill(self.bitlength)]
+            if self.last()['scrambled']:
+                return i
+        return -1
+
+
+def chal(bitlength, obf, begin, end):
+    filename = f'chals/b{bitlength}{"_obf" if obf else ""}.json'
+    with open(filename) as f:
+        branches = json.load(f)
+    board = Board(bitlength=bitlength, branches=branches)
+    return board.bruteforce(begin, end)
+
+
+if __name__ == '__main__':
+    with open(sys.argv[1]+".result", "w") as f:
+        f.write(str(chal(16, True, *[int(v) for v in sys.argv[1].split()])))
+```
+
+给 _`Board`_ 类写个 _`bruteforce`_ 方法，这个方法的作用是暴力尝试 `[start, end)` 范围内的数字是否符合要求。
+
+另外再把加载文件的逻辑和暴力破解缝合到名为 _`chal`_ 的函数里。最后从命令行读入破解范围，进行暴力破解，把结果保存到文件。
+
+最后用 `GNU parallel` 开九个进程并行计算。计算完成后在 `7281 14563.result` 里能看到答案是 `12166`, 也就是 `0b0010111110000110`.
+
+<CH.Code>
+
+```shell bruteforce
+cat input.txt | parallel --lb -k python ./BPBrute.py {}
+```
+
+---
+
+```plaintext inputs.txt
+0 7281
+7281 14563
+14563 21845
+21845 29127
+29127 36409
+36409 43691
+43691 50973
+50973 58255
+58255 65537
+```
+
+</CH.Code>
+
+</CH.Section>
