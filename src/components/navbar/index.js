@@ -14,6 +14,7 @@ import {
   faBlog,
   faHome,
   faTags,
+  faHandHoldingHeart,
 } from "@fortawesome/free-solid-svg-icons"
 
 const Navbar = ({ centerLinks, title }) => {
@@ -49,6 +50,11 @@ const Navbar = ({ centerLinks, title }) => {
           <NavbarLinkButton to="/tags">
             <IconText icon={faTags} color="dodgerblue">
               Tags
+            </IconText>
+          </NavbarLinkButton>
+          <NavbarLinkButton to="/friends">
+            <IconText icon={faHandHoldingHeart} color="orangered">
+              Friends
             </IconText>
           </NavbarLinkButton>
           <a href="#contact" className="navbar-item">
