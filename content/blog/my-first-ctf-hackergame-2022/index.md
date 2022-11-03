@@ -1876,7 +1876,7 @@ WebGL 啊， WebGL. 看不懂。。。没学过。。随便改改代码吧。
 
 ![image-20221029091951684](minminmin.png)
 
-```glsl fragment-shader.glsl
+```hlsl fragment-shader.hlsl
 float t5SDF(vec3 p, vec3 b, float r) {
   vec3 q = abs(p) - b;
   return length(max(q,0.0)) + min(max(q.x,max(q.y,q.z)),0.0) - r;
@@ -1885,7 +1885,7 @@ float t5SDF(vec3 p, vec3 b, float r) {
 
 我们直接把 `t5SDF` 的返回值改成 0 试试：
 
-```glsl fragment-shader.glsl
+```hlsl fragment-shader.hlsl
 float t5SDF(vec3 p, vec3 b, float r) {
   vec3 q = abs(p) - b;
   return .0;
@@ -3124,7 +3124,7 @@ cat input.txt | parallel --lb -k python ./BPBrute.py {}
 
 ---
 
-```plaintext inputs.txt
+```shell inputs.txt
 0 7281
 7281 14563
 14563 21845
