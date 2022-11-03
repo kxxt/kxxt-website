@@ -9,7 +9,7 @@ import Tags from "@/components/tags/tags"
 import BlogBottomNav from "@/components/blog-bottom-nav/blog-bottom-nav"
 import TableOfContents from "@/components/table-of-contents/table-of-contents"
 
-import formatDateAndTimeToRead from "../utils/date-and-time-to-read"
+import formatDateAndTimeToRead from "@/utils/date-and-time-to-read"
 
 import * as styles from "./blog-post.module.scss"
 import "katex/dist/katex.min.css"
