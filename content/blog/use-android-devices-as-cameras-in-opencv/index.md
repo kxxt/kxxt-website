@@ -18,9 +18,9 @@ First, you need an android app which acts as a webcam.
 
 I find [droidcam](https://www.dev47apps.com/) a good fit.
 
-The free version allows you to make your android phone a web cam with a resolution of `640x480`. But it will add a watermark on the top left of the picture.
+The free version allows you to make your android phone a web cam with a resolution of `640x480`. But it will add a watermark on the top left corner of the picture.
 
-Then you can use your phone as an input source to OpenCV.
+Then you can use your phone as an input source for OpenCV.
 
 <CH.Section>
 
