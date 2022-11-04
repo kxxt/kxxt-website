@@ -10,27 +10,27 @@ export default function FriendCard({
   link,
 }) {
   return (
-    <div class={`card ${styles.card} ${className}`}>
-      <div class={`card-content`}>
+    <div className={`card ${styles.card} ${className}`}>
+      <div className={`card-content`}>
         {/* Gatsby doesn't allow me to forward src to StaticImage. 
             But I don't want to use a dynamic image here either. 
             So this is a workaround: let the caller pass a StaticImage to us.*/}
-        <div class={`media ${styles.media}`}>
+        <div className={`media ${styles.media}`}>
           <a href={link}>
-            <div class="media-left">
-              <figure class="image is-48x48">{icon}</figure>
+            <div className="media-left">
+              <figure className="image is-48x48">{icon}</figure>
             </div>
           </a>
-          <div class="media-content">
-            <p class={`title is-4 ${styles.name}`}>
+          <div className="media-content">
+            <p className={`title is-4 ${styles.name}`}>
               <a href={link}>{name}</a>
             </p>
-            <p class="subtitle is-6">
+            <p className="subtitle is-6">
               {github && <a href={`https://github.com/${github}`}>@{github}</a>}
             </p>
           </div>
         </div>
-        <div class="content">{description}</div>
+        <div className="content">{description}</div>
       </div>
     </div>
   )
