@@ -1,0 +1,13 @@
+.card {
+  min-width: 16rem;
+}
+
+.name {
+  // fix title box sizing
+  margin-bottom: 1.2rem !important;
+}
+
+.media {
+  // Override bulma default
+  margin-bottom: 0.6rem !important;
+}
