@@ -25,16 +25,16 @@ const FriendPage = ({ location }) => {
       <h1 className="title">{title}</h1>
       <div className={`${styles.friendContainer} tile is-ancestor`}>
         <FriendCard
-          name="kxxt"
-          username="kxxt"
-          socialLink="https://github.com/kxxt"
-          description="暂时把我自己摆在这里，看看效果"
-          link="/"
+          name="宝硕"
+          username="renbaoshuo"
+          socialLink="https://github.com/renbaoshuo"
+          description="学习，就是发现自己越来越菜的过程。"
+          link="https://blog.baoshuo.ren/?utm_source=friends"
           isCircle={true}
           icon={
             <StaticImage
-              src="../images/profile-pic.png"
-              alt="kxxt"
+              src="../images/friends/baoshuo.webp"
+              alt="baoshuo"
               width={48}
               height={48}
             />
