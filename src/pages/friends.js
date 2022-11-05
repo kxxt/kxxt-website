@@ -17,7 +17,8 @@ const FriendPage = ({ location }) => {
       <div className={`${styles.friendContainer} tile is-ancestor`}>
         <FriendCard
           name="kxxt"
-          github="kxxt"
+          username="kxxt"
+          socialLink="https://github.com/kxxt"
           description="暂时把我自己摆在这里，看看效果"
           link="/"
           icon={

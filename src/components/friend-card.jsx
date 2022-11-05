@@ -6,7 +6,8 @@ export default function FriendCard({
   name,
   description,
   className,
-  github,
+  socialLink,
+  username,
   link,
 }) {
   return (
@@ -26,7 +27,11 @@ export default function FriendCard({
               <a href={link}>{name}</a>
             </p>
             <p className="subtitle is-6">
-              {github && <a href={`https://github.com/${github}`}>@{github}</a>}
+              {socialLink && (
+                <a href={socialLink}>
+                  {username ? `@${username}` : "Social Media"}
+                </a>
+              )}
             </p>
           </div>
         </div>
