@@ -18,17 +18,28 @@ const FriendPage = ({ location }) => {
         <FriendCard
           name="kxxt"
           github="kxxt"
-          description="Undergraduate & Developer"
+          description="暂时把我自己摆在这里，看看效果"
           link="/"
           icon={
             <StaticImage
-              src="../images/friends/kxxt.png"
+              src="../images/profile-pic.png"
               alt="kxxt"
               width={48}
               height={48}
             />
           }
         />
+      </div>
+      <hr />
+      <div>
+        <h2 className="title is-4">友链申请</h2>
+        <p className="content">
+          您可以
+          <a href="https://github.com/kxxt/kxxt-website/issues/new?assignees=kxxt&labels=link+exchange&template=exchange-website-link.md&title=%5BLink+Exchange%5D">
+            在此网站的 GitHub 仓库发 Issue{" "}
+          </a>
+          来申请友链互换，如果我看你眼熟而且你的网站上有至少两篇高质量内容，我会同意你的友链申请。
+        </p>
       </div>
     </Layout>
   )
