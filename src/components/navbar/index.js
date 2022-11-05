@@ -7,13 +7,14 @@ import NavbarEnd from "./navbar-end"
 import NavbarMobileMenu from "./navbar-burger"
 import NavbarBrand from "./navbar-brand"
 import { faGithub } from "@fortawesome/free-brands-svg-icons"
-import IconText from "../icon-text"
+import IconText from "@/components/icon-text"
 import {
   faArchive,
   faAt,
   faBlog,
   faHome,
   faTags,
+  faHandHoldingHeart,
 } from "@fortawesome/free-solid-svg-icons"
 
 const Navbar = ({ centerLinks, title }) => {
@@ -49,6 +50,11 @@ const Navbar = ({ centerLinks, title }) => {
           <NavbarLinkButton to="/tags">
             <IconText icon={faTags} color="dodgerblue">
               Tags
+            </IconText>
+          </NavbarLinkButton>
+          <NavbarLinkButton to="/friends">
+            <IconText icon={faHandHoldingHeart} color="orangered">
+              Friends
             </IconText>
           </NavbarLinkButton>
           <a href="#contact" className="navbar-item">

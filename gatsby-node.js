@@ -6,6 +6,20 @@ const {
   onlySelectPublishedArticlesInProd,
 } = require(`./src/data/conditional.js`)
 
+exports.onCreateWebpackConfig = ({ stage, actions }) => {
+  actions.setWebpackConfig({
+    resolve: {
+      alias: {
+        "@/components": path.resolve(__dirname, "src/components"),
+        "@/templates": path.resolve(__dirname, "src/templates"),
+        "@/utils": path.resolve(__dirname, "src/utils"),
+        "@/data": path.resolve(__dirname, "src/data"),
+        "@/pages": path.resolve(__dirname, "src/pages"),
+      },
+    },
+  })
+}
+
 exports.createPages = async ({ graphql, actions, reporter }) => {
   const { createPage } = actions
 
