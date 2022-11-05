@@ -9,7 +9,9 @@ export default function FriendCard({
   socialLink,
   username,
   link,
+  isCircle,
 }) {
+  const circleClass = isCircle ? styles.circle : ""
   return (
     <div className={`card ${styles.card} ${className}`}>
       <div className={`card-content`}>
@@ -19,7 +21,9 @@ export default function FriendCard({
         <div className={`media ${styles.media}`}>
           <a href={link}>
             <div className="media-left">
-              <figure className="image is-48x48">{icon}</figure>
+              <figure className={`image is-48x48 ${circleClass}`}>
+                {icon}
+              </figure>
             </div>
           </a>
           <div className="media-content">

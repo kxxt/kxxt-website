@@ -11,4 +11,9 @@
 .media {
   // Override bulma default
   margin-bottom: 0.6rem !important;
+  & figure.circle {
+    object-fit: cover;
+    border-radius: 50%;
+    overflow: hidden;
+  }
 }

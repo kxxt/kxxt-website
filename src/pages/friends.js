@@ -30,6 +30,7 @@ const FriendPage = ({ location }) => {
           socialLink="https://github.com/kxxt"
           description="暂时把我自己摆在这里，看看效果"
           link="/"
+          isCircle={true}
           icon={
             <StaticImage
               src="../images/profile-pic.png"
