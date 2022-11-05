@@ -8,6 +8,15 @@ import Seo from "@/components/seo"
 
 import * as styles from "./friends.module.scss"
 
+const IconTag = ({ size }) => {
+  const sizeStr = `${size}x${size}`
+  return (
+    <a href={`/icons/icon-${sizeStr}.png`} className="tag is-light is-primary">
+      {sizeStr}
+    </a>
+  )
+}
+
 const FriendPage = ({ location }) => {
   const title = "Friends"
   return (
@@ -41,6 +50,20 @@ const FriendPage = ({ location }) => {
           </a>
           来申请友链互换，如果我看你眼熟而且你的网站上有至少两篇高质量内容，我会同意你的友链申请。
         </p>
+        <h2 className="title is-4">我的友链信息</h2>
+        <ul>
+          <li>网站名称: kxxt 的小站</li>
+          <li>我的昵称: kxxt</li>
+          <li>一句话： 一个没有分页功能和夜间模式的小破站</li>
+          <li>
+            网站图标:{" "}
+            <div className="tags is-inline">
+              {[48, 72, 96, 144, 192, 256, 384, 512].map(size => (
+                <IconTag size={size} key={size} />
+              ))}
+            </div>
+          </li>
+        </ul>
       </div>
     </Layout>
   )
