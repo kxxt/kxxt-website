@@ -3,7 +3,7 @@ import { Link, graphql } from "gatsby"
 import { MDXProvider } from "@mdx-js/react"
 import Giscus from "@giscus/react"
 
-import Layout from "@/components/layout/layout"
+import Layout from "@/components/layout"
 import Seo from "@/components/seo"
 import Tags from "@/components/tags/tags"
 import BlogBottomNav from "@/components/blog-bottom-nav/blog-bottom-nav"

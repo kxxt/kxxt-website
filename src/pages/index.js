@@ -2,7 +2,7 @@ import * as React from "react"
 import { graphql } from "gatsby"
 import { useState } from "react"
 
-import Layout from "@/components/layout/layout"
+import Layout from "@/components/layout"
 import Seo from "@/components/seo"
 import ReactTyped from "react-typed-component"
 import { StaticImage } from "gatsby-plugin-image"

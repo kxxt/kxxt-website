@@ -3,7 +3,7 @@ import React from "react"
 import { StaticImage } from "gatsby-plugin-image"
 
 import FriendCard from "@/components/friend-card"
-import Layout from "@/components/layout/layout"
+import Layout from "@/components/layout"
 import Seo from "@/components/seo"
 
 import * as styles from "./friends.module.scss"
