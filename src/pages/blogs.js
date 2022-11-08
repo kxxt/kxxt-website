@@ -10,7 +10,7 @@ const BlogsPage = ({ data, location }) => {
   const title = "Blogs"
 
   return (
-    <Layout location={location} title={title}>
+    <Layout location={location}>
       <Seo title={title} />
       <h1 className="title">{title}</h1>
       <BlogSummaryList posts={posts} />

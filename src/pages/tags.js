@@ -9,7 +9,7 @@ const TagsPage = ({ data, location }) => {
   const title = "Tags"
   const tags = data.allMdx.group
   return (
-    <Layout location={location} title={title}>
+    <Layout location={location}>
       <Seo title={title} />
       <h1 className="title">All Tags</h1>
       <Tags tags={tags} withCount={true} />

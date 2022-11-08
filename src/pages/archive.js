@@ -41,7 +41,7 @@ const ArchivePage = ({ data, location }) => {
     list.push(<ArchiveItem post={post} date={date} />)
   }
   return (
-    <Layout title={title} location={location}>
+    <Layout location={location}>
       <Seo title={title} />
       <h1 className="title">{title}</h1>
       <p className="subtitle is-6">

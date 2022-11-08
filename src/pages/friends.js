@@ -20,7 +20,7 @@ const IconTag = ({ size }) => {
 const FriendPage = ({ location }) => {
   const title = "Friends"
   return (
-    <Layout location={location} title={title}>
+    <Layout location={location}>
       <Seo title={title} />
       <h1 className="title">{title}</h1>
       <div className={`${styles.friendContainer} tile is-ancestor`}>

@@ -9,7 +9,7 @@ const TagPage = ({ data, location, pageContext }) => {
   const title = `Tag ${pageContext.tag}`
   const posts = data.allMdx.nodes
   return (
-    <Layout location={location} title={title}>
+    <Layout location={location}>
       <Seo title={title} />
       <h1 className="title">Tag: {pageContext.tag}</h1>
       <p className="subtitle is-5">

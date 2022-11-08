@@ -14,7 +14,6 @@ import { faFastForward } from "@fortawesome/free-solid-svg-icons"
 
 const BlogIndex = ({ data, location }) => {
   let [typingSpeed, setTypingSpeed] = useState(70)
-  const siteTitle = data.site.siteMetadata?.title || `Title`
   const posts = data.allMdx.nodes
   const line1 = `Welcome to my <strong style="color: orangered;">personal website</strong>!<br/>`
   const line2 = `${line1}I'm a <strong style="color: cyan;">software developer</strong>.`
@@ -104,9 +103,8 @@ const BlogIndex = ({ data, location }) => {
   )
 
   return (
-    <Layout location={location} title={siteTitle} hero={hero}>
+    <Layout location={location} hero={hero}>
       <Seo title="Home" />
-
       <BlogSummaryList posts={posts} />
     </Layout>
   )
