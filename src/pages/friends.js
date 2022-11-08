@@ -50,6 +50,8 @@ const FriendPage = ({ location }) => {
             在此网站的 GitHub 仓库发 Issue{" "}
           </a>
           来申请友链互换，如果我看你眼熟而且你的网站上有至少两篇高质量内容，我会同意你的友链申请。
+          <br />
+          我是社恐，可能在换友链方面不太主动，欢迎各位 dalao 来和我互换友链。
         </p>
         <h2 className="title is-4">我的友链信息</h2>
         <ul>
