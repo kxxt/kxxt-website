@@ -188,7 +188,7 @@ to cause a segfault in your safe rust code.
 See [Rust CVE](https://github.com/Qwaz/rust-cve) for a list of CVEs in the rust standard library.
 
 We can make use of [`CVE-2021-28879`](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-28879)
-to cause a segfault in safe rust code.
+to cause a segfault in safe rust code (with rustc >= 1.14.0, < 1.52.0).
 
 ```rust
 #![forbid(unsafe_code)]
