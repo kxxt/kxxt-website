@@ -902,13 +902,16 @@ $ http -f 'http://prob08-xxxxxx.geekgame.pku.edu.cn/admin/localhost%3A8080%252Fb
 
 # 编原译理习题课 · 实验班
 
+安全的 Rust 代码怎么会段错误呢？？？
+
+安全的 Rust 代码怎么会段错误呢？？？
+
+安全的 Rust 代码怎么会段错误呢？？？
+
+## Flag1
+
 <CH.Section>
 
-安全的 Rust 代码怎么会段错误呢？？？
-
-安全的 Rust 代码怎么会段错误呢？？？
-
-安全的 Rust 代码怎么会段错误呢？？？
 
 或许爆栈可以段错误。Try 了 Try。没成功。报栈被 Rust 捕捉到了，最后退出码不是段错误的退出码。
 
@@ -954,12 +957,13 @@ pub fn run() {
 }
 //EOF
 ```
+下面几个循环只是为了防止编译器直接把这个变量优化掉（不然的话，在 release 模式下实测会被优化掉）。交上去，过了。
 
 </CH.Section>
 
-<CH.Section>
+## Flag2
 
-下面几个循环只是为了防止编译器直接把这个变量优化掉（不然的话，在 release 模式下实测会被优化掉）。交上去，过了。
+<CH.Section>
 
 那么第二问怎么做呢？Safe Rust 怎么读取到 Caller Stack Frame 里的东西呢？不会。。。
 
