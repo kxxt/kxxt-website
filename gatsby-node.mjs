@@ -1,12 +1,12 @@
-const path = require(`path`)
-const { createFilePath } = require(`gatsby-source-filesystem`)
-const _ = require(`lodash`)
-const readingTime = require(`reading-time`)
-const {
-  onlySelectPublishedArticlesInProd,
-} = require(`./src/data/conditional.js`)
+import path from "path"
+import { createFilePath } from "gatsby-source-filesystem"
+import _ from "lodash"
+import readingTime from "reading-time"
+import { onlySelectPublishedArticlesInProd } from "./src/data/conditional.mjs"
+import * as url from "url"
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url))
 
-exports.onCreateWebpackConfig = ({ stage, actions }) => {
+export function onCreateWebpackConfig({ stage, actions }) {
   actions.setWebpackConfig({
     resolve: {
       alias: {
@@ -20,7 +20,7 @@ exports.onCreateWebpackConfig = ({ stage, actions }) => {
   })
 }
 
-exports.createPages = async ({ graphql, actions, reporter }) => {
+export async function createPages({ graphql, actions, reporter }) {
   const { createPage } = actions
 
   // Get all markdown blog posts sorted by date
@@ -46,7 +46,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
           }
         }
 
-        group(field: frontmatter___tags) {
+        group(field: { frontmatter: { tags: SELECT } }) {
           tag: fieldValue
           totalCount
         }
@@ -103,7 +103,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   }
 }
 
-exports.onCreateNode = ({ node, actions, getNode }) => {
+export async function onCreateNode({ node, actions, getNode }) {
   const { createNodeField } = actions
 
   if (node.internal.type === `Mdx`) {
@@ -122,7 +122,7 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
   }
 }
 const pagesToAddContext = [`/`, `/blogs/`, `/archive/`, `/tags/`]
-exports.onCreatePage = ({ page, actions }) => {
+export function onCreatePage({ page, actions }) {
   const { createPage, deletePage } = actions
   const newPage = Object.assign({}, page)
 
@@ -137,7 +137,7 @@ exports.onCreatePage = ({ page, actions }) => {
   }
 }
 
-exports.createSchemaCustomization = ({ actions }) => {
+export function createSchemaCustomization({ actions }) {
   const { createTypes } = actions
 
   // Explicitly define the siteMetadata {} object
