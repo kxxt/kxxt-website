@@ -171,6 +171,8 @@ export function createSchemaCustomization({ actions }) {
       title: String
       description: String
       date: Date @dateformat
+      published: Boolean!
+      tags: [String!]!
     }
   `)
 }
