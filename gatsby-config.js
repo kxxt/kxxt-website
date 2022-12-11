@@ -1,6 +1,6 @@
 const { remarkCodeHike } = require("@code-hike/mdx")
 const theme = require("shiki/themes/solarized-light.json")
-
+const puppeteer = require("puppeteer")
 const {
   onlySelectPublishedArticlesInProd,
 } = require("./src/data/conditional.js")
@@ -60,7 +60,7 @@ module.exports = {
             // require("remark-abbr"),
             wrapESMPlugin("remark-emoji"),
             require("remark-directive"),
-            require("./src/utils/remark-mkdocs-material-admonition.js"),
+            // require("./src/utils/remark-mkdocs-material-admonition.js"),
           ],
           rehypePlugins: [
             wrapESMPlugin("rehype-katex"),
@@ -82,6 +82,9 @@ module.exports = {
           {
             resolve: `gatsby-remark-mermaid`,
             options: {
+              launchOptions: {
+                executablePath: puppeteer.executablePath(),
+              },
               mermaidOptions: {
                 // Fix mermaid and bulma css conflicts.
                 // .label styles in bulma will override .label styles in mermaid
