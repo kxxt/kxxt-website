@@ -45,11 +45,6 @@ export async function createPages({ graphql, actions, reporter }) {
             }
           }
         }
-
-        group(field: { frontmatter: { tags: SELECT } }) {
-          tag: fieldValue
-          totalCount
-        }
       }
     }
   `)
@@ -88,19 +83,19 @@ export async function createPages({ graphql, actions, reporter }) {
     })
   }
 
-  const tags = result.data.allMdx.group
-  if (tags.length > 0) {
-    tags.forEach(({ tag, totalCount }) => {
-      createPage({
-        path: `/tags/${_.kebabCase(tag)}/`,
-        component: path.resolve(`./src/templates/tag-page.js`),
-        context: {
-          tag,
-          totalCount,
-        },
-      })
-    })
-  }
+  // const tags = result.data.allMdx.group
+  // if (tags.length > 0) {
+  //   tags.forEach(({ tag, totalCount }) => {
+  //     createPage({
+  //       path: `/tags/${_.kebabCase(tag)}/`,
+  //       component: path.resolve(`./src/templates/tag-page.js`),
+  //       context: {
+  //         tag,
+  //         totalCount,
+  //       },
+  //     })
+  //   })
+  // }
 }
 
 export async function onCreateNode({ node, actions, getNode }) {
