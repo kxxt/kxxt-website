@@ -187,6 +187,7 @@ export default {
               {
                 allMdx(
                   sort: { frontmatter: { date: DESC } },
+                  ,filter: {frontmatter: {published: {eq: true}}}
                 ) {
                   nodes {
                     excerpt
