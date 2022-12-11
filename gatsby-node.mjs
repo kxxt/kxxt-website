@@ -161,5 +161,18 @@ export function createSchemaCustomization({ actions }) {
     type Social {
       twitter: String
     }
+
+    type Mdx implements Node {
+      frontmatter: Frontmatter
+      slug: String
+    }
+
+    type Frontmatter {
+      title: String
+      description: String
+      date: Date @dateformat
+      published: Boolean!
+      tags: [String!]!
+    }
   `)
 }
