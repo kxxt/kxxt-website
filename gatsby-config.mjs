@@ -92,7 +92,7 @@ export default {
                 // Fix mermaid and bulma css conflicts.
                 // .label styles in bulma will override .label styles in mermaid
                 // themeCSS:
-                // ".label { font-size: inherit!important; font-weight: inherit!important; line-height: initial!important; }",
+                  // ".label { font-size: inherit!important; font-weight: inherit!important; line-height: initial!important; }",
               },
             },
           },
@@ -187,7 +187,7 @@ export default {
               {
                 allMdx(
                   sort: { frontmatter: { date: DESC } },
-                  ,filter: {frontmatter: {published: {eq: true}}}
+                  ${onlySelectPublishedArticlesInProd}
                 ) {
                   nodes {
                     excerpt
