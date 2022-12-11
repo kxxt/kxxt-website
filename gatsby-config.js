@@ -59,7 +59,6 @@ module.exports = {
             ],
             // require("remark-abbr"),
             wrapESMPlugin("remark-emoji"),
-            wrapESMPlugin("remark-unwrap-images"),
             require("remark-directive"),
             require("./src/utils/remark-mkdocs-material-admonition.js"),
           ],
@@ -181,7 +180,7 @@ module.exports = {
             query: `
               {
                 allMdx(
-                  sort: { order: DESC, fields: [frontmatter___date] },
+                  sort: { frontmatter: { date: DESC } },
                   ${onlySelectPublishedArticlesInProd}
                 ) {
                   nodes {
