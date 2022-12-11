@@ -44,6 +44,7 @@
     "gatsby-transformer-remark": "^6.2.0",
     "gatsby-transformer-sharp": "^5.2.0",
     "graphql": "^16.6.0",
+    "hastscript": "^7.1.0",
     "katex": "^0.16.4",
     "lodash": "^4.17.21",
     "material-design-color": "^2.3.2",
@@ -63,7 +64,8 @@
     "remark-gfm": "^3",
     "remark-math": "^5.1.1",
     "typeface-merriweather": "1.1.13",
-    "typeface-montserrat": "1.1.13"
+    "typeface-montserrat": "1.1.13",
+    "unist-util-visit": "^4.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.5",
