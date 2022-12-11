@@ -1,3 +1,4 @@
+import * as url from "url"
 import { remarkCodeHike } from "@code-hike/mdx"
 import theme from "shiki/themes/solarized-light.json" assert { type: "json" }
 import remarkDirective from "remark-directive"
@@ -7,11 +8,12 @@ import remarkEmoji from "remark-emoji"
 import rehypeKatex from "rehype-katex"
 import rehypeSlug from "rehype-slug"
 import rehypeAutolinkHeadings from "rehype-autolink-headings"
-import remarkMkdocsMaterialAdmonition from "./src/utils/remark-mkdocs-material-admonition.mjs"
+import puppeteer from "puppeteer"
 
+import remarkMkdocsMaterialAdmonition from "./src/utils/remark-mkdocs-material-admonition.mjs"
 import { onlySelectPublishedArticlesInProd } from "./src/data/conditional.mjs"
 
-import * as url from "url"
+const puppeteerExecutablePath = puppeteer.executablePath()
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url))
 
 export default {
@@ -79,17 +81,21 @@ export default {
           ],
         },
         gatsbyRemarkPlugins: [
-          // {
-          //   resolve: `gatsby-remark-mermaid`,
-          //   options: {
-          //     mermaidOptions: {
-          //       // Fix mermaid and bulma css conflicts.
-          //       // .label styles in bulma will override .label styles in mermaid
-          //       themeCSS:
-          //         ".label { font-size: inherit!important; font-weight: inherit!important; line-height: initial!important; }",
-          //     },
-          //   },
-          // },
+          {
+            resolve: `gatsby-remark-mermaid`,
+            options: {
+              launchOptions: {
+                executablePath: puppeteerExecutablePath,
+              },
+              theme: "base",
+              mermaidOptions: {
+                // Fix mermaid and bulma css conflicts.
+                // .label styles in bulma will override .label styles in mermaid
+                // themeCSS:
+                  // ".label { font-size: inherit!important; font-weight: inherit!important; line-height: initial!important; }",
+              },
+            },
+          },
           `gatsby-remark-graphviz`,
           // `gatsby-remark-check-links`,
           "gatsby-remark-smartypants",
