@@ -37,7 +37,7 @@
     "gatsby-remark-copy-relative-linked-files": "https://github.com/kxxt/npm-gatsby-remark-copy-relative-linked-files",
     "gatsby-remark-graphviz": "^5.2.0",
     "gatsby-remark-images": "^7.2.0",
-    "gatsby-remark-mermaid": "^3.0.1",
+    "gatsby-remark-mermaid": "^2.1.0",
     "gatsby-remark-responsive-iframe": "^6.2.0",
     "gatsby-remark-smartypants": "^6.2.0",
     "gatsby-source-filesystem": "^5.2.0",
