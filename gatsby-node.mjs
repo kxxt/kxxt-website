@@ -164,7 +164,13 @@ export function createSchemaCustomization({ actions }) {
 
     type Mdx implements Node {
       frontmatter: Frontmatter
-      slug: String
+      body: String
+      id: String!
+      excerpt: String
+      fields: {
+        slug: String
+        timeToRead: Int
+      }
     }
 
     type Frontmatter {
