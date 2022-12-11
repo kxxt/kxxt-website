@@ -1,20 +1,20 @@
-const { remarkCodeHike } = require("@code-hike/mdx")
-const theme = require("shiki/themes/solarized-light.json")
+import { remarkCodeHike } from "@code-hike/mdx"
+import theme from "shiki/themes/solarized-light.json" assert { type: "json" }
+import remarkDirective from "remark-directive"
+import remarkGfm from "remark-gfm"
+import remarkMath from "remark-math"
+import remarkEmoji from "remark-emoji"
+import rehypeKatex from "rehype-katex"
+import rehypeSlug from "rehype-slug"
+import rehypeAutolinkHeadings from "rehype-autolink-headings"
+import remarkMkdocsMaterialAdmonition from "./src/utils/remark-mkdocs-material-admonition.mjs"
 
-const {
-  onlySelectPublishedArticlesInProd,
-} = require("./src/data/conditional.js")
+import { onlySelectPublishedArticlesInProd } from "./src/data/conditional.mjs"
 
-const wrapESMPlugin = name =>
-  function wrapESM(opts) {
-    return async (...args) => {
-      const mod = await import(name)
-      const plugin = mod.default(opts)
-      return plugin(...args)
-    }
-  }
+import * as url from "url"
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url))
 
-module.exports = {
+export default {
   siteMetadata: {
     title: `kxxt`,
     author: {
@@ -46,8 +46,8 @@ module.exports = {
         extensions: [`.mdx`, `.md`],
         mdxOptions: {
           remarkPlugins: [
-            require("remark-gfm"),
-            require("remark-math"),
+            remarkGfm,
+            remarkMath,
             [
               remarkCodeHike,
               {
@@ -58,15 +58,15 @@ module.exports = {
               },
             ],
             // require("remark-abbr"),
-            wrapESMPlugin("remark-emoji"),
-            require("remark-directive"),
-            require("./src/utils/remark-mkdocs-material-admonition.js"),
+            remarkEmoji,
+            remarkDirective,
+            remarkMkdocsMaterialAdmonition,
           ],
           rehypePlugins: [
-            wrapESMPlugin("rehype-katex"),
-            require("rehype-slug"),
+            rehypeKatex,
+            rehypeSlug,
             [
-              require("rehype-autolink-headings"),
+              rehypeAutolinkHeadings,
               {
                 behavior: "append",
                 properties: {

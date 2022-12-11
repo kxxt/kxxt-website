@@ -1,7 +1,7 @@
-const visit = require("unist-util-visit")
-const h = require("hastscript")
+import { visit } from "unist-util-visit"
+import { h } from "hastscript"
 
-module.exports = function remarkMkdocsMaterialAdmonition() {
+export default function remarkMkdocsMaterialAdmonition() {
   return tree => {
     visit(tree, node => {
       if (node.type === "containerDirective") {
