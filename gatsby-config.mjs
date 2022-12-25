@@ -1,20 +1,22 @@
-const { remarkCodeHike } = require("@code-hike/mdx")
-const theme = require("shiki/themes/solarized-light.json")
+import * as url from "url"
+import { remarkCodeHike } from "@code-hike/mdx"
+import theme from "shiki/themes/solarized-light.json" assert { type: "json" }
+import remarkDirective from "remark-directive"
+import remarkGfm from "remark-gfm"
+import remarkMath from "remark-math"
+import remarkEmoji from "remark-emoji"
+import rehypeKatex from "rehype-katex"
+import rehypeSlug from "rehype-slug"
+import rehypeAutolinkHeadings from "rehype-autolink-headings"
+import puppeteer from "puppeteer"
 
-const {
-  onlySelectPublishedArticlesInProd,
-} = require("./src/data/conditional.js")
+import remarkMkdocsMaterialAdmonition from "./src/utils/remark-mkdocs-material-admonition.mjs"
+import { onlySelectPublishedArticlesInProd } from "./src/data/conditional.mjs"
 
-const wrapESMPlugin = name =>
-  function wrapESM(opts) {
-    return async (...args) => {
-      const mod = await import(name)
-      const plugin = mod.default(opts)
-      return plugin(...args)
-    }
-  }
+const puppeteerExecutablePath = puppeteer.executablePath()
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url))
 
-module.exports = {
+export default {
   siteMetadata: {
     title: `kxxt`,
     author: {
@@ -46,8 +48,8 @@ module.exports = {
         extensions: [`.mdx`, `.md`],
         mdxOptions: {
           remarkPlugins: [
-            require("remark-gfm"),
-            require("remark-math"),
+            remarkGfm,
+            remarkMath,
             [
               remarkCodeHike,
               {
@@ -58,15 +60,15 @@ module.exports = {
               },
             ],
             // require("remark-abbr"),
-            wrapESMPlugin("remark-emoji"),
-            require("remark-directive"),
-            require("./src/utils/remark-mkdocs-material-admonition.js"),
+            remarkEmoji,
+            remarkDirective,
+            remarkMkdocsMaterialAdmonition,
           ],
           rehypePlugins: [
-            wrapESMPlugin("rehype-katex"),
-            require("rehype-slug"),
+            rehypeKatex,
+            rehypeSlug,
             [
-              require("rehype-autolink-headings"),
+              rehypeAutolinkHeadings,
               {
                 behavior: "append",
                 properties: {
@@ -82,11 +84,15 @@ module.exports = {
           {
             resolve: `gatsby-remark-mermaid`,
             options: {
+              launchOptions: {
+                executablePath: puppeteerExecutablePath,
+              },
+              theme: "base",
               mermaidOptions: {
                 // Fix mermaid and bulma css conflicts.
                 // .label styles in bulma will override .label styles in mermaid
-                themeCSS:
-                  ".label { font-size: inherit!important; font-weight: inherit!important; line-height: initial!important; }",
+                // themeCSS:
+                  // ".label { font-size: inherit!important; font-weight: inherit!important; line-height: initial!important; }",
               },
             },
           },
