@@ -46,3 +46,10 @@ html {
 code {
   overflow-wrap: break-word;
 }
+
+a code {
+  color: dodgerblue;
+  &:hover {
+    text-decoration: underline;
+  }
+}
