@@ -4,17 +4,17 @@ import _ from "lodash"
 import readingTime from "reading-time"
 import { onlySelectPublishedArticlesInProd } from "./src/data/conditional.mjs"
 import * as url from "url"
-const __dirname = url.fileURLToPath(new URL(".", import.meta.url))
+const BASE_PATH = url.fileURLToPath(new URL(".", import.meta.url))
 
 export function onCreateWebpackConfig({ stage, actions }) {
   actions.setWebpackConfig({
     resolve: {
       alias: {
-        "@/components": path.resolve(__dirname, "src/components"),
-        "@/templates": path.resolve(__dirname, "src/templates"),
-        "@/utils": path.resolve(__dirname, "src/utils"),
-        "@/data": path.resolve(__dirname, "src/data"),
-        "@/pages": path.resolve(__dirname, "src/pages"),
+        "@/components": path.resolve(BASE_PATH, "src/components"),
+        "@/templates": path.resolve(BASE_PATH, "src/templates"),
+        "@/utils": path.resolve(BASE_PATH, "src/utils"),
+        "@/data": path.resolve(BASE_PATH, "src/data"),
+        "@/pages": path.resolve(BASE_PATH, "src/pages"),
       },
     },
   })
