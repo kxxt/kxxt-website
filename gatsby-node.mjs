@@ -121,12 +121,12 @@ export async function onCreateNode({ node, actions, getNode }) {
     })
   }
 }
-const pagesToAddContext = [`/`, `/blogs/`, `/archive/`, `/tags/`]
+const pagesToAddContext = new Set([`/`, `/blogs/`, `/archive/`, `/tags/`]);
 export function onCreatePage({ page, actions }) {
   const { createPage, deletePage } = actions
   const newPage = Object.assign({}, page)
 
-  if (pagesToAddContext.includes(page.path)) {
+  if (pagesToAddContext.has(page.path)) {
     deletePage(page)
 
     newPage.context = {
