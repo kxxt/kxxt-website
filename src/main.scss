@@ -54,7 +54,26 @@ a code {
   }
 }
 
-a[target="_blank"]:after {
+.content a:not(.header-anchor, .tag, .gatsby-resp-image-link) {
+  text-decoration: underline;
+  position: relative;
+  &::before {
+    content: "";
+    background-color: hsla(81, 92%, 50%, 0.6);
+    position: absolute;
+    left: 0;
+    bottom: -0.1em;
+    width: 100%;
+    height: 0.2em;
+    transition: all 0.3s cubic-bezier(0, 1.5, 1, 1.5);
+  }
+  &:hover::before {
+    bottom: -0.1em;
+    height: 1.2em;
+  }
+}
+
+a[target="_blank"]:not(.tag, .gatsby-resp-image-link):after {
   content: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVR42qXKwQkAIAxDUUdxtO6/RBQkQZvSi8I/pL4BoGw/XPkh4XigPmsUgh0626AjRsgxHTkUThsG2T/sIlzdTsp52kSS1wAAAABJRU5ErkJggg==);
   margin: 0 3px 0 5px;
 }
