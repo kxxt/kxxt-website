@@ -8,6 +8,6 @@ const { join } = require("path")
 module.exports = {
   // Changes the cache location for Puppeteer.
   cacheDirectory: __dirname.startsWith("/vercel")
-    ? join(__dirname, ".cache", "puppeteer")
+    ? join(__dirname, ".puppeteer", "puppeteer")
     : "~/.cache/puppeteer",
 }
