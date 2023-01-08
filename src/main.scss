@@ -55,7 +55,7 @@ a code {
 }
 
 .content a:not(.header-anchor, .tag, .gatsby-resp-image-link) {
-  text-decoration: underline;
+  text-decoration: none;
   position: relative;
   &::before {
     content: "";
