@@ -51,6 +51,16 @@ const BlogPostTemplate = ({ data, location, children }) => {
           </p>
           <Tags tags={post.frontmatter.tags} />
         </header>
+        {post.frontmatter.outdated && (
+          <div className="admonition attention">
+            <p className="admonition-title">Attention</p>
+            <p>
+              This article has been explicitly marked as outdated. It may
+              contain outdated information. Please seek other sources for
+              information on this topic for the latest information.
+            </p>
+          </div>
+        )}
         <MDXProvider components={shortCodes}>{children}</MDXProvider>
       </article>
       <Giscus
