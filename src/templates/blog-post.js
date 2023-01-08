@@ -16,7 +16,7 @@ import "katex/dist/katex.min.css"
 import "@code-hike/mdx/dist/index.css"
 import "../admonition.scss"
 
-const shortcodes = { Link } // Provide common components here
+const shortCodes = { Link } // Provide common components here
 
 const BlogPostTemplate = ({ data, location, children }) => {
   const post = data.mdx
@@ -51,7 +51,7 @@ const BlogPostTemplate = ({ data, location, children }) => {
           </p>
           <Tags tags={post.frontmatter.tags} />
         </header>
-        <MDXProvider components={shortcodes}>{children}</MDXProvider>
+        <MDXProvider components={shortCodes}>{children}</MDXProvider>
       </article>
       <Giscus
         repo="kxxt/kxxt-website"
