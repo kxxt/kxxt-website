@@ -121,7 +121,9 @@ export async function onCreateNode({ node, actions, getNode }) {
     })
   }
 }
-const pagesToAddContext = new Set([`/`, `/blogs/`, `/archive/`, `/tags/`]);
+
+const pagesToAddContext = new Set([`/`, `/blogs/`, `/archive/`, `/tags/`])
+
 export function onCreatePage({ page, actions }) {
   const { createPage, deletePage } = actions
   const newPage = Object.assign({}, page)
@@ -137,48 +139,51 @@ export function onCreatePage({ page, actions }) {
   }
 }
 
-// export function createSchemaCustomization({ actions }) {
-//   const { createTypes } = actions
+export function createSchemaCustomization({ actions }) {
+  const { createTypes } = actions
 
-//   // Explicitly define the siteMetadata {} object
-//   // This way those will always be defined even if removed from gatsby-config.js
+  // Explicitly define the siteMetadata {} object
+  // This way those will always be defined even if removed from gatsby-config.js
 
-//   // Also explicitly define the Markdown frontmatter
-//   // This way the "MarkdownRemark" queries will return `null` even when no
-//   // blog posts are stored inside "content/blog" instead of returning an error
-//   createTypes(`
-//     type SiteSiteMetadata {
-//       author: Author
-//       siteUrl: String
-//       social: Social
-//     }
+  // Also explicitly define the Markdown frontmatter
+  // This way the "MarkdownRemark" queries will return `null` even when no
+  // blog posts are stored inside "content/blog" instead of returning an error
+  createTypes(`
+    type SiteSiteMetadata {
+      author: Author
+      siteUrl: String
+      social: Social
+    }
 
-//     type Author {
-//       name: String
-//       summary: String
-//     }
+    type Author {
+      name: String
+      summary: String
+    }
 
-//     type Social {
-//       twitter: String
-//     }
+    type Social {
+      twitter: String
+    }
 
-//     type Mdx implements Node {
-//       frontmatter: Frontmatter
-//       body: String
-//       id: String!
-//       excerpt: String
-//       fields: {
-//         slug: String
-//         timeToRead: Int
-//       }
-//     }
+    type Mdx implements Node {
+      frontmatter: Frontmatter
+      body: String
+      id: String!
+      excerpt: String
+      fields: MdxFields!
+    }
 
-//     type Frontmatter {
-//       title: String
-//       description: String
-//       date: Date @dateformat
-//       published: Boolean!
-//       tags: [String!]!
-//     }
-//   `)
-// }
+    type MdxFields {
+      slug: String!
+      timeToRead: Int!
+    }
+
+    type Frontmatter {
+      title: String
+      description: String
+      date: Date @dateformat
+      published: Boolean!
+      tags: [String!]!
+      outdated: Boolean
+    }
+  `)
+}
