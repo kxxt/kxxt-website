@@ -9,6 +9,7 @@ import rehypeKatex from "rehype-katex"
 import rehypeSlug from "rehype-slug"
 import rehypeAutolinkHeadings from "rehype-autolink-headings"
 import puppeteer from "puppeteer"
+import rehypeExternalLinks from "rehype-external-links"
 
 import remarkMkdocsMaterialAdmonition from "./src/utils/remark-mkdocs-material-admonition.mjs"
 import { onlySelectPublishedArticlesInProd } from "./src/data/conditional.mjs"
@@ -78,6 +79,13 @@ export default {
                 },
               },
             ],
+            [
+              rehypeExternalLinks,
+              {
+                target: "_blank",
+                rel: ["external"],
+              },
+            ],
           ],
         },
         gatsbyRemarkPlugins: [
@@ -92,7 +100,7 @@ export default {
                 // Fix mermaid and bulma css conflicts.
                 // .label styles in bulma will override .label styles in mermaid
                 // themeCSS:
-                  // ".label { font-size: inherit!important; font-weight: inherit!important; line-height: initial!important; }",
+                // ".label { font-size: inherit!important; font-weight: inherit!important; line-height: initial!important; }",
               },
             },
           },
