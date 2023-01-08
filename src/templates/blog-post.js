@@ -16,7 +16,7 @@ import "katex/dist/katex.min.css"
 import "@code-hike/mdx/dist/index.css"
 import "../admonition.scss"
 
-const shortcodes = { Link } // Provide common components here
+const shortCodes = { Link } // Provide common components here
 
 const BlogPostTemplate = ({ data, location, children }) => {
   const post = data.mdx
@@ -51,7 +51,17 @@ const BlogPostTemplate = ({ data, location, children }) => {
           </p>
           <Tags tags={post.frontmatter.tags} />
         </header>
-        <MDXProvider components={shortcodes}>{children}</MDXProvider>
+        {post.frontmatter.outdated && (
+          <div className="admonition attention">
+            <p className="admonition-title">Attention</p>
+            <p>
+              This article has been explicitly marked as outdated. It may
+              contain outdated information. Please seek other sources for
+              information on this topic for the latest information.
+            </p>
+          </div>
+        )}
+        <MDXProvider components={shortCodes}>{children}</MDXProvider>
       </article>
       <Giscus
         repo="kxxt/kxxt-website"

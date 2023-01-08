@@ -2,7 +2,7 @@ import { graphql } from "gatsby"
 
 export const blogFields = graphql`
   fragment BlogFields on Mdx {
-    excerpt(pruneLength: 160)
+    excerpt
     body
     tableOfContents
     fields {
@@ -13,6 +13,7 @@ export const blogFields = graphql`
       tags
       date(formatString: "MMMM DD, YYYY")
       description
+      outdated
     }
   }
 `
@@ -32,7 +33,7 @@ export const blogQuickInfoFields = graphql`
 
 export const blogSummaryFields = graphql`
   fragment BlogSummaryFields on Mdx {
-    excerpt(pruneLength: 160)
+    excerpt
     fields {
       slug
       timeToRead
