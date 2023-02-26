@@ -6,7 +6,7 @@ import FriendCard from "@/components/friend-card"
 import Layout from "@/components/layout"
 import Seo from "@/components/seo"
 
-import * as styles from "./friends.module.scss"
+import * as styles from "./links.module.scss"
 
 const IconTag = ({ size }) => {
   const sizeStr = `${size}x${size}`
@@ -17,12 +17,12 @@ const IconTag = ({ size }) => {
   )
 }
 
-const FriendPage = ({ location }) => {
-  const title = "Friends"
+const LinkPage = ({ location }) => {
+  const title = "Links"
   return (
     <Layout location={location}>
       <Seo title={title} />
-      <h1 className="title">{title}</h1>
+      <h2 className="title">Excellent Blogs</h2>
       <div className={`${styles.friendContainer} tile is-ancestor`}>
         <FriendCard
           name="宝硕"
@@ -41,6 +41,7 @@ const FriendPage = ({ location }) => {
           }
         />
       </div>
+      <h2 className="title">Useful Documentations</h2>
       <hr />
       <div>
         <h2 className="title is-4">友链申请</h2>
@@ -72,4 +73,4 @@ const FriendPage = ({ location }) => {
   )
 }
 
-export default FriendPage
+export default LinkPage

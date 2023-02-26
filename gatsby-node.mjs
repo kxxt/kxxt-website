@@ -21,8 +21,9 @@ export function onCreateWebpackConfig({ stage, actions }) {
 }
 
 export async function createPages({ graphql, actions, reporter }) {
-  const { createPage } = actions
+  const { createPage, createRedirect } = actions
 
+  createRedirect({ fromPath: "/friends", toPath: "/links", isPermanent: true })
   // Get all markdown blog posts sorted by date
   const result = await graphql(`
     {
