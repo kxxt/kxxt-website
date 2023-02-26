@@ -14,6 +14,7 @@ export const blogFields = graphql`
       date(formatString: "MMMM DD, YYYY")
       description
       outdated
+      outdatedReason
     }
   }
 `

@@ -20,6 +20,7 @@ const shortCodes = { Link } // Provide common components here
 
 const BlogPostTemplate = ({ data, location, children }) => {
   const post = data.mdx
+  const { frontmatter } = post
   const { previous, next } = data
   const toc = post.tableOfContents.items ? (
     <TableOfContents toc={post.tableOfContents.items} />
@@ -33,8 +34,8 @@ const BlogPostTemplate = ({ data, location, children }) => {
   return (
     <Layout location={location} sidebar={toc} bottom={bottom}>
       <Seo
-        title={post.frontmatter.title}
-        description={post.frontmatter.description || post.excerpt}
+        title={frontmatter.title}
+        description={frontmatter.description || post.excerpt}
       />
       <article
         className="blog-post content"
@@ -42,16 +43,13 @@ const BlogPostTemplate = ({ data, location, children }) => {
         itemType="http://schema.org/Article"
       >
         <header className={styles.postHeader}>
-          <h1 itemProp="headline">{post.frontmatter.title}</h1>
+          <h1 itemProp="headline">{frontmatter.title}</h1>
           <p>
-            {formatDateAndTimeToRead(
-              post.frontmatter.date,
-              post.fields.timeToRead
-            )}
+            {formatDateAndTimeToRead(frontmatter.date, post.fields.timeToRead)}
           </p>
-          <Tags tags={post.frontmatter.tags} />
+          <Tags tags={frontmatter.tags} />
         </header>
-        {post.frontmatter.outdated && (
+        {frontmatter.outdated && (
           <div className="admonition attention">
             <p className="admonition-title">Attention</p>
             <p>
@@ -59,6 +57,16 @@ const BlogPostTemplate = ({ data, location, children }) => {
               contain outdated information. Please seek other sources for
               information on this topic for the latest information.
             </p>
+            {frontmatter.outdatedReason && (
+              <div>
+                <p className="title is-6" style={{ fontWeight: "bold" }}>
+                  Reason
+                </p>
+                <p style={{ whiteSpace: "pre-wrap" }}>
+                  {frontmatter.outdatedReason}
+                </p>
+              </div>
+            )}
           </div>
         )}
         <MDXProvider components={shortCodes}>{children}</MDXProvider>
