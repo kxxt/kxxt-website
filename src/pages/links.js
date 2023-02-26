@@ -33,10 +33,24 @@ const LinkPage = ({ location }) => {
           isCircle={true}
           icon={
             <StaticImage
-              src="../images/friends/baoshuo.webp"
+              src="../images/links/baoshuo.webp"
               alt="baoshuo"
               width={48}
               height={48}
+            />
+          }
+        />
+        <FriendCard
+          name="The Overflow"
+          description="Stack Overflow's Blog"
+          link="https://stackoverflow.blog"
+          isCircle={false}
+          icon={
+            <StaticImage
+              src="../images/links/logo-stackoverflow.png"
+              alt="The Overflow"
+              width={48}
+              height={52}
             />
           }
         />
