@@ -57,7 +57,8 @@ export default {
                 theme,
                 lineNumbers: false,
                 showCopyButton: true,
-                skipLanguages: ["mermaid", "dot"],
+                // Temporarily skip `wiki` until code hike supports custom grammar.
+                skipLanguages: ["mermaid", "dot", "wiki"],
               },
             ],
             // require("remark-abbr"),
