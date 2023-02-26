@@ -52,9 +52,9 @@ const Navbar = ({ centerLinks, title }) => {
               Tags
             </IconText>
           </NavbarLinkButton>
-          <NavbarLinkButton to="/friends">
+          <NavbarLinkButton to="/links">
             <IconText icon={faHandHoldingHeart} color="orangered">
-              Friends
+              Links
             </IconText>
           </NavbarLinkButton>
           <a href="#contact" className="navbar-item">
