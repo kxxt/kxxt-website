@@ -32,13 +32,13 @@ const ArchivePage = ({ data, location }) => {
     if (currentYear !== year) {
       currentYear = year
       currentMonth = null
-      list.push(<h2>{year}</h2>)
+      list.push(<h2 key={`year-${year}`}>{year}</h2>)
     }
     if (currentMonth !== month) {
       currentMonth = month
-      list.push(<h3>{months[month - 1]}</h3>)
+      list.push(<h3 key={`month-${year}-${month}`}>{months[month - 1]}</h3>)
     }
-    list.push(<ArchiveItem post={post} date={date} />)
+    list.push(<ArchiveItem key={post.fields.slug} post={post} date={date} />)
   }
   return (
     <Layout location={location}>
