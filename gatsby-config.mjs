@@ -67,7 +67,12 @@ export default {
             remarkMkdocsMaterialAdmonition,
           ],
           rehypePlugins: [
-            rehypeKatex,
+            [
+              rehypeKatex,
+              {
+                strict: true,
+              },
+            ],
             rehypeSlug,
             [
               rehypeAutolinkHeadings,
