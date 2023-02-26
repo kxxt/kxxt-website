@@ -184,6 +184,7 @@ export function createSchemaCustomization({ actions }) {
       published: Boolean!
       tags: [String!]!
       outdated: Boolean
+      outdatedReason: String
     }
   `)
 }
