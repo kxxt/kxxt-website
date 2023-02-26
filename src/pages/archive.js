@@ -21,11 +21,11 @@ const months = [
 
 const ArchivePage = ({ data, location }) => {
   const title = "Archive"
-  const posts = data.allMdx.nodes
+  const posts = data.allFile.nodes
   let currentYear = null,
     currentMonth = null,
     list = []
-  for (let post of posts) {
+  for (let { childMdx: post } of posts) {
     let date = new Date(post.frontmatter.date)
     const year = date.getFullYear(),
       month = date.getMonth()
@@ -56,19 +56,25 @@ export default ArchivePage
 
 export const pageQuery = graphql`
   query ($published: [Boolean!]!) {
-    allMdx(
-      sort: { frontmatter: { date: DESC } }
-      filter: { frontmatter: { published: { in: $published } } }
+    allFile(
+      filter: {
+        sourceInstanceName: { eq: "blog" }
+        extension: { in: ["mdx", "md"] }
+        childMdx: { frontmatter: { published: { in: $published } } }
+      }
+      sort: { childMdx: { frontmatter: { date: DESC } } }
     ) {
       nodes {
-        id
-        fields {
-          slug
-        }
-        frontmatter {
-          date(formatString: "YYYY-MM-DD")
-          title
-          tags
+        childMdx {
+          id
+          fields {
+            slug
+          }
+          frontmatter {
+            date(formatString: "YYYY-MM-DD")
+            title
+            tags
+          }
         }
       }
     }

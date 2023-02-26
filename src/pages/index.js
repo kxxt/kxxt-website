@@ -14,7 +14,7 @@ import { faFastForward } from "@fortawesome/free-solid-svg-icons"
 
 const BlogIndex = ({ data, location }) => {
   let [typingSpeed, setTypingSpeed] = useState(70)
-  const posts = data.allMdx.nodes
+  const posts = data.allFile.nodes
   const line1 = `Welcome to my <strong style="color: orangered;">personal website</strong>!<br/>`
   const line2 = `${line1}I'm a <strong style="color: cyan;">software developer</strong>.`
   const line3 = `${line2}<br/>I speak <em style="color: cornflowerblue;">English</em> and <em style="color: palevioletred;">Chinese</em>.`
@@ -119,12 +119,18 @@ export const pageQuery = graphql`
         title
       }
     }
-    allMdx(
-      sort: { frontmatter: { date: DESC } }
-      filter: { frontmatter: { published: { in: $published } } }
+    allFile(
+      filter: {
+        sourceInstanceName: { eq: "blog" }
+        extension: { in: ["mdx", "md"] }
+        childMdx: { frontmatter: { published: { in: $published } } }
+      }
+      sort: { childMdx: { frontmatter: { date: DESC } } }
     ) {
       nodes {
-        ...BlogSummaryFields
+        childMdx {
+          ...BlogSummaryFields
+        }
       }
     }
   }

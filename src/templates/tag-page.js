@@ -7,7 +7,7 @@ import BlogSummaryList from "@/components/blog-summary/blog-summary-list"
 
 const TagPage = ({ data, location, pageContext }) => {
   const title = `Tag ${pageContext.tag}`
-  const posts = data.allMdx.nodes
+  const posts = data.allFile.nodes
   return (
     <Layout location={location}>
       <Seo title={title} />
@@ -24,21 +24,26 @@ const TagPage = ({ data, location, pageContext }) => {
 
 export const pageQuery = graphql`
   query ($tag: String) {
-    allMdx(
-      sort: { frontmatter: { date: DESC } }
-      filter: { frontmatter: { tags: { in: [$tag] } } }
+    allFile(
+      filter: {
+        sourceInstanceName: { eq: "blog" }
+        extension: { in: ["mdx", "md"] }
+        childMdx: { frontmatter: { tags: { in: [$tag] } } }
+      }
+      sort: { childMdx: { frontmatter: { date: DESC } } }
     ) {
-      totalCount
       nodes {
-        fields {
-          slug
-        }
-        excerpt
-        frontmatter {
-          title
-          description
-          tags
-          date(formatString: "MMMM DD, YYYY")
+        childMdx {
+          fields {
+            slug
+          }
+          excerpt
+          frontmatter {
+            title
+            description
+            tags
+            date(formatString: "MMMM DD, YYYY")
+          }
         }
       }
     }

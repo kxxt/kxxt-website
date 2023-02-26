@@ -6,7 +6,7 @@ import Seo from "@/components/seo"
 import BlogSummaryList from "@/components/blog-summary/blog-summary-list"
 
 const BlogsPage = ({ data, location }) => {
-  const posts = data.allMdx.nodes
+  const posts = data.allFile.nodes
   const title = "Blogs"
 
   return (
@@ -27,12 +27,18 @@ export const pageQuery = graphql`
         title
       }
     }
-    allMdx(
-      sort: { frontmatter: { date: DESC } }
-      filter: { frontmatter: { published: { in: $published } } }
+    allFile(
+      filter: {
+        sourceInstanceName: { eq: "blog" }
+        extension: { in: ["mdx", "md"] }
+        childMdx: { frontmatter: { published: { in: $published } } }
+      }
+      sort: { childMdx: { frontmatter: { date: DESC } } }
     ) {
       nodes {
-        ...BlogSummaryFields
+        childMdx {
+          ...BlogSummaryFields
+        }
       }
     }
   }
