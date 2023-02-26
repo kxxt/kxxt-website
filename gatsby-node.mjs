@@ -27,27 +27,31 @@ export async function createPages({ graphql, actions, reporter }) {
   // Get all markdown blog posts sorted by date
   const result = await graphql(`
     {
-      allMdx(sort: { frontmatter: { date: DESC } }${onlySelectPublishedArticlesInProd}) {
+      allFile(
+        filter: {
+          sourceInstanceName: { eq: "blog" }
+          extension: { in: ["mdx", "md"] }
+          ${onlySelectPublishedArticlesInProd}
+        }
+        sort: { childMdx: { frontmatter: { date: DESC } } }
+      ) {
         edges {
           node {
-            body
-            id
-            fields {
-              slug
-            }
-            frontmatter {
-              title
-              published
-            }
-            parent {
-              ... on File {
-                absolutePath
+            childMdx {
+              body
+              id
+              fields {
+                slug
+              }
+              frontmatter {
+                title
+                published
               }
             }
+            absolutePath
           }
         }
-
-        group(field: { frontmatter: { tags: SELECT } }) {
+        group(field: { childMdx: { frontmatter: { tags: SELECT } } }) {
           tag: fieldValue
           totalCount
         }
@@ -63,25 +67,25 @@ export async function createPages({ graphql, actions, reporter }) {
     return
   }
 
-  let posts = result.data.allMdx.edges
+  let posts = result.data.allFile.edges
 
   // Create blog posts pages
   // But only if there's at least one markdown file found at "content/blog" (defined in gatsby-config.js)
   // `context` is available in the template as a prop and as a variable in GraphQL
 
   if (posts.length > 0) {
-    posts.forEach((post, index) => {
-      const nextPostId = index === 0 ? null : posts[index - 1].node.id
+    posts.forEach(({ node: { childMdx: post, absolutePath } }, index) => {
+      const nextPostId = index === 0 ? null : posts[index - 1].id
       const previousPostId =
-        index === posts.length - 1 ? null : posts[index + 1].node.id
+        index === posts.length - 1 ? null : posts[index + 1].id
 
       createPage({
-        path: `blog${post.node.fields.slug}`,
+        path: `blog${post.fields.slug}`,
         component: `${path.resolve(
           "./src/templates/blog-post.js"
-        )}?__contentFilePath=${post.node.parent.absolutePath}`,
+        )}?__contentFilePath=${absolutePath}`,
         context: {
-          id: post.node.id,
+          id: post.id,
           previousPostId,
           nextPostId,
         },
@@ -89,7 +93,7 @@ export async function createPages({ graphql, actions, reporter }) {
     })
   }
 
-  const tags = result.data.allMdx.group
+  const tags =  result.data.allFile.group
   if (tags.length > 0) {
     tags.forEach(({ tag, totalCount }) => {
       createPage({
@@ -108,6 +112,7 @@ export async function onCreateNode({ node, actions, getNode }) {
   const { createNodeField } = actions
 
   if (node.internal.type === `Mdx`) {
+    // && node.fileAbsolutePath.indexOf('/pages/') !== -1) {
     const value = createFilePath({ node, getNode })
 
     createNodeField({

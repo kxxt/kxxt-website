@@ -10,11 +10,11 @@ import { faGithub } from "@fortawesome/free-brands-svg-icons"
 import IconText from "@/components/icon-text"
 import {
   faArchive,
-  faAt,
   faBlog,
   faHome,
   faTags,
   faHandHoldingHeart,
+  faUser,
 } from "@fortawesome/free-solid-svg-icons"
 
 const Navbar = ({ centerLinks, title }) => {
@@ -57,9 +57,9 @@ const Navbar = ({ centerLinks, title }) => {
               Links
             </IconText>
           </NavbarLinkButton>
-          <a href="#contact" className="navbar-item">
-            <IconText icon={faAt} color="gold">
-              Contact
+          <a href="/about" className="navbar-item">
+            <IconText icon={faUser} color="gold">
+              About
             </IconText>
           </a>
         </NavbarStart>

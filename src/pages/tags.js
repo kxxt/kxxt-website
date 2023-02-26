@@ -7,7 +7,7 @@ import Tags from "@/components/tags/tags"
 
 const TagsPage = ({ data, location }) => {
   const title = "Tags"
-  const tags = data.allMdx.group
+  const tags = data.allFile.group
   return (
     <Layout location={location}>
       <Seo title={title} />
@@ -19,8 +19,15 @@ const TagsPage = ({ data, location }) => {
 
 export const pageQuery = graphql`
   query ($published: [Boolean!]!) {
-    allMdx(filter: { frontmatter: { published: { in: $published } } }) {
-      group(field: { frontmatter: { tags: SELECT } }) {
+    allFile(
+      filter: {
+        sourceInstanceName: { eq: "blog" }
+        extension: { in: ["mdx", "md"] }
+        childMdx: { frontmatter: { published: { in: $published } } }
+      }
+      sort: { childMdx: { frontmatter: { date: DESC } } }
+    ) {
+      group(field: { childMdx: { frontmatter: { tags: SELECT } } }) {
         tag: fieldValue
         totalCount
       }
