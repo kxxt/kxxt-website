@@ -181,8 +181,13 @@ export default {
         `,
         feeds: [
           {
-            serialize: ({ query: { site, allMdx } }) => {
-              return allMdx.nodes.map(node => {
+            serialize: ({
+              query: {
+                site,
+                allFile: { nodes },
+              },
+            }) => {
+              return nodes.map(({ childMdx: node }) => {
                 return Object.assign({}, node.frontmatter, {
                   description: node.excerpt,
                   date: node.frontmatter.date,
@@ -199,18 +204,24 @@ export default {
             },
             query: `
               {
-                allMdx(
-                  sort: { frontmatter: { date: DESC } },
-                  ${onlySelectPublishedArticlesInProd}
+                allFile(
+                  filter: {
+                    sourceInstanceName: { eq: "blog" }
+                    extension: { in: ["mdx", "md"] }
+                    ${onlySelectPublishedArticlesInProd}
+                  }
+                  sort: { childMdx: { frontmatter: { date: DESC } } }
                 ) {
                   nodes {
-                    excerpt
-                    fields {
-                      slug
-                    }
-                    frontmatter {
-                      title
-                      date
+                    childMdx {
+                      excerpt
+                      fields {
+                        slug
+                      }
+                      frontmatter {
+                        title
+                        date
+                      }
                     }
                   }
                 }
