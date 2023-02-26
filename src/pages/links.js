@@ -55,7 +55,7 @@ const LinkPage = ({ location }) => {
           }
         />
       </div>
-      <h2 className="title">Useful Documentations</h2>
+      {/* <h2 className="title">Useful Documentations</h2> */}
       <hr />
       <div>
         <h2 className="title is-4">友链申请</h2>
