@@ -6,12 +6,8 @@
   @if $from == $to {
     @return "#{$before} h#{$from}#{$after}";
   } @else {
-    @return "#{$before} h#{$from}#{$after}, "+headings(
-        $before,
-        $from + 1,
-        $to,
-        $after
-      );
+    @return "#{$before} h#{$from}#{$after}, " +
+      headings($before, $from + 1, $to, $after);
   }
 }
 
@@ -54,7 +50,7 @@ a code {
   }
 }
 
-.content a:not(.header-anchor, .tag, .gatsby-resp-image-link) {
+.content a:not(.header-anchor, .tag, .gatsby-resp-image-link, .clear) {
   text-decoration: none;
   position: relative;
   &::before {

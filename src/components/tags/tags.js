@@ -16,11 +16,25 @@ const TagLink = ({ tag, totalCount = 0, fontSize }) => {
   )
 }
 
+const Tag = ({ tag, fontSize }) => {
+  return (
+    <span
+      key={tag}
+      className={`tag ${styles.tag}`}
+      style={{ fontSize }}
+      itemProp="keywords"
+    >
+      {tag}
+    </span>
+  )
+}
+
 const Tags = ({
   tags,
   withCount = false,
   fontSize = "14px",
   inline = false,
+  withLink = true,
 }) => {
   if (!tags) return null
   const Container = ({ children, ...props }) =>
@@ -29,18 +43,21 @@ const Tags = ({
     ) : (
       <div {...props}>{children}</div>
     )
+  const TagComponent = withLink ? TagLink : Tag
   return (
     <Container className={`tags ${inline ? styles.tagsInline : ""}`}>
       {withCount
         ? tags.map(({ tag, totalCount }) => (
-            <TagLink
+            <TagComponent
               key={tag}
               tag={tag}
               totalCount={totalCount}
               fontSize={fontSize}
             />
           ))
-        : tags.map(tag => <TagLink key={tag} tag={tag} fontSize={fontSize} />)}
+        : tags.map(tag => (
+            <TagComponent key={tag} tag={tag} fontSize={fontSize} />
+          ))}
     </Container>
   )
 }
