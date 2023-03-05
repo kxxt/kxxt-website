@@ -75,9 +75,9 @@ export async function createPages({ graphql, actions, reporter }) {
 
   if (posts.length > 0) {
     posts.forEach(({ node: { childMdx: post, absolutePath } }, index) => {
-      const nextPostId = index === 0 ? null : posts[index - 1].id
+      const nextPostId = index === 0 ? null : posts[index - 1].node.childMdx.id
       const previousPostId =
-        index === posts.length - 1 ? null : posts[index + 1].id
+        index === posts.length - 1 ? null : posts[index + 1].node.childMdx.id
 
       createPage({
         path: `blog${post.fields.slug}`,
