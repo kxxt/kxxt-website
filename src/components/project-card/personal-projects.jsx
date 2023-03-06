@@ -26,7 +26,8 @@ export default function PersonalProjects() {
   return (
     <ProjectCards>
       <ProjectCard
-        img={<img src={aspeakImg} alt="aspeak help text" />}
+        img={aspeakImg}
+        alt="aspeak help text"
         name="aspeak"
         description="A simple text-to-speech client for Azure TTS API."
         content={
@@ -78,7 +79,8 @@ export default function PersonalProjects() {
         datetime="From May 1, 2022, still maintained"
       />
       <ProjectCard
-        img={<img src={catManImg} alt="Category Manager" />}
+        img={catManImg}
+        alt="Category Manager"
         name="Category Manager"
         description="A thunderbird extension to manage categories of your contacts."
         content={
@@ -122,7 +124,8 @@ export default function PersonalProjects() {
         datetime="From Sep 26, 2022, still maintained"
       />
       <ProjectCard
-        img={<img src={chatGPTActionImg} alt="An example" />}
+        img={chatGPTActionImg}
+        alt="An example"
         name="chatgpt-action"
         description="Let ChatGPT review PRs for you."
         content={
@@ -176,12 +179,8 @@ export default function PersonalProjects() {
         datetime="From Dec 7, 2022 to Dec 13, 2022, Unmaintained."
       />
       <ProjectCard
-        img={
-          <img
-            src={advancedPasteImg}
-            alt="Command palette showing the commands of Advanced Paste Plugin for Obsidian"
-          />
-        }
+        img={advancedPasteImg}
+        alt="Command palette showing the commands of Advanced Paste Plugin for Obsidian"
         name="Advanced Paste Plugin for Obsidian"
         description="This plugin provides advanced paste commands and enables you to create custom transforms for pasting."
         content={
@@ -208,7 +207,8 @@ export default function PersonalProjects() {
         datetime="From Jan 16, 2023, still maintained"
       />
       <ProjectCard
-        img={<img src={websiteImg} alt="A screenshot of my personal website" />}
+        img={websiteImg}
+        alt="A screenshot of my personal website"
         name="My Personal Website"
         description="The website you are visiting right now."
         content={
@@ -248,12 +248,8 @@ export default function PersonalProjects() {
         datetime="From Nov 28, 2021, actively maintained"
       />
       <ProjectCard
-        img={
-          <img
-            src={wslDiskShrinkerImg}
-            alt="A screenshot of WSL Disk Shrinker"
-          />
-        }
+        img={wslDiskShrinkerImg}
+        alt="A screenshot of WSL Disk Shrinker"
         name="WSL Disk Shrinker"
         description="Reduce WSL disk usage. "
         content={
@@ -284,12 +280,8 @@ export default function PersonalProjects() {
         datetime="From May 24, 2021, finished"
       />
       <ProjectCard
-        img={
-          <img
-            src={slidevTemplateImg}
-            alt="A screenshot of the directory listing and a slide."
-          />
-        }
+        img={slidevTemplateImg}
+        alt="A screenshot of the directory listing and a slide."
         name="Slidev Template Repo"
         description="A template repo for slidev slides with automatic GitHub Pages deployment and directory listing generation."
         content={

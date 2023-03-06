@@ -2,9 +2,11 @@ import React from "react"
 import * as styles from "./project-card.module.scss"
 import Tags from "@/components/tags/tags"
 import IconText from "@/components/icon-text"
+import ModalImage from "react-modal-image"
 
 export default function ProjectCard({
   img,
+  alt,
   name,
   description,
   content,
@@ -14,7 +16,7 @@ export default function ProjectCard({
 }) {
   return (
     <div className={`card ${styles.horizontal}`}>
-      {img}
+      <ModalImage small={img} large={img} alt={alt} hideDownload={true} />
       <div className={styles.cardStacked}>
         <div className="card-content">
           <p className="title is-4">{name}</p>

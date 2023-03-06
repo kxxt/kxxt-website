@@ -18,9 +18,8 @@ export default function CourseProjects() {
   return (
     <ProjectCards>
       <ProjectCard
-        img={
-          <img src={cfpsReportImg} alt="A screenshot of CFPS report website" />
-        }
+        img={cfpsReportImg}
+        alt="A screenshot of CFPS report website"
         name="CFPS Report"
         description="Course project for front-end development."
         content={
@@ -96,9 +95,8 @@ export default function CourseProjects() {
         datetime="From Nov 23, 2021 to Jan 2, 2022"
       />
       <ProjectCard
-        img={
-          <img src={cfpsJupyterHubImg} alt="A screenshot of our platform." />
-        }
+        img={cfpsJupyterHubImg}
+        alt="A screenshot of our platform."
         name="CFPS Data Analysis and Visualization Platform"
         description="Course project for front-end development and database."
         content={
@@ -206,7 +204,8 @@ export default function CourseProjects() {
         datetime="From Jan 12, 2022 to Feb 12, 2022"
       />
       <ProjectCard
-        img={<img src={roboticArmImg} alt="Our robotic arm" />}
+        img={roboticArmImg}
+        alt="Our robotic arm"
         name="Robotic Arm"
         description="Course project for PCB and more."
         content={
@@ -264,12 +263,8 @@ export default function CourseProjects() {
         datetime="From Apr 9, 2021 to Jul 12, 2021"
       />
       <ProjectCard
-        img={
-          <img
-            src={selfDrivingCarImg}
-            alt="Our car, road and one of the traffic signs"
-          />
-        }
+        img={selfDrivingCarImg}
+        alt="Our car, road and one of the traffic signs"
         name="smart-car-deep-learning"
         description="Course project for summer research training program."
         content={
@@ -321,12 +316,8 @@ export default function CourseProjects() {
       />
 
       <ProjectCard
-        img={
-          <img
-            src={selfParkingCarImg}
-            alt="Showcase of the self-parking process."
-          />
-        }
+        img={selfParkingCarImg}
+        alt="Showcase of the self-parking process."
         name="smart-car-auto-parking"
         description="Course project for Computer Vision."
         content={
