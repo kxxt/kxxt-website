@@ -34,11 +34,11 @@
 
 @include tablet {
   :global(.card).horizontal {
-    max-width: 80%;
+    max-width: 95%;
   }
 }
 
-@include mobile {
+@include touch {
   :global(.card).horizontal {
     flex-direction: column;
     max-width: 100%;
