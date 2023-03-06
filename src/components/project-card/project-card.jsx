@@ -1,7 +1,7 @@
 import React from "react"
 import * as styles from "./project-card.module.scss"
-import Tags from "./tags/tags"
-import IconText from "./icon-text"
+import Tags from "@/components/tags/tags"
+import IconText from "@/components/icon-text"
 
 export default function ProjectCard({
   img,

@@ -12,26 +12,19 @@ import {
 } from "@fortawesome/free-solid-svg-icons"
 import React from "react"
 import ProjectCard from "./project-card"
-import * as styles from "./project-cards.module.scss"
-import aspeakImg from "../images/projects/aspeak.png"
-import catManImg from "../images/projects/category-manager.jpg"
-import chatGPTActionImg from "../images/projects/chatgpt-action.png"
-import advancedPasteImg from "../images/projects/advanced-paste.png"
-import websiteImg from "../images/projects/website.png"
-import wslDiskShrinkerImg from "../images/projects/wsl-disk-shrinker.png"
-import slidevTemplateImg from "../images/projects/slidev-template.png"
+import ProjectCards from "./project-cards"
+import aspeakImg from "@/imgs/projects/aspeak.png"
+import catManImg from "@/imgs/projects/category-manager.jpg"
+import chatGPTActionImg from "@/imgs/projects/chatgpt-action.png"
+import advancedPasteImg from "@/imgs/projects/advanced-paste.png"
+import websiteImg from "@/imgs/projects/website.png"
+import wslDiskShrinkerImg from "@/imgs/projects/wsl-disk-shrinker.png"
+import slidevTemplateImg from "@/imgs/projects/slidev-template.png"
+import TransparentLink from "./transparent-link"
 
-function TransparentLink({ href, ...props }) {
+export default function PersonalProjects() {
   return (
-    <a href={href} {...props}>
-      {href}
-    </a>
-  )
-}
-
-export default function ProjectCards({ ...props }) {
-  return (
-    <div className={styles.cardList}>
+    <ProjectCards>
       <ProjectCard
         img={<img src={aspeakImg} alt="aspeak help text" />}
         name="aspeak"
@@ -333,6 +326,6 @@ export default function ProjectCards({ ...props }) {
         ]}
         datetime="From Feb 27, 2023, still maintained"
       />
-    </div>
+    </ProjectCards>
   )
 }

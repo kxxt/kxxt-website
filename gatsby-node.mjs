@@ -15,6 +15,7 @@ export function onCreateWebpackConfig({ stage, actions }) {
         "@/utils": path.resolve(BASE_PATH, "src/utils"),
         "@/data": path.resolve(BASE_PATH, "src/data"),
         "@/pages": path.resolve(BASE_PATH, "src/pages"),
+        "@/imgs": path.resolve(BASE_PATH, "src/images"),
       },
     },
   })
