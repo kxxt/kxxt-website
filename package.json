@@ -52,6 +52,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
+    "react-modal-image": "^2.6.0",
     "react-refresh": "^0.14.0",
     "react-typed-component": "^1.0.4",
     "reading-time": "^1.5.0",
