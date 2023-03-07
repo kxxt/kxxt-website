@@ -13,6 +13,7 @@ import roboticArmImg from "@/imgs/projects/robotic-arm.png"
 import selfDrivingCarImg from "@/imgs/projects/self-driving-car.png"
 import selfParkingCarImg from "@/imgs/projects/self-parking-car.png"
 import TransparentLink from "./transparent-link"
+import ExternalLink from "./external-link"
 
 export default function CourseProjects() {
   return (
@@ -109,13 +110,13 @@ export default function CourseProjects() {
             <p>
               We chose JupyterHub because it is more convenient for data
               analysis and visualization. I used <strong>Next.js</strong> for{" "}
-              <a href="https://github.com/lie-flat/cfps-jupyterhub/tree/master/hub-login">
+              <ExternalLink href="https://github.com/lie-flat/cfps-jupyterhub/tree/master/hub-login">
                 front-end development
-              </a>{" "}
+              </ExternalLink>{" "}
               and <strong>FastAPI</strong> for{" "}
-              <a href="https://github.com/lie-flat/cfps-jupyterhub/tree/master/backend">
+              <ExternalLink href="https://github.com/lie-flat/cfps-jupyterhub/tree/master/backend">
                 OAuth2 server implementation
-              </a>
+              </ExternalLink>
               . We also used <strong>MySQL</strong> to store the CFPS dataset
               and <strong>Nginx</strong> for reverse proxy. I deployed the
               platform on my cloud server.
@@ -124,9 +125,9 @@ export default function CourseProjects() {
               To solve the problem of echarts.js loading issues when a jupyter
               notebook is shared between different users of our platform, I
               wrote a Jupyter lab plugin named{" "}
-              <a href="https://github.com/lie-flat/cfps-jupyterhub/tree/master/jupyterlab_cfps_preload">
+              <ExternalLink href="https://github.com/lie-flat/cfps-jupyterhub/tree/master/jupyterlab_cfps_preload">
                 <code>jupyterlab-cfps-preload</code>
-              </a>
+              </ExternalLink>
               .
             </p>
             <p>
@@ -138,19 +139,22 @@ export default function CourseProjects() {
             <p>
               Besides security, I also take the user experience seriously. We
               have set up the jupyter lab to{" "}
-              <a href="https://github.com/lie-flat/cfps-jupyterhub/blob/master/cfps-notebook/startup.py">
+              <ExternalLink href="https://github.com/lie-flat/cfps-jupyterhub/blob/master/cfps-notebook/startup.py">
                 automatically load common libraries
-              </a>{" "}
+              </ExternalLink>{" "}
               and{" "}
-              <a href="https://github.com/lie-flat/cfps-jupyterhub/blob/master/cfps_dvapis/sql.py">
+              <ExternalLink href="https://github.com/lie-flat/cfps-jupyterhub/blob/master/cfps_dvapis/sql.py">
                 set up the database connection
-              </a>
+              </ExternalLink>
               .
             </p>
             <p>
               We created twenty-three kinds of data visualization on our
               platform. The notebook source files are available at{" "}
-              <TransparentLink href="https://github.com/lie-flat/cfps-jupyterhub/tree/master/notebooks" />
+              <TransparentLink
+                target="_blank"
+                href="https://github.com/lie-flat/cfps-jupyterhub/tree/master/notebooks"
+              />
             </p>
           </>
         }

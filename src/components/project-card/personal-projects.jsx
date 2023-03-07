@@ -21,6 +21,7 @@ import websiteImg from "@/imgs/projects/website.png"
 import wslDiskShrinkerImg from "@/imgs/projects/wsl-disk-shrinker.png"
 import slidevTemplateImg from "@/imgs/projects/slidev-template.png"
 import TransparentLink from "./transparent-link"
+import ExternalLink from "./external-link"
 
 export default function PersonalProjects() {
   return (
@@ -34,9 +35,9 @@ export default function PersonalProjects() {
           <>
             <p>
               The{" "}
-              <a href="https://azure.microsoft.com/en-us/services/cognitive-services/text-to-speech/">
+              <ExternalLink href="https://azure.microsoft.com/en-us/services/cognitive-services/text-to-speech/">
                 Azure Text-to-Speech demo
-              </a>{" "}
+              </ExternalLink>{" "}
               shows how powerful Azure TTS API is and it was once very popular
               on the web. A lot of people invented their own ways(e.g. User
               Scripts) to utilize the demo page to download the synthesized
@@ -87,18 +88,23 @@ export default function PersonalProjects() {
           <>
             <p>
               At first, I made some pull requests to{" "}
-              <a href="https://github.com/jobisoft/EAS-4-TbSync">
+              <ExternalLink href="https://github.com/jobisoft/EAS-4-TbSync">
                 EAS-4-TbSync
-              </a>{" "}
+              </ExternalLink>{" "}
               and{" "}
-              <a href="https://github.com/jobisoft/TbSync/tree/TB102">TbSync</a>{" "}
+              <ExternalLink href="https://github.com/jobisoft/TbSync/tree/TB102">
+                TbSync
+              </ExternalLink>{" "}
               to fix the calendar sync issue caused by incompatibility with
               Thunderbird 102.
             </p>
             <p>
               Later, the author of the two add-ons,{" "}
-              <a href="https://github.com/jobisoft">John Bieling</a>, sponsored
-              me to rewrite his Category Manager add-on for Thunderbird 102.
+              <ExternalLink href="https://github.com/jobisoft">
+                John Bieling
+              </ExternalLink>
+              , sponsored me to rewrite his Category Manager add-on for
+              Thunderbird 102.
             </p>
             <p>
               By rewriting the add-on, I learned a lot about Thunderbird add-on
@@ -144,19 +150,34 @@ export default function PersonalProjects() {
             Here are some demos:
             <ul>
               <li>
-                <TransparentLink href="https://github.com/kxxt/chatgpt-action/pull/12" />
+                <TransparentLink
+                  target="_blank"
+                  href="https://github.com/kxxt/chatgpt-action/pull/12"
+                />
               </li>
               <li>
-                <TransparentLink href="https://github.com/kxxt/chatgpt-action/pull/10" />
+                <TransparentLink
+                  target="_blank"
+                  href="https://github.com/kxxt/chatgpt-action/pull/10"
+                />
               </li>
               <li>
-                <TransparentLink href="https://github.com/kxxt/chatgpt-action/pull/9" />
+                <TransparentLink
+                  target="_blank"
+                  href="https://github.com/kxxt/chatgpt-action/pull/9"
+                />
               </li>
               <li>
-                <TransparentLink href="https://github.com/kxxt/chatgpt-action/pull/20" />
+                <TransparentLink
+                  target="_blank"
+                  href="https://github.com/kxxt/chatgpt-action/pull/20"
+                />
               </li>
               <li>
-                <TransparentLink href="https://github.com/kxxt/chatgpt-action/pull/22" />
+                <TransparentLink
+                  target="_blank"
+                  href="https://github.com/kxxt/chatgpt-action/pull/22"
+                />
               </li>
             </ul>
           </>
@@ -256,9 +277,9 @@ export default function PersonalProjects() {
           <p>
             When I use WSL, I found that the disk usage of WSL is always
             growing. Inspired by{" "}
-            <a href="https://stephenreescarter.net/how-to-shrink-a-wsl2-virtual-disk/">
+            <ExternalLink href="https://stephenreescarter.net/how-to-shrink-a-wsl2-virtual-disk/">
               this blog post
-            </a>
+            </ExternalLink>
             , I created this GUI tool to help me shrink the disk usage of WSL.
           </p>
         }
@@ -287,9 +308,9 @@ export default function PersonalProjects() {
         content={
           <>
             <p>
-              <a href="https://sli.dev">Slidev</a> is a great tool for creating
-              slides in Markdown and Vue. I usually use it as a replacement for
-              PowerPoint.
+              <ExternalLink href="https://sli.dev">Slidev</ExternalLink> is a
+              great tool for creating slides in Markdown and Vue. I usually use
+              it as a replacement for PowerPoint.
             </p>
             <p>
               I created this template repo to make it easier to deploy multiple
