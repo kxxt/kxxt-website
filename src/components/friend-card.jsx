@@ -7,7 +7,7 @@ export default function FriendCard({
   description,
   className,
   socialLink,
-  username,
+  subtitle,
   link,
   isCircle,
 }) {
@@ -31,10 +31,12 @@ export default function FriendCard({
               <a href={link}>{name}</a>
             </p>
             <p className="subtitle is-6">
-              {socialLink && (
+              {socialLink ? (
                 <a href={socialLink}>
-                  {username ? `@${username}` : "Social Media"}
+                  {subtitle ? `${subtitle}` : "Social Media"}
                 </a>
+              ) : (
+                <>{subtitle}</>
               )}
             </p>
           </div>

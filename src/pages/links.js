@@ -26,7 +26,7 @@ const LinkPage = ({ location }) => {
       <div className={`${styles.friendContainer} tile is-ancestor`}>
         <FriendCard
           name="宝硕"
-          username="renbaoshuo"
+          subtitle="@renbaoshuo"
           socialLink="https://github.com/renbaoshuo"
           description="学习，就是发现自己越来越菜的过程。"
           link="https://blog.baoshuo.ren/?utm_source=friends"
@@ -35,6 +35,21 @@ const LinkPage = ({ location }) => {
             <StaticImage
               src="../images/links/baoshuo.webp"
               alt="baoshuo"
+              width={48}
+              height={48}
+            />
+          }
+        />
+        <FriendCard
+          name="Josh W. Comeau"
+          subtitle="front-end developer"
+          description="Check out his amazing blog posts about flexbox and more!"
+          link="https://www.joshwcomeau.com/"
+          isCircle={true}
+          icon={
+            <StaticImage
+              src="../images/links/joshwcomeau.png"
+              alt="avatar of Josh W. Comeau"
               width={48}
               height={48}
             />
@@ -61,7 +76,10 @@ const LinkPage = ({ location }) => {
         <h2 className="title is-4">友链申请</h2>
         <p className="content">
           您可以
-          <a href="https://github.com/kxxt/kxxt-website/issues/new?assignees=kxxt&labels=link+exchange&template=exchange-website-link.md&title=%5BLink+Exchange%5D">
+          <a
+            target="_blank"
+            href="https://github.com/kxxt/kxxt-website/issues/new?assignees=kxxt&labels=link+exchange&template=exchange-website-link.md&title=%5BLink+Exchange%5D"
+          >
             在此网站的 GitHub 仓库发 Issue{" "}
           </a>
           来申请友链互换，如果我看你眼熟而且你的网站上有至少两篇高质量内容，我会同意你的友链申请。
