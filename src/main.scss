@@ -51,21 +51,23 @@ a code {
 }
 
 .content a:not(.header-anchor, .tag, .gatsby-resp-image-link, .clear) {
+  cursor: pointer;
+  font-weight: 600;
   text-decoration: none;
-  position: relative;
-  &::before {
-    content: "";
-    background-color: hsla(81, 92%, 50%, 0.6);
-    position: absolute;
-    left: 0;
-    bottom: -0.1em;
-    width: 100%;
-    height: 0.2em;
-    transition: all 0.3s cubic-bezier(0, 1.5, 1, 1.5);
-  }
-  &:hover::before {
-    bottom: -0.1em;
-    height: 1.2em;
+  display: inline;
+  transition: all 0.35s linear;
+  background: linear-gradient(
+    to bottom,
+    rgba($primary, 1) 0%,
+    rgba($primary, 1) 98%
+  );
+  background-size: 0px 2px;
+  background-repeat: no-repeat;
+  background-position: left 100%;
+
+  &:hover {
+    color: rgba($primary, 1);
+    background-size: 100% 2px;
   }
 }
 
