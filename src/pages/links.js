@@ -5,6 +5,7 @@ import { StaticImage } from "gatsby-plugin-image"
 import FriendCard from "@/components/friend-card"
 import Layout from "@/components/layout"
 import Seo from "@/components/seo"
+import { shuffle } from "lodash"
 
 import * as styles from "./links.module.scss"
 
@@ -19,61 +20,71 @@ const IconTag = ({ size }) => {
 
 const LinkPage = ({ location }) => {
   const title = "Links"
+  const cards = [
+    <FriendCard
+      name="宝硕"
+      key="宝硕"
+      subtitle="@renbaoshuo"
+      socialLink="https://github.com/renbaoshuo"
+      description="学习，就是发现自己越来越菜的过程。"
+      link="https://blog.baoshuo.ren/?utm_source=friends"
+      isCircle={true}
+      icon={
+        <StaticImage
+          src="../images/links/baoshuo.webp"
+          alt="baoshuo"
+          width={48}
+          height={48}
+        />
+      }
+    />,
+    <FriendCard
+      name="Josh W. Comeau"
+      key="Josh W. Comeau"
+      subtitle="front-end developer"
+      description="Check out his amazing blog posts about flexbox and more!"
+      link="https://www.joshwcomeau.com/"
+      isCircle={true}
+      icon={
+        <StaticImage
+          src="../images/links/joshwcomeau.png"
+          alt="avatar of Josh W. Comeau"
+          width={48}
+          height={48}
+        />
+      }
+    />,
+    <FriendCard
+      name="The Overflow"
+      key="The Overflow"
+      description="Stack Overflow's Blog"
+      link="https://stackoverflow.blog"
+      isCircle={false}
+      icon={
+        <StaticImage
+          src="../images/links/logo-stackoverflow.png"
+          alt="The Overflow"
+          width={48}
+          height={52}
+        />
+      }
+    />,
+  ]
   return (
     <Layout location={location}>
       <Seo title={title} />
       <h2 className="title">Excellent Blogs</h2>
+      <p className="subtitle">
+        The following blogs are displayed in random order and are not ranked.
+      </p>
       <div className={`${styles.friendContainer} tile is-ancestor`}>
-        <FriendCard
-          name="宝硕"
-          subtitle="@renbaoshuo"
-          socialLink="https://github.com/renbaoshuo"
-          description="学习，就是发现自己越来越菜的过程。"
-          link="https://blog.baoshuo.ren/?utm_source=friends"
-          isCircle={true}
-          icon={
-            <StaticImage
-              src="../images/links/baoshuo.webp"
-              alt="baoshuo"
-              width={48}
-              height={48}
-            />
-          }
-        />
-        <FriendCard
-          name="Josh W. Comeau"
-          subtitle="front-end developer"
-          description="Check out his amazing blog posts about flexbox and more!"
-          link="https://www.joshwcomeau.com/"
-          isCircle={true}
-          icon={
-            <StaticImage
-              src="../images/links/joshwcomeau.png"
-              alt="avatar of Josh W. Comeau"
-              width={48}
-              height={48}
-            />
-          }
-        />
-        <FriendCard
-          name="The Overflow"
-          description="Stack Overflow's Blog"
-          link="https://stackoverflow.blog"
-          isCircle={false}
-          icon={
-            <StaticImage
-              src="../images/links/logo-stackoverflow.png"
-              alt="The Overflow"
-              width={48}
-              height={52}
-            />
-          }
-        />
+        {shuffle(cards)}
       </div>
       {/* <h2 className="title">Useful Documentations</h2> */}
       <hr />
       <div>
         <h2 className="title is-4">友链申请</h2>
+        <p className="subtitle is-6">Link Exchange</p>
         <p className="content">
           您可以
           <a
