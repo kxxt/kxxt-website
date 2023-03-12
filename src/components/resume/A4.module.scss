@@ -15,10 +15,15 @@
 
 .subpage {
   padding: 0;
-  //   border: 5px red solid;
   box-sizing: border-box;
   height: 257mm;
-  outline: 2cm #ffeaea solid;
+
+  // for debugging purpose:
+  // outline: 2cm #ffeaea solid;
+
+  & > :first-child {
+    margin-top: 0;
+  }
 }
 
 @page {
