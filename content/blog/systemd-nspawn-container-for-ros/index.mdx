@@ -85,7 +85,7 @@ Bind=/dev/dri
 ```
 
 - 直接使用系统的现有 UID. 因为 Ubuntu 18.04 的 systemd 的版本太低, 不支持 systemd-nspawn 的一些高级功能
-- 为了简单期间, 把 `VirtualEthernet` 设置成 `no`, 让容器直接使用宿主机网络.
+- 为了简单起见, 把 `VirtualEthernet` 设置成 `no`, 让容器直接使用宿主机网络.
 - [不使用宿主机的 `resolv.conf`](focus://3)
 - 另外, 为了能在容器里访问摄像头, 把 `/dev/video*` Bind 进去
 - 为了启用硬件加速[^1], 把 `/dev/dri` Bind 进去. 
@@ -123,6 +123,7 @@ sudo machinectl login bionic
 服务, 
 
 ```bash
+sudo systemctl disable --now systemd-resolved
 echo 'nameserver 8.8.8.8' > /etc/resolv.conf
 ```
 
