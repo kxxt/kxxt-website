@@ -89,6 +89,7 @@ const LinkPage = ({ location }) => {
           您可以
           <a
             target="_blank"
+            rel="noreferrer"
             href="https://github.com/kxxt/kxxt-website/issues/new?assignees=kxxt&labels=link+exchange&template=exchange-website-link.md&title=%5BLink+Exchange%5D"
           >
             在此网站的 GitHub 仓库发 Issue{" "}

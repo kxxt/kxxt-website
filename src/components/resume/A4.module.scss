@@ -1,0 +1,49 @@
+// Reference: https://stackoverflow.com/questions/20446252/stretch-div-to-a4-size
+
+.page {
+  width: 21cm;
+  height: 296mm;
+  max-height: 296mm;
+  padding: 2cm;
+  margin: 1cm auto;
+  box-sizing: border-box;
+  border: 1px #d3d3d3 solid;
+  border-radius: 5px;
+  background: white;
+  box-shadow: 5px 5px 7px rgba(0, 0, 0, 0.3);
+}
+
+.subpage {
+  padding: 0;
+  box-sizing: border-box;
+  height: 257mm;
+
+  // for debugging purpose:
+  // outline: 2cm #ffeaea solid;
+
+  & > :first-child {
+    margin-top: 0;
+  }
+}
+
+@page {
+  size: A4;
+  margin: 0;
+}
+
+@media print {
+  .page {
+    margin: 0;
+    border: initial;
+    border-radius: initial;
+    width: initial;
+    min-height: initial;
+    box-shadow: initial;
+    background: initial;
+    page-break-after: always;
+
+    &:last-child {
+      page-break-after: avoid;
+    }
+  }
+}
