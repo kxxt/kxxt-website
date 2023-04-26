@@ -69,6 +69,57 @@ const LinkPage = ({ location }) => {
         />
       }
     />,
+    <FriendCard
+      name="lancern"
+      key="lancern"
+      subtitle="@lancern"
+      socialLink="https://github.com/lancern"
+      description="Programming life"
+      link="https://lancern.xyz/"
+      isCircle={false}
+      icon={
+        <StaticImage
+          src="../images/links/lancern.jpg"
+          alt="lancern"
+          width={48}
+          height={48}
+        />
+      }
+    />,
+    <FriendCard
+      name="QuarticCat"
+      key="QuarticCat"
+      subtitle="@QuarticCat"
+      socialLink="https://github.com/QuarticCat"
+      description=""
+      link="https://blog.quarticcat.com/"
+      isCircle={false}
+      icon={
+        <StaticImage
+          src="../images/links/QuarticCat.png"
+          alt="QuarticCat"
+          width={48}
+          height={48}
+        />
+      }
+    />,
+    <FriendCard
+      name="山楂片的博客"
+      key="山楂片的博客"
+      subtitle="@sunziping2016"
+      socialLink="https://github.com/sunziping2016"
+      description=""
+      link="https://szp15.com/"
+      isCircle={false}
+      icon={
+        <StaticImage
+          src="../images/links/山楂片的博客.png"
+          alt="山楂片的博客"
+          width={48}
+          height={48}
+        />
+      }
+    />,
   ]
   return (
     <Layout location={location}>
