@@ -2,15 +2,18 @@ import React from "react"
 import { graphql } from "gatsby"
 
 import Layout from "@/components/layout"
-import Seo from "@/components/seo"
+import HeadWithDefaults from "@/components/head"
 import BlogSummaryList from "@/components/blog-summary/blog-summary-list"
 
-const TagPage = ({ data, location, pageContext }) => {
+export function Head({ pageContext }) {
   const title = `Tag ${pageContext.tag}`
+  return <HeadWithDefaults title={title} />
+}
+
+const TagPage = ({ data, location, pageContext }) => {
   const posts = data.allFile.nodes
   return (
     <Layout location={location}>
-      <Seo title={title} />
       <h1 className="title">Tag: {pageContext.tag}</h1>
       <p className="subtitle is-5">
         Found {pageContext.totalCount} page

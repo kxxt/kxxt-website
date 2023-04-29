@@ -1,12 +1,14 @@
 import Layout from "@/components/layout/mdx"
-import Seo from "@/components/seo"
+import HeadWithDefaults from "@/components/head"
 import { Link } from "gatsby"
 
 import PersonalProjects from "@/components/project-card/personal-projects"
 import CourseProjects from "@/components/project-card/course-projects"
 export default Layout
 
-<Seo title="About" />
+export function Head() {
+  return <HeadWithDefaults title="About"/>
+}
 
 # About Me
 

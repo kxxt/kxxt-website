@@ -4,7 +4,7 @@ import { StaticImage } from "gatsby-plugin-image"
 
 import FriendCard from "@/components/friend-card"
 import Layout from "@/components/layout"
-import Seo from "@/components/seo"
+import HeadWithDefaults from "@/components/head"
 import { shuffle } from "lodash"
 
 import * as styles from "./links.module.scss"
@@ -18,8 +18,11 @@ const IconTag = ({ size }) => {
   )
 }
 
+export function Head() {
+  return <HeadWithDefaults title="Links" />
+}
+
 const LinkPage = ({ location }) => {
-  const title = "Links"
   const cards = [
     <FriendCard
       name="宝硕"
@@ -123,7 +126,6 @@ const LinkPage = ({ location }) => {
   ]
   return (
     <Layout location={location}>
-      <Seo title={title} />
       <h2 className="title">Excellent Blogs</h2>
       <p className="subtitle">
         The following blogs are displayed in random order and are not ranked.

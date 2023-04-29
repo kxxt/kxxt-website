@@ -3,7 +3,7 @@ import { graphql } from "gatsby"
 import { useState } from "react"
 
 import Layout from "@/components/layout"
-import Seo from "@/components/seo"
+import HeadWithDefaults from "@/components/head"
 import ReactTyped from "react-typed-component"
 import { StaticImage } from "gatsby-plugin-image"
 import BlogSummaryList from "@/components/blog-summary/blog-summary-list"
@@ -11,6 +11,10 @@ import BlogSummaryList from "@/components/blog-summary/blog-summary-list"
 import * as styles from "./index.module.scss"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faFastForward } from "@fortawesome/free-solid-svg-icons"
+
+export function Head() {
+  return <HeadWithDefaults title="Home" />
+}
 
 const BlogIndex = ({ data, location }) => {
   let [typingSpeed, setTypingSpeed] = useState(70)
@@ -104,7 +108,6 @@ const BlogIndex = ({ data, location }) => {
 
   return (
     <Layout location={location} hero={hero}>
-      <Seo title="Home" />
       <BlogSummaryList posts={posts} />
     </Layout>
   )

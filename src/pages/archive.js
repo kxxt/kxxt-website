@@ -1,6 +1,6 @@
 import React from "react"
 import Layout from "@/components/layout"
-import Seo from "@/components/seo"
+import HeadWithDefaults from "@/components/head"
 import { graphql } from "gatsby"
 import ArchiveItem from "@/components/archive/archive-item"
 
@@ -19,8 +19,13 @@ const months = [
   "December",
 ]
 
+const title = "Archive"
+
+export function Head() {
+  return <HeadWithDefaults title="Archive" />
+}
+
 const ArchivePage = ({ data, location }) => {
-  const title = "Archive"
   const posts = data.allFile.nodes
   let currentYear = null,
     currentMonth = null,
@@ -42,7 +47,6 @@ const ArchivePage = ({ data, location }) => {
   }
   return (
     <Layout location={location}>
-      <Seo title={title} />
       <h1 className="title">{title}</h1>
       <p className="subtitle is-6">
         This is the archive page. You can find all the posts here.

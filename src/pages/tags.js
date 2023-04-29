@@ -2,15 +2,19 @@ import React from "react"
 import { graphql } from "gatsby"
 
 import Layout from "@/components/layout"
-import Seo from "@/components/seo"
+import HeadWithDefaults from "@/components/head"
 import Tags from "@/components/tags/tags"
 
+const title = "Tags"
+
+export function Head() {
+  return <HeadWithDefaults title={title} />
+}
+
 const TagsPage = ({ data, location }) => {
-  const title = "Tags"
   const tags = data.allFile.group
   return (
     <Layout location={location}>
-      <Seo title={title} />
       <h1 className="title">All Tags</h1>
       <Tags tags={tags} withCount={true} />
     </Layout>

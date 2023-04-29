@@ -1,7 +1,6 @@
 import * as React from "react"
 import Navbar from "../navbar"
 import Footer from "../footer"
-import { Helmet } from "react-helmet"
 
 import SidebarContext from "./sidebar-context"
 import * as styles from "./layout.module.scss"
@@ -21,9 +20,7 @@ const Layout = ({
   }
   return (
     <>
-      <Helmet>
-        <body className="has-navbar-fixed-top-desktop" />
-      </Helmet>
+      <body className="has-navbar-fixed-top-desktop" />
       <Navbar title="kxxt" />
       {hero}
       <div id="main-container" className="container">

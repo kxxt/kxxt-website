@@ -4,7 +4,7 @@ import { MDXProvider } from "@mdx-js/react"
 import Giscus from "@giscus/react"
 
 import Layout from "@/components/layout"
-import Seo from "@/components/seo"
+import HeadWithDefaults from "@/components/head"
 import Tags from "@/components/tags/tags"
 import BlogBottomNav from "@/components/blog-bottom-nav/blog-bottom-nav"
 import TableOfContents from "@/components/table-of-contents/table-of-contents"
@@ -18,6 +18,17 @@ import "../admonition.scss"
 import "./blog-post.scss"
 
 const shortCodes = { Link } // Provide common components here
+
+export const Head = ({
+  data: {
+    mdx: {
+      frontmatter: { title, description },
+      excerpt,
+    },
+  },
+}) => {
+  return <HeadWithDefaults title={title} description={description || excerpt} />
+}
 
 const BlogPostTemplate = ({ data, location, children }) => {
   const post = data.mdx
@@ -34,10 +45,6 @@ const BlogPostTemplate = ({ data, location, children }) => {
   )
   return (
     <Layout location={location} sidebar={toc} bottom={bottom}>
-      <Seo
-        title={frontmatter.title}
-        description={frontmatter.description || post.excerpt}
-      />
       <article
         className="blog-post content"
         itemScope
