@@ -100,13 +100,11 @@ export default {
             options: {
               launchOptions: {
                 executablePath: puppeteerExecutablePath,
+                headless: "new",
               },
               theme: "base",
               mermaidOptions: {
-                // Fix mermaid and bulma css conflicts.
-                // .label styles in bulma will override .label styles in mermaid
-                // themeCSS:
-                // ".label { font-size: inherit!important; font-weight: inherit!important; line-height: initial!important; }",
+                // TODO
               },
             },
           },

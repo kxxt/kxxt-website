@@ -15,6 +15,7 @@ import * as styles from "./blog-post.module.scss"
 import "katex/dist/katex.min.css"
 import "@code-hike/mdx/dist/index.css"
 import "../admonition.scss"
+import "./blog-post.scss"
 
 const shortCodes = { Link } // Provide common components here
 
