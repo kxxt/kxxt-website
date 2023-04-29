@@ -102,9 +102,12 @@ export default {
                 executablePath: puppeteerExecutablePath,
                 headless: "new",
               },
-              theme: "base",
+              svgo: {
+                plugins: [{ name: "removeTitle", active: false }],
+              },
               mermaidOptions: {
-                // TODO
+                theme: "neutral",
+                themeCSS: ".node rect { fill: lemonchiffon; }",
               },
             },
           },

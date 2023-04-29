@@ -1,6 +1,7 @@
 // Fix mermaid and bulma css conflicts.
 // .label styles in bulma will override .label styles in mermaid
 svg .label {
+  display: inherit !important;
   font-size: inherit !important;
   font-weight: inherit !important;
   line-height: initial !important;

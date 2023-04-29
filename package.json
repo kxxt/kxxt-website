@@ -37,7 +37,7 @@
     "gatsby-remark-copy-relative-linked-files": "https://github.com/kxxt/npm-gatsby-remark-copy-relative-linked-files",
     "gatsby-remark-graphviz": "^5.9.0",
     "gatsby-remark-images": "^7.9.0",
-    "gatsby-remark-mermaid": "^2.1.0",
+    "gatsby-remark-mermaid": "^3.0.1",
     "gatsby-remark-responsive-iframe": "^6.9.0",
     "gatsby-remark-smartypants": "^6.9.0",
     "gatsby-source-filesystem": "^5.9.0",
@@ -70,7 +70,7 @@
     "unist-util-visit": "^4.1.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.21.4",
+    "@babel/core": "^7.21.5",
     "@babel/eslint-parser": "^7.21.3",
     "babel-eslint": "^10.0.0",
     "eslint": "^8.39.0",
