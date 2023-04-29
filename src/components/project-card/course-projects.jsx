@@ -362,7 +362,7 @@ export default function CourseProjects() {
         ]}
         links={[
           {
-            link: "https://github.com/kxxt/chatgpt-action",
+            link: "https://github.com/lie-flat/smart-car-auto-parking",
             text: "GitHub",
             icon: faGithub,
             color: "black",
