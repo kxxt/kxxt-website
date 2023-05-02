@@ -84,13 +84,54 @@ const intern = {
   },
 }
 
-const competitions = {}
+const competitions = {
+  comp_rank: {
+    zh: "排名",
+    en: "Rank",
+  },
+  comp_writeup: {
+    zh: "我的 Writeup",
+    en: "My Writeup",
+  },
+  comp_welcome_to_read: {
+    zh: "欢迎阅读",
+    en: "Welcome to read ",
+  },
+}
+
+const tags = {
+  tag_ctf: {
+    zh: "CTF 比赛",
+    en: "CTF",
+  },
+}
+
+const skills = {
+  skill_programming_languages: {
+    zh: "常用编程语言",
+    en: "Commonly Used Programming Languages",
+  },
+  skill_other_programming_languages: {
+    zh: "不太常用/会一部分的编程语言",
+    en: "Other Programming Languages",
+  },
+  skill_apps: {
+    zh: "软件",
+    en: "Software",
+  },
+  skill_others: {
+    zh: "其他",
+    en: "Others",
+  },
+}
 
 const locales = {
   ...labels,
   ...education,
   ...intern,
   ...competitions,
+  ...tags,
+  ...skills,
   getText(locale, key) {
     if (this[key] && this[key][locale]) {
       return this[key][locale]

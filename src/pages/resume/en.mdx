@@ -13,7 +13,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons"
 import { locales } from "@/data/strings"
 export const L = ({ k }) => {
-  return locales.getText("zh", k)
+  return locales.getText("en", k)
 }
 
 <A4>
@@ -30,11 +30,12 @@ export const L = ({ k }) => {
 
     ### <L k="label_education"/>
 
-    - <L k="edu_time"/>   **<L k="edu_sduwh"/>**  **<L k="edu_major"/>** 专业 <L k="edu_status"/>
+    - <L k="edu_time"/> at **<L k="edu_sduwh"/>**, majoring in **<L k="edu_major"/>**, as an <L k="edu_status"/>
 
     ### <L k="label_intern"/>
 
-    - <L k="intern_archrv_time"/>  &nbsp; <L k="intern_archrv_job"/> &nbsp; <L k="intern_archrv_company"/>
+    - <L k="intern_archrv_time"/>  &nbsp; <L k="intern_archrv_job"/>
+      - at <L k="intern_archrv_company"/>
 
     ### <L k="label_competitions"/>
 
