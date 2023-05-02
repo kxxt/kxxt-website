@@ -1,14 +1,13 @@
 import React from "react"
 import { graphql } from "gatsby"
 
-import Layout from "@/components/layout"
-import HeadWithDefaults from "@/components/head"
+import { Layout, HeadWithNavBarTop } from "@/components/layout"
 import Tags from "@/components/tags/tags"
 
 const title = "Tags"
 
 export function Head() {
-  return <HeadWithDefaults title={title} />
+  return <HeadWithNavBarTop title={title} />
 }
 
 const TagsPage = ({ data, location }) => {

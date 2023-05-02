@@ -3,8 +3,7 @@ import { Link, graphql } from "gatsby"
 import { MDXProvider } from "@mdx-js/react"
 import Giscus from "@giscus/react"
 
-import Layout from "@/components/layout"
-import HeadWithDefaults from "@/components/head"
+import { Layout, HeadWithNavBarTop } from "@/components/layout"
 import Tags from "@/components/tags/tags"
 import BlogBottomNav from "@/components/blog-bottom-nav/blog-bottom-nav"
 import TableOfContents from "@/components/table-of-contents/table-of-contents"
@@ -27,7 +26,9 @@ export const Head = ({
     },
   },
 }) => {
-  return <HeadWithDefaults title={title} description={description || excerpt} />
+  return (
+    <HeadWithNavBarTop title={title} description={description || excerpt} />
+  )
 }
 
 const BlogPostTemplate = ({ data, location, children }) => {

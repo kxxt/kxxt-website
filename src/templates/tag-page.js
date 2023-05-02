@@ -1,13 +1,12 @@
 import React from "react"
 import { graphql } from "gatsby"
 
-import Layout from "@/components/layout"
-import HeadWithDefaults from "@/components/head"
+import { Layout, HeadWithNavBarTop } from "@/components/layout"
 import BlogSummaryList from "@/components/blog-summary/blog-summary-list"
 
 export function Head({ pageContext }) {
   const title = `Tag ${pageContext.tag}`
-  return <HeadWithDefaults title={title} />
+  return <HeadWithNavBarTop title={title} />
 }
 
 const TagPage = ({ data, location, pageContext }) => {

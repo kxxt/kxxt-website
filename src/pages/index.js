@@ -2,8 +2,7 @@ import * as React from "react"
 import { graphql } from "gatsby"
 import { useState } from "react"
 
-import Layout from "@/components/layout"
-import HeadWithDefaults from "@/components/head"
+import { Layout, HeadWithNavBarTop } from "@/components/layout"
 import ReactTyped from "react-typed-component"
 import { StaticImage } from "gatsby-plugin-image"
 import BlogSummaryList from "@/components/blog-summary/blog-summary-list"
@@ -13,7 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faFastForward } from "@fortawesome/free-solid-svg-icons"
 
 export function Head() {
-  return <HeadWithDefaults title="Home" />
+  return <HeadWithNavBarTop title="Home" />
 }
 
 const BlogIndex = ({ data, location }) => {

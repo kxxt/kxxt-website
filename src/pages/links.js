@@ -3,8 +3,7 @@ import React from "react"
 import { StaticImage } from "gatsby-plugin-image"
 
 import FriendCard from "@/components/friend-card"
-import Layout from "@/components/layout"
-import HeadWithDefaults from "@/components/head"
+import { Layout, HeadWithNavBarTop } from "@/components/layout"
 import { shuffle } from "lodash"
 
 import * as styles from "./links.module.scss"
@@ -19,7 +18,7 @@ const IconTag = ({ size }) => {
 }
 
 export function Head() {
-  return <HeadWithDefaults title="Links" />
+  return <HeadWithNavBarTop title="Links" />
 }
 
 const LinkPage = ({ location }) => {

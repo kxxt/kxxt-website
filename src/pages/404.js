@@ -1,11 +1,10 @@
 import * as React from "react"
 import { graphql } from "gatsby"
 
-import Layout from "@/components/layout"
-import HeadWithDefaults from "@/components/head"
+import { Layout, HeadWithNavBarTop } from "@/components/layout"
 
 export function Head() {
-  return <HeadWithDefaults title="404: Not Found" />
+  return <HeadWithNavBarTop title="404: Not Found" />
 }
 
 const NotFoundPage = ({ data, location }) => {

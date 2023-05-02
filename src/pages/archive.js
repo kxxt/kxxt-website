@@ -1,6 +1,5 @@
 import React from "react"
-import Layout from "@/components/layout"
-import HeadWithDefaults from "@/components/head"
+import { Layout, HeadWithNavBarTop } from "@/components/layout"
 import { graphql } from "gatsby"
 import ArchiveItem from "@/components/archive/archive-item"
 
@@ -22,7 +21,7 @@ const months = [
 const title = "Archive"
 
 export function Head() {
-  return <HeadWithDefaults title="Archive" />
+  return <HeadWithNavBarTop title="Archive" />
 }
 
 const ArchivePage = ({ data, location }) => {

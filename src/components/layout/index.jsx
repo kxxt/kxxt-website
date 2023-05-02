@@ -4,6 +4,16 @@ import Footer from "../footer"
 
 import SidebarContext from "./sidebar-context"
 import * as styles from "./layout.module.scss"
+import HeadWithDefaults from "../head"
+
+const HeadWithNavBarTop = ({ children, ...props }) => {
+  return (
+    <HeadWithDefaults {...props}>
+      <body className="has-navbar-fixed-top-desktop" />
+      {children}
+    </HeadWithDefaults>
+  )
+}
 
 const Layout = ({
   location,
@@ -20,7 +30,6 @@ const Layout = ({
   }
   return (
     <>
-      <body className="has-navbar-fixed-top-desktop" />
       <Navbar title="kxxt" />
       {hero}
       <div id="main-container" className="container">
@@ -56,4 +65,4 @@ const Layout = ({
   )
 }
 
-export default Layout
+export { HeadWithNavBarTop, Layout }

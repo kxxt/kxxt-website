@@ -1,5 +1,5 @@
 import Layout from "@/components/layout/mdx"
-import HeadWithDefaults from "@/components/head"
+import { HeadWithNavBarTop } from "@/components/layout"
 import { Link } from "gatsby"
 
 import PersonalProjects from "@/components/project-card/personal-projects"
@@ -7,7 +7,7 @@ import CourseProjects from "@/components/project-card/course-projects"
 export default Layout
 
 export function Head() {
-  return <HeadWithDefaults title="About"/>
+  return <HeadWithNavBarTop title="About" />
 }
 
 # About Me
@@ -124,7 +124,6 @@ I have participated in some CTF competitions and I have learned a lot on informa
 
 - [Hackergame 2022](https://github.com/USTC-Hackergame/hackergame2022-writeups), rank 34: Here is my <Link to="/blog/my-first-ctf-hackergame-2022/">writeup</Link>.
 - [Geekgame 2nd](https://github.com/PKU-GeekGame/geekgame-2nd), rank 19: Here is my <Link to="/blog/geekgame-2nd-writeup/">writeup</Link>.
-
 
 # Foot notes
 

@@ -1,14 +1,13 @@
 import * as React from "react"
 import { graphql } from "gatsby"
 
-import Layout from "@/components/layout"
-import HeadWithDefaults from "@/components/head"
+import { Layout, HeadWithNavBarTop } from "@/components/layout"
 import BlogSummaryList from "@/components/blog-summary/blog-summary-list"
 
 const title = "Blogs"
 
 export function Head() {
-  return <HeadWithDefaults title={title} />
+  return <HeadWithNavBarTop title={title} />
 }
 
 const BlogsPage = ({ data, location }) => {
