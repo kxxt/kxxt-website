@@ -2,8 +2,6 @@ import A4 from "@/components/resume/A4"
 import "./resume.scss"
 import IconLink from "@/components/icon-link"
 import HorizontalIconLinks from "@/components/resume/HorizontalIconLinks"
-// import Layout from "@/components/layout/mdx"
-// export default Layout;
 import Tags from "@/components/tags/tags"
 import PR from "@/components/mdx/PR"
 import { faGithub } from "@fortawesome/free-brands-svg-icons"
@@ -13,29 +11,32 @@ import {
   faUser,
   faPhone,
 } from "@fortawesome/free-solid-svg-icons"
-
+import { locales } from "@/data/strings"
+export const L = ({ k }) => {
+  return locales.getText("zh", k)
+}
 
 <A4>
     <h1 className="has-text-centered"> 任鹏飞   Pengfei Ren </h1>
     <HorizontalIconLinks items={
         [
             {icon: faGithub, color: "black", children: "GitHub", href: "https://github.com/kxxt"},
-            {icon: faGlobe, color: "dodgerblue", children: "个人网站", href: "https://www.kxxt.dev"},
-            {icon: faEnvelope, color: "seagreen", children: "邮箱", href: "mailto:rsworktech@outlook.com"},
-            {icon: faUser, color: "darkorange", children: "关于我(英文)", href: "https://www.kxxt.dev/about/"},
-            {icon: faPhone, children: "电话: +86 DATA_REMOVED", color: "hotpink", href: "tel:+86TODO"},
+            {icon: faGlobe, color: "dodgerblue", children: <L k="label_website"/>, href: "https://www.kxxt.dev"},
+            {icon: faEnvelope, color: "seagreen", children: <L k="label_email"/>, href: "mailto:rsworktech@outlook.com"},
+            {icon: faUser, color: "darkorange", children: <L k="label_about_me"/>, href: "https://www.kxxt.dev/about/"},
+            {icon: faPhone, children: <><L k="label_phone"/>: +86 DATA_REMOVED</>, color: "hotpink", href: "tel:+86TODO"},
         ]
     }/>
 
-    ### 教育经历
+    ### <L k="label_education"/>
 
-    - 2020.10 至今   **山东大学(威海校区)**  **统计学(数据科学与人工智能)** 专业 本科在读(大三)
+    - <L k="edu_time"/>   **<L k="edu_sduwh"/>**  **<L k="edu_major"/>** 专业 <L k="edu_status"/>
 
-    ### 实习经历
+    ### <L k="label_intern"/>
 
-    - 2023.3 至今    RISCV-V Arch Linux 打包实习生    中科院软件所 PLCT 实验室
+    - <L k="intern_archrv_time"/>  &nbsp; <L k="intern_archrv_job"/> &nbsp; <L k="intern_archrv_company"/>
 
-    ### 比赛经历
+    ### <L k="label_competitions"/>
 
     - [Hackergame 2022](https://github.com/USTC-Hackergame/hackergame2022-writeups):
     <Tags inline={true} tags={["CTF 比赛"]} withLink={false}/> ,
@@ -45,7 +46,7 @@ import {
     [排名 19](https://github.com/PKU-GeekGame/geekgame-2nd/blob/master/ranking/score_all.csv),
     欢迎阅读[我的 WriteUp](https://www.kxxt.dev/blog/my-first-ctf-hackergame-2022/).
 
-    ### 技能
+    ### <L k="label_skills"/>
 
     - 常用编程语言: <Tags inline={true} tags={[
         "Python","JavaScript","Rust", "C#",  "C/C++"]} withLink={false}/>
@@ -56,7 +57,7 @@ import {
     - 杂项: <Tags inline={true}  tags={[
          "Gatsby.js", "FastAPI", "React", "WPF", "WinForms", "OpenCV", "numpy", "PyO3", "Markdown", "HTML", "CSS"]} withLink={false}/>
 
-    ### 个人项目
+    ### <L k="label_personal_projects"/>
 
     - [aspeak](https://github.com/kxxt/aspeak), 2022 年 5 月至今. 一个 Azure 语音合成服务的 CLI.
     最初我采用 Python 编写了它, 直接调用微软的 SDK 包. 最近我已经用 Rust 重写了它, 现在它直接使用 Websockets 与 Azure
@@ -78,7 +79,7 @@ import {
 
 <A4>
 
-- [WSLDiskShrinker](https://github.com/kxxt/WSLDiskShrinker), 开坑于2021 年 5 月, 不再维护.
+- [WSLDiskShrinker](https://github.com/kxxt/WSLDiskShrinker), 开坑于 2021 年 5 月, 不再维护.
   一个使用 C# WPF 编写的 Windows 桌面应用, 它可以通过缩小 WSL 的虚拟磁盘大小来释放磁盘空间.
 - [slidev 模板仓库](https://github.com/kxxt/slidev-template-repo), 开坑于 2023
   年 2 月. [Slidev](https://sli.dev/) 是一款 Markdown + Vue 幻灯片框架.
@@ -89,7 +90,7 @@ import {
   我就借着这个机会学习了如何编写 GitHub Actions, 编写了这个玩具项目,
   最终验证了自己的想法.
 
-### 课程大作业
+### <L k="label_course_projects"/>
 
 - [CFPS 分析报告网站](https://cfps-report.vercel.app/), 前端与 Web 开发课程的大作业, 2021 年底.
   CFPS 是中国家庭追踪调查数据集, 我们围绕着乡村振兴与城乡差异分析这一主题, 做了简单数据分析并使用 Vue.js 和
@@ -120,17 +121,23 @@ import {
   我们使用安卓手机作为唯一的摄像头完成了基于 ArUco 标记的[小车位姿实时跟踪](https://www.bilibili.com/video/BV1N24y1y7Zt).
   之后, 我们在此基础上使用强化学习方法实现了[小车的倒车入库](https://www.bilibili.com/video/BV1C84y1W7zS).
 
-### 其他经历
+### <L k="label_other_experiences"/>
 
 - 参加了[2022 开源操作系统训练营](https://github.com/LearningOS/rust-based-os-comp2023/tree/comp2022),
   完成了第一部分. 我从中学习到了很多操作系统和 risc-v 的知识. 提了几个 PR, <PR number="107" repo="LearningOS/rust-based-os-comp2023"/>,
-  <PR number="145" repo="LearningOS/rust-based-os-comp2023"/>, <PR number="152" repo="LearningOS/rust-based-os-comp2023" open/>
+  <PR number="145" repo="LearningOS/rust-based-os-comp2023" />, <PR number="152" repo="LearningOS/rust-based-os-comp2023" open />
 - 给几个我使用的 ThunderBird 扩展修复兼容性问题: <PR number="287" repo="jobisoft/DAV-4-TbSync" half/>,
-  <PR number="606" repo="jobisoft/TbSync" half/>, <PR number="602" repo="jobisoft/TbSync" half/>, 
-  <PR number="173" repo="jobisoft/EAS-4-TbSync" half/>, <PR number="174" repo="jobisoft/EAS-4-TbSync" half/>
+  <PR number="606" repo="jobisoft/TbSync" half />, <PR
+    number="602"
+    repo="jobisoft/TbSync"
+    half
+  />,
+  <PR number="173" repo="jobisoft/EAS-4-TbSync" half />, <PR number="174" repo="jobisoft/EAS-4-TbSync" half />
 - Others: <PR number="12" repo="jhavl/swift" full/>, <PR number="3757" repo="taichi-dev/taichi" full/>,
-  <PR number="11" repo="imbushuo/EnergyStar" full/>, <PR number="111" repo="lukas-blecher/LaTeX-OCR" full/>, <PR number="9" repo="imbushuo/EnergyStar" full/>,
+  <PR number="11" repo="imbushuo/EnergyStar" full />, <PR
+    number="111"
+    repo="lukas-blecher/LaTeX-OCR"
+    full
+  />, <PR number="9" repo="imbushuo/EnergyStar" full />,
 
 </A4>
-
-
