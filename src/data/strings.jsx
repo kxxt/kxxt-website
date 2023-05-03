@@ -227,7 +227,132 @@ const personal_projects = {
       </>
     ),
   },
+  wsl_disk_shrinker_desc: {
+    zh: "开坑于 2021 年 5 月, 不再维护. 一个使用 C# WPF 编写的 Windows 桌面应用, 它可以通过缩小 WSL 的虚拟磁盘大小来释放磁盘空间.",
+    en: "Started in May 2021, no longer maintained. It is a Windows desktop application written in C# WPF, which can release disk space by reducing the size of the virtual disk of WSL.",
+  },
+  slidev_template_desc: {
+    zh: (
+      <>
+        开坑于 2023 年 2 月.{" "}
+        <ExternalLink href="https://sli.dev/">Slidev</ExternalLink> 是一款
+        Markdown + Vue 幻灯片框架. 我为这个模板仓库配置了 GitHub Actions,
+        让它自动构建并部署到 GitHub Pages 上.{" "}
+        <ExternalLink href="https://lie-flat.github.io/slides/">
+          我的前端与 Web 课程的大作业的讲解幻灯片
+        </ExternalLink>
+        采用了这个模版.
+      </>
+    ),
+  },
+  chatgpt_action_desc: {
+    zh: "玩具项目, 不再维护. 在 ChatGPT 横空出世之后, 我萌生了让 ChatGPT 来审 PR 的想法. 我就借着这个机会学习了如何编写 GitHub Actions, 编写了这个玩具项目, 最终验证了自己的想法.",
+  },
 }
+
+const course_projects = {
+  cfps_report_desc: {
+    zh: (
+      <>
+        前端与 Web 开发课程的大作业, 2021 年底. CFPS 是中国家庭追踪调查数据集,
+        我们围绕着乡村振兴与城乡差异分析这一主题, 做了简单数据分析并使用 Vue.js
+        和 echarts.js 制作了一个网站来展示我们的分析结果和数据可视化.
+        <IconLink
+          icon={faGithub}
+          color="black"
+          href="https://github.com/lie-flat/cfps-report"
+        >
+          GitHub
+        </IconLink>
+      </>
+    ),
+  },
+  cfps_jupyterhub_desc: {
+    zh: (
+      <>
+        前端与 Web 开发课程及数据库应用的大作业, 2022 年初. 我们搭建了
+        JupyterHub 实例, 使用 Next.js 编写了{" "}
+        <ExternalLink href="https://github.com/lie-flat/cfps-jupyterhub/tree/master/hub-login">
+          网站前端
+        </ExternalLink>
+        , 使用{" "}
+        <ExternalLink href="https://github.com/lie-flat/cfps-jupyterhub/tree/master/backend">
+          基于 FastAPI 编写的 OAuth2 后端
+        </ExternalLink>
+        来实现用户登录, 同时我们{" "}
+        <ExternalLink href="https://github.com/lie-flat/cfps-jupyterhub/tree/master/minimal-notebook-py310">
+          自定义了 JupyterLab 的 Docker 镜像
+        </ExternalLink>
+        , 解决了{" "}
+        <ExternalLink href="https://github.com/lie-flat/cfps-jupyterhub/tree/master/jupyterlab_cfps_preload">
+          Echarts.js 在 JupyterLab 中的自动加载
+        </ExternalLink>
+        问题, 内置了一些常用的 Python 包, 同时使
+        <ExternalLink href="https://github.com/lie-flat/cfps-jupyterhub/tree/master/cfps_dvapis">
+          我们编写的库
+        </ExternalLink>
+        自动载入, 自动连接数据库.
+        我们编写的库提供了从数据库中读取数据的简单接口. 最后我们做了{" "}
+        <ExternalLink href="https://github.com/lie-flat/cfps-jupyterhub/tree/master/notebooks">
+          23 种动态的数据可视化
+        </ExternalLink>
+        .
+      </>
+    ),
+  },
+  robotic_arm_desc: {
+    zh: (
+      <>
+        PCB 课程大作业, 2021 年 4 月至 2021 年 7 月. 我们使用舵机,
+        自己设计的零件, 自己画的 PCB 板, 以及树莓派 4B 来制作了一个智能机械臂.
+        它能够在收到语音指令后将自己的末端对准人脸以及跟随人的手部运动.
+        代码部分主要由我负责, 我使用 Python 编写了主要程序并实现了全程仿真,
+        <ExternalLink href="https://github.com/kxxt/robotic-arm">
+          我们的程序
+        </ExternalLink>{" "}
+        运行在 Manjaro ARM 上.
+      </>
+    ),
+  },
+  car_dl_desc: {
+    zh: "暑期科研实训项目, 2022 年 7-8 月. 我们编写程序并训练模型使一个 ESP32 驱动的小车循线行驶并在识别到交通标志时蜂鸣器发出声音. 循线功能是使用 ESP32 摄像头拍摄的图像作为输入, 然后在笔记本上使用计算机视觉方法做的.",
+  },
+  car_parking_desc: {
+    zh: (
+      <>
+        计算机视觉大作业, 2022 年底至 2023 年 2 月.
+        我们使用安卓手机作为唯一的摄像头完成了基于 ArUco 标记的{" "}
+        <ExternalLink href="https://www.bilibili.com/video/BV1N24y1y7Zt">
+          小车位姿实时跟踪
+        </ExternalLink>
+        . 之后, 我们在此基础上使用强化学习方法实现了
+        <ExternalLink href="https://www.bilibili.com/video/BV1C84y1W7zS">
+          小车的倒车入库
+        </ExternalLink>
+        .
+      </>
+    ),
+  },
+}
+
+const experiences = {
+  os_camp_desc: {
+    zh: (
+      <>
+        参加了
+        <ExternalLink href="https://github.com/LearningOS/rust-based-os-comp2023/tree/comp2022">
+          2022 开源操作系统训练营
+        </ExternalLink>
+        , 完成了第一部分. 我从中学习到了很多操作系统和 RISC-V 的知识. 提了几个
+        PR
+      </>
+    ),
+  },
+  tb_ext_desc: {
+    zh: "给几个我使用的 ThunderBird 扩展修复兼容性问题",
+  },
+}
+
 const locales = {
   ...labels,
   ...education,
@@ -236,6 +361,8 @@ const locales = {
   ...tags,
   ...skills,
   ...personal_projects,
+  ...course_projects,
+  ...experiences,
   getText(locale, key) {
     if (this[key] && this[key][locale]) {
       return this[key][locale]
