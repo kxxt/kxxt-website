@@ -62,62 +62,38 @@ export const L = ({ k }) => {
 
     - [aspeak](https://github.com/kxxt/aspeak), <L k="aspeak_desc"/>
     - [Category Manager](https://github.com/jobisoft/CategoryManager), <L k="category_manager_desc"/>
-    
+    - [<L k="label_website"/>](https://www.kxxt.dev), <L k="personal_website_desc"/>
 
 </A4>
 
 <A4>
 
-- [<L k="label_website"/>](https://www.kxxt.dev), <L k="personal_website_desc"/>
 - [obsidian-advanced-paste](https://github.com/kxxt/obsidian-advanced-paste), <L k="obsidian_advanced_paste_desc"/>
-- [WSLDiskShrinker](https://github.com/kxxt/WSLDiskShrinker), 开坑于 2021 年 5 月, 不再维护.
-  一个使用 C# WPF 编写的 Windows 桌面应用, 它可以通过缩小 WSL 的虚拟磁盘大小来释放磁盘空间.
-- [slidev 模板仓库](https://github.com/kxxt/slidev-template-repo), 开坑于 2023
-  年 2 月. [Slidev](https://sli.dev/) 是一款 Markdown + Vue 幻灯片框架.
-  我为这个模板仓库配置了 GitHub Actions, 让它自动构建并部署到 GitHub Pages 上. [我的前端与 Web
-  课程的大作业的讲解幻灯片](https://lie-flat.github.io/slides/)采用了这个模版.
-- [chatgpt-action](https://github.com/kxxt/chatgpt-action), 玩具项目, 不再维护.
-  在 ChatGPT 横空出世之后, 我萌生了让 ChatGPT 来审 PR 的想法.
-  我就借着这个机会学习了如何编写 GitHub Actions, 编写了这个玩具项目,
-  最终验证了自己的想法.
+- [WSLDiskShrinker](https://github.com/kxxt/WSLDiskShrinker), <L k="wsl_disk_shrinker_desc"/>
+- [slidev template repo](https://github.com/kxxt/slidev-template-repo), <L k="slidev_template_desc"/>
+- [chatgpt-action](https://github.com/kxxt/chatgpt-action), <L k="chatgpt_action_desc"/>
 
 ### <L k="label_course_projects"/>
 
-- [CFPS 分析报告网站](https://cfps-report.vercel.app/), 前端与 Web 开发课程的大作业, 2021 年底.
-  CFPS 是中国家庭追踪调查数据集, 我们围绕着乡村振兴与城乡差异分析这一主题, 做了简单数据分析并使用 Vue.js 和
-  echarts.js 制作了一个网站来展示我们的分析结果和数据可视化.
-  <IconLink
-    icon={faGithub}
-    color="black"
-    href="https://github.com/lie-flat/cfps-report"
-  >
-    GitHub
-  </IconLink>
-- [CFPS 数据分析与可视化平台](https://github.com/lie-flat/cfps-jupyterhub), 前端与 Web 开发课程及数据库应用的大作业, 2022 年初.
-  我们搭建了 JupyterHub 实例, 使用 Next.js 编写了[网站前端](https://github.com/lie-flat/cfps-jupyterhub/tree/master/hub-login),
-  使用[基于 FastAPI 编写的 OAuth2 后端](https://github.com/lie-flat/cfps-jupyterhub/tree/master/backend)
-  来实现用户登录, 同时我们[自定义了 JupyterLab 的 Docker 镜像](https://github.com/lie-flat/cfps-jupyterhub/tree/master/minimal-notebook-py310),
-  解决了 [Echarts.js 在 JupyterLab 中的自动加载](https://github.com/lie-flat/cfps-jupyterhub/tree/master/jupyterlab_cfps_preload)问题,
-  内置了一些常用的 Python 包, 同时使[我们编写的库](https://github.com/lie-flat/cfps-jupyterhub/tree/master/cfps_dvapis)
-  自动载入, 自动连接数据库. 我们编写的库提供了从数据库中读取数据的简单接口. 最后我们做了 [23 种动态的数据可视化](https://github.com/lie-flat/cfps-jupyterhub/tree/master/notebooks).
-- [智能机械臂](https://www.bilibili.com/video/BV1J54y1n7v6/), PCB 课程大作业, 2021 年 4 月至 2021 年 7 月.
-  我们使用舵机, 自己设计的零件, 自己画的 PCB 板, 以及树莓派 4B 来制作了一个智能机械臂.
-  它能够在收到语音指令后将自己的末端对准人脸以及跟随人的手部运动. 代码部分主要由我负责,
-  我使用 Python 编写了主要程序并实现了全程仿真, [我们的程序](https://github.com/kxxt/robotic-arm)运行在 Manjaro ARM 上.
-- [smart-car-deep-learning](https://github.com/lie-flat/smart-car-deep-learning),
-  暑期科研实训项目, 2022 年 7-8 月.
-  我们编写程序并训练模型使一个 ESP32 驱动的小车循线行驶并在识别到交通标志时蜂鸣器发出声音.
-  循线功能是使用 ESP32 摄像头拍摄的图像作为输入, 然后在笔记本上使用计算机视觉方法做的.
-- [smart-car-auto-parking](https://github.com/kxxt/chatgpt-action), 计算机视觉大作业, 2022 年底至 2023 年 2 月.
-  我们使用安卓手机作为唯一的摄像头完成了基于 ArUco 标记的[小车位姿实时跟踪](https://www.bilibili.com/video/BV1N24y1y7Zt).
-  之后, 我们在此基础上使用强化学习方法实现了[小车的倒车入库](https://www.bilibili.com/video/BV1C84y1W7zS).
+- [Analysis Report Website of CFPS](https://cfps-report.vercel.app/), <L k="cfps_report_desc"/>
+- [CFPS Data Analysis and Visualization Platform](https://github.com/lie-flat/cfps-jupyterhub), <L k="cfps_jupyterhub_desc"/>
+- [Robotic Arm](https://www.bilibili.com/video/BV1J54y1n7v6/), <L k="robotic_arm_desc"/>
+- [smart-car-deep-learning](https://github.com/lie-flat/smart-car-deep-learning), <L k="car_dl_desc"/>
+
+</A4>
+
+<A4>
+
+- [smart-car-auto-parking](https://github.com/lie-flat/smart-car-auto-parking), <L k="car_parking_desc"/>
 
 ### <L k="label_other_experiences"/>
 
-- 参加了[2022 开源操作系统训练营](https://github.com/LearningOS/rust-based-os-comp2023/tree/comp2022),
-  完成了第一部分. 我从中学习到了很多操作系统和 risc-v 的知识. 提了几个 PR, <PR number="107" repo="LearningOS/rust-based-os-comp2023"/>,
+- <L k="os_camp_desc" />, <PR
+    number="107"
+    repo="LearningOS/rust-based-os-comp2023"
+  />,
   <PR number="145" repo="LearningOS/rust-based-os-comp2023" />, <PR number="152" repo="LearningOS/rust-based-os-comp2023" open />
-- 给几个我使用的 ThunderBird 扩展修复兼容性问题: <PR number="287" repo="jobisoft/DAV-4-TbSync" half/>,
+- <L k="tb_ext_desc" />: <PR number="287" repo="jobisoft/DAV-4-TbSync" half />,
   <PR number="606" repo="jobisoft/TbSync" half />, <PR
     number="602"
     repo="jobisoft/TbSync"
@@ -125,10 +101,12 @@ export const L = ({ k }) => {
   />,
   <PR number="173" repo="jobisoft/EAS-4-TbSync" half />, <PR number="174" repo="jobisoft/EAS-4-TbSync" half />
 - Others: <PR number="12" repo="jhavl/swift" full/>, <PR number="3757" repo="taichi-dev/taichi" full/>,
+  {" "}
   <PR number="11" repo="imbushuo/EnergyStar" full />, <PR
     number="111"
     repo="lukas-blecher/LaTeX-OCR"
     full
-  />, <PR number="9" repo="imbushuo/EnergyStar" full />,
+  />
+  , <PR number="9" repo="imbushuo/EnergyStar" full />,
 
 </A4>

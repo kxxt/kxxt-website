@@ -1,7 +1,6 @@
 import React from "react"
 import { faGithub } from "@fortawesome/free-brands-svg-icons"
 import IconLink from "@/components/icon-link"
-import HorizontalIconLinks from "@/components/resume/HorizontalIconLinks"
 
 const ExternalLink = ({ href, children }) => {
   return (
@@ -117,7 +116,7 @@ const tags = {
 const skills = {
   skill_programming_languages: {
     zh: "常用编程语言",
-    en: "Commonly Used Programming Languages",
+    en: "Fluent Languages",
   },
   skill_other_programming_languages: {
     zh: "不太常用/会一部分的编程语言",
@@ -244,9 +243,24 @@ const personal_projects = {
         采用了这个模版.
       </>
     ),
+    en: (
+      <>
+        From February 2023.{" "}
+        <ExternalLink href="https://sli.dev/">Slidev</ExternalLink> is a
+        Markdown + Vue slideshow framework. I configured GitHub Actions for a
+        template repository to automatically build and deploy to GitHub Pages
+        (with a directory listing).{" "}
+        <ExternalLink href="https://lie-flat.github.io/slides/">
+          The presentation slides for my Frontend and Web Development course's
+          final project
+        </ExternalLink>
+        use this template.
+      </>
+    ),
   },
   chatgpt_action_desc: {
     zh: "玩具项目, 不再维护. 在 ChatGPT 横空出世之后, 我萌生了让 ChatGPT 来审 PR 的想法. 我就借着这个机会学习了如何编写 GitHub Actions, 编写了这个玩具项目, 最终验证了自己的想法.",
+    en: "A toy project, no longer maintained. After ChatGPT emerged, I came up with the idea of using ChatGPT to review PRs. I took this opportunity to learn how to write GitHub Actions, wrote this toy project, and ultimately validated my idea.",
   },
 }
 
@@ -257,6 +271,22 @@ const course_projects = {
         前端与 Web 开发课程的大作业, 2021 年底. CFPS 是中国家庭追踪调查数据集,
         我们围绕着乡村振兴与城乡差异分析这一主题, 做了简单数据分析并使用 Vue.js
         和 echarts.js 制作了一个网站来展示我们的分析结果和数据可视化.
+        <IconLink
+          icon={faGithub}
+          color="black"
+          href="https://github.com/lie-flat/cfps-report"
+        >
+          GitHub
+        </IconLink>
+      </>
+    ),
+    en: (
+      <>
+        Final project for the Frontend and Web Development course, at the end of
+        2021. CFPS is a Chinese Family Panel Studies dataset. We conducted
+        simple data analysis and used Vue.js and echarts.js to create a website
+        to showcase our analysis results and data visualization, focusing on the
+        theme of rural revitalization and urban-rural differences analysis.
         <IconLink
           icon={faGithub}
           color="black"
@@ -299,6 +329,36 @@ const course_projects = {
         .
       </>
     ),
+    en: (
+      <>
+        Final project for the Frontend and Web Development course, as well as
+        the Database Application course, in early 2022. We built a JupyterHub
+        instance, wrote the{" "}
+        <ExternalLink href="https://github.com/lie-flat/cfps-jupyterhub/tree/master/hub-login">
+          website frontend
+        </ExternalLink>
+        using Next.js, and implemented an{" "}
+        <ExternalLink href="https://github.com/lie-flat/cfps-jupyterhub/tree/master/backend">
+          OAuth2 backend based on FastAPI
+        </ExternalLink>
+        for user login. We also{" "}
+        <ExternalLink href="https://github.com/lie-flat/cfps-jupyterhub/tree/master/minimal-notebook-py310">
+          customized the Docker image of JupyterLab
+        </ExternalLink>
+        to solve the problem of Echarts.js not automatically loading in
+        JupyterLab, built-in some commonly used Python packages, and
+        automatically loaded our{" "}
+        <ExternalLink href="https://github.com/lie-flat/cfps-jupyterhub/tree/master/cfps_dvapis">
+          handy library
+        </ExternalLink>
+        and automatically connected to the database. Our library provides a
+        simple interface for reading data from the database. Finally, we created{" "}
+        <ExternalLink href="https://github.com/lie-flat/cfps-jupyterhub/tree/master/notebooks">
+          23 dynamic data visualizations
+        </ExternalLink>
+        .
+      </>
+    ),
   },
   robotic_arm_desc: {
     zh: (
@@ -313,9 +373,24 @@ const course_projects = {
         运行在 Manjaro ARM 上.
       </>
     ),
+    en: (
+      <>
+        PCB course final project, from April 2021 to July 2021. We used servos,
+        self-designed parts, self-drawn PCB board, and Raspberry Pi 4B to create
+        a smart robotic arm. It can align its end effector with a human face and
+        follow hand movements upon receiving voice commands. I was mainly
+        responsible for the code part and wrote the main program using Python
+        and implemented simulation.{" "}
+        <ExternalLink href="https://github.com/kxxt/robotic-arm">
+          Our program
+        </ExternalLink>{" "}
+        runs on Manjaro ARM.
+      </>
+    ),
   },
   car_dl_desc: {
     zh: "暑期科研实训项目, 2022 年 7-8 月. 我们编写程序并训练模型使一个 ESP32 驱动的小车循线行驶并在识别到交通标志时蜂鸣器发出声音. 循线功能是使用 ESP32 摄像头拍摄的图像作为输入, 然后在笔记本上使用计算机视觉方法做的.",
+    en: "Summer research training project, July-August 2022. We wrote programs and trained models to make an ESP32-driven car follow the line and beep when it recognizes a traffic sign. The line-following functionality was implemented using images captured by the ESP32 camera as input, and computer vision methods were applied on a laptop to achieve this.",
   },
   car_parking_desc: {
     zh: (
@@ -328,6 +403,21 @@ const course_projects = {
         . 之后, 我们在此基础上使用强化学习方法实现了
         <ExternalLink href="https://www.bilibili.com/video/BV1C84y1W7zS">
           小车的倒车入库
+        </ExternalLink>
+        .
+      </>
+    ),
+    en: (
+      <>
+        Computer Vision Project, from the end of 2022 to February 2023. We used
+        an Android phone as the only camera to achieve{" "}
+        <ExternalLink href="https://www.bilibili.com/video/BV1N24y1y7Zt">
+          real-time pose tracking of a small car based on ArUco markers
+        </ExternalLink>
+        . Afterwards, we used reinforcement learning to achieve reverse parking
+        of the small car as shown in this{" "}
+        <ExternalLink href="https://www.bilibili.com/video/BV1C84y1W7zS">
+          video
         </ExternalLink>
         .
       </>
@@ -347,9 +437,20 @@ const experiences = {
         PR
       </>
     ),
+    en: (
+      <>
+        I participated in the
+        <ExternalLink href="https://github.com/LearningOS/rust-based-os-comp2023/tree/comp2022">
+          2022 Rust-based Operating System Training Camp
+        </ExternalLink>
+        and completed the first part. I learned a lot about operating systems
+        and RISC-V from it, and submitted several pull requests.
+      </>
+    ),
   },
   tb_ext_desc: {
     zh: "给几个我使用的 ThunderBird 扩展修复兼容性问题",
+    en: "Fix compatibility issues for several ThunderBird extensions I use",
   },
 }
 
