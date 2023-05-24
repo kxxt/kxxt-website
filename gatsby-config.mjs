@@ -8,13 +8,11 @@ import remarkEmoji from "remark-emoji"
 import rehypeKatex from "rehype-katex"
 import rehypeSlug from "rehype-slug"
 import rehypeAutolinkHeadings from "rehype-autolink-headings"
-import puppeteer from "puppeteer"
 import rehypeExternalLinks from "rehype-external-links"
 
 import remarkMkdocsMaterialAdmonition from "./src/utils/remark-mkdocs-material-admonition.mjs"
 import { onlySelectPublishedArticlesInProd } from "./src/data/conditional.mjs"
 
-const puppeteerExecutablePath = puppeteer.executablePath()
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url))
 
 export default {
@@ -98,14 +96,10 @@ export default {
           {
             resolve: `gatsby-remark-mermaid`,
             options: {
-              launchOptions: {
-                executablePath: puppeteerExecutablePath,
-                headless: "new",
-              },
               svgo: {
                 plugins: [{ name: "removeTitle", active: false }],
               },
-              mermaidOptions: {
+              mermaidConfig: {
                 theme: "neutral",
                 themeCSS: ".node rect { fill: lemonchiffon; }",
               },
