@@ -33,17 +33,17 @@ const HeadWithDefaults = ({ description, lang, title, children }) => {
     <>
       <html lang={lang} />
       <title> {title ? `${title} | ${defaultTitle}` : defaultTitle} </title>
-      <meta name="description" content={metaDescription} />
-      <meta name="og:title" content={title} />
-      <meta name="og:description" content={metaDescription} />
-      <meta name="og:type" content="website" />
-      <meta name="twitter:card" content="summmary" />
-      <meta name="twitter:title" content={title} />
+      <meta property="description" content={metaDescription} />
+      <meta property="og:title" content={title} />
+      <meta property="og:description" content={metaDescription} />
+      <meta property="og:type" content="website" />
+      <meta property="twitter:card" content="summmary" />
+      <meta property="twitter:title" content={title} />
       <meta
-        name="twitter:creator"
+        property="twitter:creator"
         content={site.siteMetadata?.author?.name || ``}
       />
-      <meta name="twitter:description" content={metaDescription} />
+      <meta property="twitter:description" content={metaDescription} />
       {children}
     </>
   )
