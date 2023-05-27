@@ -11753,13 +11753,13 @@ react-server-dom-webpack@0.0.0-experimental-c8b778b7f-20220825:
     loose-envify "^1.1.0"
     neo-async "^2.6.1"
 
-react-typed-component@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.npmjs.org/react-typed-component/-/react-typed-component-1.0.4.tgz#c2af121d452e57bbf5a3fbd498c359829a592d8e"
-  integrity sha512-NQ4idbQ0/JOzFtc9D1x7oBz84ryWn2X+2HQw+/dFYtUUijG8nYpcC62DlgS6ou7hy3PPW5W1vW3PJ4QMkrWPBw==
+react-typed-component@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/react-typed-component/-/react-typed-component-1.0.6.tgz#b6d80f8e8a48e4886536309c4b08db30877d7dc8"
+  integrity sha512-O290XuaGspH5dMy+2DkrxQI+LyfGLE+I/bAMJKI0cNkUiYavvjyVTnFkKGl5awdvre1cBpM+X0dvU2NX6jHQNQ==
   dependencies:
     prop-types "^15.8.1"
-    typed.js "^2.0.12"
+    typed.js "^2.0.16"
 
 react@^18.2.0:
   version "18.2.0"
@@ -13518,10 +13518,10 @@ type@^2.7.2:
   resolved "https://registry.npmjs.org/type/-/type-2.7.2.tgz#2376a15a3a28b1efa0f5350dcf72d24df6ef98d0"
   integrity sha512-dzlvlNlt6AXU7EBSfpAscydQ7gXB+pPGsPnfJnZpiNJBDj7IaJzQlBZYGdEi4R9HmPdBv2XmWJ6YUtoTa7lmCw==
 
-typed.js@^2.0.12:
-  version "2.0.12"
-  resolved "https://registry.npmjs.org/typed.js/-/typed.js-2.0.12.tgz#246aff074c8e18d32ec27acb7be15094ac0bc0e1"
-  integrity sha512-lyACZh1cu+vpfYY3DG/bvsGLXXbdoDDpWxmqta10IQUdMXisMXOEyl+jos+YT9uBbzK4QaKYBjT3R0kTJO0Slw==
+typed.js@^2.0.16:
+  version "2.0.16"
+  resolved "https://registry.yarnpkg.com/typed.js/-/typed.js-2.0.16.tgz#2ba416821ec8a59521466f405784077eddb1d95e"
+  integrity sha512-IBB52GlJiTUOnomwdVVf7lWgC6gScn8md+26zTHj5oJWA+4pSuclHE76rbGI2hnyO+NT+QXdIUHbfjAY5nEtcw==
 
 typedarray-to-buffer@^3.1.5:
   version "3.1.5"

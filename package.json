@@ -51,7 +51,7 @@
     "react-dom": "^18.2.0",
     "react-modal-image": "^2.6.0",
     "react-refresh": "^0.14.0",
-    "react-typed-component": "^1.0.4",
+    "react-typed-component": "^1.0.6",
     "reading-time": "^1.5.0",
     "rehype-autolink-headings": "^6.1.1",
     "rehype-external-links": "^2.1.0",
