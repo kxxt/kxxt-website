@@ -6904,7 +6904,7 @@ gatsby-react-router-scroll@^6.10.0:
 
 "gatsby-remark-copy-relative-linked-files@https://github.com/kxxt/npm-gatsby-remark-copy-relative-linked-files":
   version "1.5.0"
-  resolved "https://github.com/kxxt/npm-gatsby-remark-copy-relative-linked-files#1669f14ba1b01c5151efbd6d201310bbd80a6460"
+  resolved "https://github.com/kxxt/npm-gatsby-remark-copy-relative-linked-files#e5568e69ac45500a73a92c94f90ea7da0249e37f"
   dependencies:
     fs-extra "^10.0.0"
     htmlparser2 "^7.2.0"
