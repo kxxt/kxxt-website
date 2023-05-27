@@ -22,16 +22,17 @@ const BlogIndex = ({ data, location }) => {
   const line2 = `${line1}I'm a <strong style="color: cyan;">software developer</strong>.`
   const line3 = `${line2}<br/>I speak <em style="color: cornflowerblue;">English</em> and <em style="color: palevioletred;">Chinese</em>.`
   const langs = [
-    `<strong style="background: green;">C#</strong>`,
+    // `<strong style="background: green;">C#</strong>`,
     `<strong style="background: dodgerblue;">Py</strong><strong style="background: gold;color: black;">thon</strong>`,
     `<strong style="background: yellow;color: black;">JavaScript</strong>`,
+    `<strong style="background: #e84d22;color: white;">Rust</strong>`,
   ]
   const langsLines = langs.map(lang => `${line3}<br/>I use ${lang}.^1000`)
   const langsSummaryLine = `${line3}<br/>I use ${langs.join(", ")}.`
   const learnings = [
-    `<strong style="background: mediumpurple;">Haskell</strong>`,
-    `<strong style="background: saddlebrown;">Rust</strong>`,
-    `<strong style="background: purple;">F#</strong>`,
+    // `<strong style="background: mediumpurple;">Haskell</strong>`,
+    `<strong style="background: #e84d22;color: white;">Rust</strong>`,
+    // `<strong style="background: purple;">F#</strong>`,
     `<strong style="color: goldenrod;">Computer Science</strong>`,
     `<strong style="color: deepskyblue;">React</strong> and <strong style="color: mediumspringgreen;">Vue</strong>`,
   ]
@@ -43,7 +44,7 @@ const BlogIndex = ({ data, location }) => {
   )}.`
   const softwareLine = `${learningsSummaryLine}<br/>I'm the creator and maintainer of <a href="https://github.com/kxxt/WSLDiskShrinker"><strong style="background: darkolivegreen;color: azure;text-decoration-line: underline;">aspeak</strong></a> and <a href="https://github.com/kxxt/WSLDiskShrinker"><strong style="background: darkturquoise;color: palegoldenrod;text-decoration-line: underline;">WSL Disk Shrinker</strong></a>.`
   const websiteLine = `${learningsSummaryLine}<br/>I built this site with <strong style="color: mediumpurple;">Gatsby.js</strong> and <strong style="color: cyan;">Bulma.</strong>`
-  const osLine = `${learningsSummaryLine}<br>Proudly using <span style="color: #26a0ef">Garuda Linux</span> and <span style="color: #f75c2e">Firefox</span>.`
+  const osLine = `${learningsSummaryLine}<br>Proudly using <span style="color: #26a0ef">Garuda Linux</span>, <span style="color: #63a4a9">Lineage OS</span> and <span style="color: #f75c2e">Firefox</span>.`
   const strings = [
     line1,
     line2,
