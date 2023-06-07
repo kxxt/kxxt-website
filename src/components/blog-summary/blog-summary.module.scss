@@ -1,3 +1,5 @@
+@import "~bulma/sass/utilities/mixins";
+
 .blog-summary {
   margin-bottom: 20px;
 
@@ -7,6 +9,32 @@
     }
     & > :global(.tags) {
       margin-top: 0.3rem;
+    }
+  }
+}
+
+.time-to-read {
+  margin-right: 1rem;
+  @include mobile() {
+    margin-bottom: 0.3rem;
+  }
+}
+
+@include mobile() {
+  .title {
+    text-align: center;
+  }
+}
+
+.summary-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.3rem;
+
+  @include mobile() {
+    & {
+      flex-direction: column;
     }
   }
 }

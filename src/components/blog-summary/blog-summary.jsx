@@ -14,18 +14,20 @@ const BlogSummary = ({ post }) => {
       itemType="http://schema.org/Article"
     >
       <header>
-        <h2 className="title is-4">
+        <h2 className={`title is-4 ${styles.title}`}>
           <Link to={`/blog${post.fields.slug}`} itemProp="url">
             <span itemProp="headline">{title}</span>
           </Link>
         </h2>
-        <small>
-          {formatDateAndTimeToRead(
-            post.frontmatter.date,
-            post.fields.timeToRead ?? "unknown"
-          )}
-        </small>
-        <Tags tags={post.frontmatter.tags} />
+        <div className={styles.summaryFlex}>
+          <small className={styles.timeToRead}>
+            {formatDateAndTimeToRead(
+              post.frontmatter.date,
+              post.fields.timeToRead ?? "unknown"
+            )}
+          </small>
+          <Tags tags={post.frontmatter.tags} className={styles.tags} />
+        </div>
       </header>
       <section>
         <p
