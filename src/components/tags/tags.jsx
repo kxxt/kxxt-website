@@ -35,6 +35,7 @@ const Tags = ({
   fontSize = "14px",
   inline = false,
   withLink = true,
+  className,
 }) => {
   if (!tags) return null
   const Container = ({ children, ...props }) =>
@@ -45,7 +46,9 @@ const Tags = ({
     )
   const TagComponent = withLink ? TagLink : Tag
   return (
-    <Container className={`tags ${inline ? styles.tagsInline : ""}`}>
+    <Container
+      className={`tags ${className} ${inline ? styles.tagsInline : ""}`}
+    >
       {withCount
         ? tags.map(({ tag, totalCount }) => (
             <TagComponent
