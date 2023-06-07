@@ -38,6 +38,7 @@ export const pageQuery = graphql`
         childMdx {
           fields {
             slug
+            timeToRead
           }
           excerpt
           frontmatter {
