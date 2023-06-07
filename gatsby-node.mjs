@@ -98,7 +98,7 @@ export async function createPages({ graphql, actions, reporter }) {
   if (tags.length > 0) {
     tags.forEach(({ tag, totalCount }) => {
       createPage({
-        path: `/tags/${_.kebabCase(tag)}/`,
+        path: `/tags/${tag}/`,
         component: path.resolve(`./src/templates/tag-page.js`),
         context: {
           tag,
