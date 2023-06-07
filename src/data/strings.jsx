@@ -85,8 +85,16 @@ const intern = {
     en: "Mar. 2023 - Present",
   },
   intern_archrv_job: {
-    zh: "RISC-V Arch Linux 打包实习生",
-    en: "RISC-V Arch Linux Packaging Intern",
+    zh: (
+      <>
+        RISC-V Arch Linux 打包实习生 (五月晋升
+        <ExternalLink href="https://github.com/plctlab/weloveinterns/blob/master/outstanding-interns.md#list-of-senior-interns">
+          高级实习生
+        </ExternalLink>
+        )
+      </>
+    ),
+    en: "RISC-V Arch Linux Packaging Intern (Senior Intern since May)",
   },
   intern_archrv_company: {
     zh: "中科院软件所 PLCT 实验室",
