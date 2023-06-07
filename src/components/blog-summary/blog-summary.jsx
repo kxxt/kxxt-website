@@ -26,7 +26,7 @@ const BlogSummary = ({ post }) => {
               post.fields.timeToRead ?? "unknown"
             )}
           </small>
-          <Tags tags={post.frontmatter.tags} className={styles.tags} />
+          <Tags tags={post.frontmatter.tags} />
         </div>
       </header>
       <section>
