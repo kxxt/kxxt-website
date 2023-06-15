@@ -6,3 +6,9 @@ svg .label {
   font-weight: inherit !important;
   line-height: initial !important;
 }
+
+@media print {
+  giscus-widget {
+    display: none;
+  }
+}
