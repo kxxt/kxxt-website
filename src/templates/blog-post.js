@@ -58,6 +58,21 @@ const BlogPostTemplate = ({ data, location, children }) => {
           </p>
           <Tags tags={frontmatter.tags} />
         </header>
+        <div className={`admonition tip ${styles.printedVersionTips}`}>
+          <p className="admonition-title">建议 Tips</p>
+          <p>
+            您正在查看印刷版本的博客, 印刷版本的博客可能会缺少部分交互功能,
+            部分内容显示不全或过时. 如果您在查看该印刷版博客时遇到了任何问题,
+            欢迎来此链接查看在线版: <a href={location.href}>{location.href}</a>
+          </p>
+          <p>
+            You are viewing a printed version of this blog. It may lack some
+            interactive features and some content might now be fully displayed
+            or outdated. If you encounter any problems while viewing this
+            printed version of the blog, feel free to view the online version
+            here: <a href={location.href}>{location.href}</a>
+          </p>
+        </div>
         {frontmatter.outdated && (
           <div className="admonition attention">
             <p className="admonition-title">Attention</p>
