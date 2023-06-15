@@ -46,7 +46,7 @@ const BlogBottomNavContent = ({ post, pos }) => {
 
 const BlogBottomNav = ({ next, previous }) => {
   return (
-    <nav>
+    <nav className={styles.bottomNav}>
       <ul className={styles.blogPostNav}>
         {previous ? (
           <BlogBottomNavContent post={previous} pos="prev" />

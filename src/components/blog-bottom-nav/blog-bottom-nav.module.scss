@@ -32,3 +32,9 @@
     width: 100%;
   }
 }
+
+@media print {
+  .bottom-nav {
+    display: none;
+  }
+}
