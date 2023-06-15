@@ -1,3 +1,9 @@
 .page-footer {
   margin-top: 1.5rem;
 }
+
+@media print {
+  .page-footer {
+    display: none;
+  }
+}
