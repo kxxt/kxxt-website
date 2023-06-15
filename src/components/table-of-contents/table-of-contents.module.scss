@@ -1,5 +1,11 @@
 @import "variables";
 
+@media print {
+  .toc {
+    display: none;
+  }
+}
+
 details.toc-top-level {
   & summary {
     cursor: pointer;

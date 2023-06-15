@@ -35,7 +35,7 @@ const TableOfContents = ({ toc }) => {
   const { toggleSidebar } = React.useContext(SidebarContext)
   if (toc == null) return null
   return (
-    <div>
+    <div className={styles.toc}>
       <details className={styles.tocTopLevel} open>
         <summary
           className={`menu-label ${styles.tocTitle}`}
