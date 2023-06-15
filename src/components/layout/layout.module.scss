@@ -5,3 +5,9 @@
   height: min-content;
   max-height: 90vh;
 }
+
+@media print {
+  .sidebar {
+    display: none;
+  }
+}
