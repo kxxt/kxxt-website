@@ -32,7 +32,7 @@ const HeadWithDefaults = ({ description, lang, title, children }) => {
   return (
     <>
       <html lang={lang} />
-      <title> {title ? `${title} | ${defaultTitle}` : defaultTitle} </title>
+      <title children={title ? `${title} | ${defaultTitle}` : defaultTitle} />
       <meta property="description" content={metaDescription} />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={metaDescription} />
