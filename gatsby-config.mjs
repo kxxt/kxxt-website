@@ -1,6 +1,5 @@
 import * as url from "url"
 import { remarkCodeHike } from "@code-hike/mdx"
-import theme from "shiki/themes/solarized-light.json" assert { type: "json" }
 import remarkDirective from "remark-directive"
 import remarkGfm from "remark-gfm"
 import remarkMath from "remark-math"
@@ -52,7 +51,7 @@ export default {
             [
               remarkCodeHike,
               {
-                theme,
+                theme: "solarized-light",
                 lineNumbers: false,
                 showCopyButton: true,
                 // Temporarily skip `wiki` until code hike supports custom grammar.
