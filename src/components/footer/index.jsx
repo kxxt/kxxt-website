@@ -1,5 +1,5 @@
 import React from "react"
-import { faGithub } from "@fortawesome/free-brands-svg-icons"
+import { faGithub, faMastodon } from "@fortawesome/free-brands-svg-icons"
 import { StaticImage } from "gatsby-plugin-image"
 import { faAt, faRss } from "@fortawesome/free-solid-svg-icons"
 import IconText from "../icon-text"
@@ -67,6 +67,13 @@ const Footer = () => {
                 <a href="mailto:kxxt@kxxt.dev">
                   <IconText color="pink" icon={faAt}>
                     Site Admin: admin@kxxt.dev
+                  </IconText>
+                </a>
+              </li>
+              <li>
+                <a href="https://mastodon.social/@kxxt">
+                  <IconText color="purple" icon={faMastodon}>
+                    Mastodon: @kxxt@Mastodon.social
                   </IconText>
                 </a>
               </li>
