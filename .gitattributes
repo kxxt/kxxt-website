@@ -2,3 +2,7 @@
 *.png binary
 *.jpg binary
 *.webp binary
+*.md linguist-detectable
+*.mdx linguist-detectable
+README.md linguist-detectable=false
+CODE_OF_CONDUCT.md linguist-detectable=false
