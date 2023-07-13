@@ -37,6 +37,8 @@ const TableOfContents = ({ toc }) => {
   return (
     <div className={styles.toc}>
       <details className={styles.tocTopLevel} open>
+        {/* The sidebar can be toggled via the space key if it has focus. jsx-a11y */}
+        {/* eslint-disable-next-line */}
         <summary
           className={`menu-label ${styles.tocTitle}`}
           onClick={toggleSidebar}
