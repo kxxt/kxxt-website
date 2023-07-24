@@ -71,7 +71,7 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="https://mastodon.social/@kxxt">
+                <a rel="me" href="https://mastodon.social/@kxxt">
                   <IconText color="purple" icon={faMastodon}>
                     Mastodon: @kxxt@Mastodon.social
                   </IconText>
