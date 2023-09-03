@@ -48,7 +48,7 @@ const BlogIndex = ({ data, location }) => {
   const strings = [
     line1,
     line2,
-    `${line1}I'm a junior from <strong>Shandong University</strong>.`,
+    `${line1}I'm a senior from <strong>Shandong University</strong>.`,
     `${line1}I'm a student majoring in <span style="color: hotpink;">data science</span> and <span style="color: lightseagreen;">artificial intelligence.</span>`,
     `${line2}<br/>`,
     line3,
