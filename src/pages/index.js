@@ -37,12 +37,12 @@ const BlogIndex = ({ data, location }) => {
     `<strong style="color: deepskyblue;">React</strong> and <strong style="color: mediumspringgreen;">Vue</strong>`,
   ]
   const learningsLines = learnings.map(
-    learning => `${langsSummaryLine}<br/>I'm learning ${learning}.^1000`
+    learning => `${langsSummaryLine}<br/>I'm learning ${learning}.^1000`,
   )
   const learningsSummaryLine = `${langsSummaryLine}<br/>I'm learning ${learnings.join(
-    ", "
+    ", ",
   )}.`
-  const softwareLine = `${learningsSummaryLine}<br/>I'm the creator and maintainer of <a href="https://github.com/kxxt/WSLDiskShrinker"><strong style="background: darkolivegreen;color: azure;text-decoration-line: underline;">aspeak</strong></a> and <a href="https://github.com/kxxt/WSLDiskShrinker"><strong style="background: darkturquoise;color: palegoldenrod;text-decoration-line: underline;">WSL Disk Shrinker</strong></a>.`
+  const softwareLine = `${learningsSummaryLine}<br/>I'm the creator and maintainer of <a href="https://github.com/kxxt/aspeak"><strong style="background: darkolivegreen;color: azure;text-decoration-line: underline;">aspeak</strong></a> and <a href="https://github.com/kxxt/WSLDiskShrinker"><strong style="background: darkturquoise;color: palegoldenrod;text-decoration-line: underline;">WSL Disk Shrinker</strong></a>.`
   const websiteLine = `${learningsSummaryLine}<br/>I built this site with <strong style="color: mediumpurple;">Gatsby.js</strong> and <strong style="color: cyan;">Bulma.</strong>`
   const osLine = `${learningsSummaryLine}<br>Proudly using <span style="color: #26a0ef">Garuda Linux</span>, <span style="color: #63a4a9">Lineage OS</span> and <span style="color: #f75c2e">Firefox</span>.`
   const strings = [
