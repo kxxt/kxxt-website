@@ -37,6 +37,12 @@ Android 系统上限制只能有一个活跃的 VPN 程序，但是很不巧的�
 /system/bin/su -p -c tailscaled --tun=userspace-networking --statedir=.cache -socks5-server=localhost:5432
 ```
 
+当然，初次使用还需要：
+
+```bash
+/system/bin/su -c tailscale up
+```
+
 然后在 Clash 配置文件中加入以下代理服务器：
 
 ```yaml
