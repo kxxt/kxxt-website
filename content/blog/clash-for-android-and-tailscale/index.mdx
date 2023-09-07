@@ -1,0 +1,58 @@
+---
+title: 在 Android 上同时使用 Clash for Android 和 Tailscale
+date: 2023-09-07
+tags: [clash,tailscale,android]
+description: 
+published: true
+---
+
+Android 系统上限制只能有一个活跃的 VPN 程序，但是很不巧的是，我经常需要使用 Tailscale 来做内网穿透，同时又需要使用 Clash for Android 来做代理。
+这时候就需要一个方法来绕过这个限制。一个很自然的想法便是在 Android 上直接跑 tailscale 二进制程序。
+
+我已经为 [pacman-for-android](https://github.com/pacman-for-android/pacman-for-android)
+打包了 tailscale，可以直接使用包管理器安装使用:
+
+```bash
+/system/bin/su -c pacman -S tailscale
+```
+
+当然，如果读者没有在使用 pacman-for-android, 而是在使用 Termux 等程序的话，也可以自己编译 tailscale。
+
+# PlanA: 直接运行 tailscaled (失败)
+
+
+直接启动 tailscaled 会报一大片 `Network is unreachable` 的错误，而我也不是很擅长调试这种问题，所以在一通乱调之后这个方案暂时搁置。
+
+![Tailscaled error](tailscaled-failed.png)
+
+
+# PlanB: tailscaled userspace-networking 模式
+
+运行 tailscaled, 但是不使用 tun, 而是使用 [userspace-networking](https://tailscale.com/kb/1112/userspace-networking/) 模式,
+然后给 Clash for Android 配置一个规则，把 `100.64.0.0/10` 的流量交给 tailscale 处理。
+
+使用以下命令启动 tailscaled, 使用 userspace-networking 模式, 并且在 `localhost:5432` 上开一个 socks5 代理服务器。
+
+```bash
+/system/bin/su -p -c tailscaled --tun=userspace-networking --statedir=.cache -socks5-server=localhost:5432
+```
+
+然后在 Clash 配置文件中加入以下代理服务器：
+
+```yaml
+- name: tailscale
+  type: socks5
+  server: 127.0.0.1
+  port: 5432
+```
+
+再添加以下规则：
+
+```yaml
+- IP-CIDR,100.64.0.0/10,tailscale,no-resolve
+```
+
+将配置文件导入 Clash for Android, 并且启动 Clash for Android, 就可以使用了。
+
+但是注意没有 MagicDNS, 我们不能使用机器的名字来访问，只能使用 IP 地址。
+
