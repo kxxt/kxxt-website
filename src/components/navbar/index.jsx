@@ -15,6 +15,7 @@ import {
   faTags,
   faHandHoldingHeart,
   faUser,
+  faStickyNote,
 } from "@fortawesome/free-solid-svg-icons"
 
 const Navbar = ({ centerLinks, title }) => {
@@ -40,6 +41,11 @@ const Navbar = ({ centerLinks, title }) => {
           <NavbarLinkButton to="/blogs">
             <IconText icon={faBlog} color="hotpink">
               Blogs
+            </IconText>
+          </NavbarLinkButton>
+          <NavbarLinkButton to="/notes">
+            <IconText icon={faStickyNote} color="lightslategray">
+              Notes
             </IconText>
           </NavbarLinkButton>
           <NavbarLinkButton to="/archive">

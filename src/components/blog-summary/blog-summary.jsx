@@ -15,7 +15,10 @@ const BlogSummary = ({ post }) => {
     >
       <header>
         <h2 className={`title is-4 ${styles.title}`}>
-          <Link to={`/blog${post.fields.slug}`} itemProp="url">
+          <Link
+            to={`/${post.fields.sourceInstanceName}${post.fields.slug}`}
+            itemProp="url"
+          >
             <span itemProp="headline">{title}</span>
           </Link>
         </h2>
@@ -23,7 +26,7 @@ const BlogSummary = ({ post }) => {
           <small className={styles.timeToRead}>
             {formatDateAndTimeToRead(
               post.frontmatter.date,
-              post.fields.timeToRead ?? "unknown"
+              post.fields.timeToRead,
             )}
           </small>
           <Tags tags={post.frontmatter.tags} />

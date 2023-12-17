@@ -17,7 +17,7 @@ export function Head() {
 
 const BlogIndex = ({ data, location }) => {
   let [typingSpeed, setTypingSpeed] = useState(70)
-  const posts = data.allFile.nodes
+  const posts = data.allMdx.nodes
   const line1 = `Welcome to my <strong style="color: orangered;">personal website</strong>!<br/>`
   const line2 = `${line1}I'm a <strong style="color: cyan;">software developer</strong>.`
   const line3 = `${line2}<br/>I speak <em style="color: cornflowerblue;">English</em> and <em style="color: palevioletred;">Chinese</em>.`
@@ -122,18 +122,15 @@ export const pageQuery = graphql`
         title
       }
     }
-    allFile(
+    allMdx(
       filter: {
-        sourceInstanceName: { eq: "blog" }
-        extension: { in: ["mdx", "md"] }
-        childMdx: { frontmatter: { published: { in: $published } } }
+        fields: { sourceInstanceName: { eq: "blog" } }
+        frontmatter: { published: { in: $published } }
       }
-      sort: { childMdx: { frontmatter: { date: DESC } } }
+      sort: { frontmatter: { date: DESC } }
     ) {
       nodes {
-        childMdx {
-          ...BlogSummaryFields
-        }
+        ...BlogSummaryFields
       }
     }
   }

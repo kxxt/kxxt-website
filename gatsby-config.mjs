@@ -130,6 +130,13 @@ export default {
         name: `blog`,
       },
     },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        path: `${__dirname}/content/notes`,
+        name: `notes`,
+      },
+    },
     // {
     //   resolve: `gatsby-plugin-page-creator`,
     //   options: {
@@ -178,10 +185,10 @@ export default {
             serialize: ({
               query: {
                 site,
-                allFile: { nodes },
+                allMdx: { nodes },
               },
             }) => {
-              return nodes.map(({ childMdx: node }) => {
+              return nodes.map((node) => {
                 return Object.assign({}, node.frontmatter, {
                   description: node.excerpt,
                   date: node.frontmatter.date,
@@ -198,24 +205,21 @@ export default {
             },
             query: `
               {
-                allFile(
+                allMdx(
                   filter: {
-                    sourceInstanceName: { eq: "blog" }
-                    extension: { in: ["mdx", "md"] }
+                    fields: { sourceInstanceName: { eq: "blog" } }
                     ${onlySelectPublishedArticlesInProd}
                   }
-                  sort: { childMdx: { frontmatter: { date: DESC } } }
+                  sort: { frontmatter: { date: DESC } }
                 ) {
                   nodes {
-                    childMdx {
-                      excerpt
-                      fields {
-                        slug
-                      }
-                      frontmatter {
-                        title
-                        date
-                      }
+                    excerpt
+                    fields {
+                      slug
+                    }
+                    frontmatter {
+                      title
+                      date
                     }
                   }
                 }
@@ -223,6 +227,52 @@ export default {
             `,
             output: "/rss.xml",
             title: "kxxt's blog",
+          },
+          {
+            serialize: ({
+              query: {
+                site,
+                allMdx: { nodes },
+              },
+            }) => {
+              return nodes.map((node) => {
+                return Object.assign({}, node.frontmatter, {
+                  description: node.excerpt,
+                  date: node.frontmatter.date,
+                  url: `${site.siteMetadata.siteUrl}/notes${node.fields.slug}`,
+                  guid: node.slug,
+                  // TODO: Add back rss content
+                  custom_elements: [
+                    {
+                      "content:encoded": `${site.siteMetadata.siteUrl}/notes${node.fields.slug}`,
+                    },
+                  ],
+                })
+              })
+            },
+            query: `
+              {
+                allMdx(
+                  filter: {
+                    fields: { sourceInstanceName: { eq: "notes" } }
+                  }
+                  sort: { frontmatter: { date: DESC } }
+                ) {
+                  nodes {
+                    excerpt
+                    fields {
+                      slug
+                    }
+                    frontmatter {
+                      title
+                      date
+                    }
+                  }
+                }
+              }
+            `,
+            output: "/notes-feed.xml",
+            title: "kxxt's short notes",
           },
         ],
       },

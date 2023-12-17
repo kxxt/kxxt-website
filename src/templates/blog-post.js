@@ -33,15 +33,19 @@ export const Head = ({
 
 const BlogPostTemplate = ({ data, location, children }) => {
   const post = data.mdx
-  const { frontmatter } = post
+  const {
+    frontmatter,
+    fields: { sourceInstanceName: source },
+  } = post
   const { previous, next } = data
-  const toc = post.tableOfContents.items ? (
-    <TableOfContents toc={post.tableOfContents.items} />
-  ) : null
+  const toc =
+    source === "notes" ? null : post.tableOfContents.items ? (
+      <TableOfContents toc={post.tableOfContents.items} />
+    ) : null
   const bottom = (
     <>
       <hr />
-      <BlogBottomNav next={next} previous={previous} />
+      <BlogBottomNav next={next} previous={previous} source={source} />
     </>
   )
   const canonicalUrl = data.site.siteMetadata.siteUrl + location.pathname

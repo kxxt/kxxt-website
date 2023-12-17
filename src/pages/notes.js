@@ -4,19 +4,20 @@ import { graphql } from "gatsby"
 import { Layout, HeadWithNavBarTop } from "@/components/layout"
 import BlogSummaryList from "@/components/blog-summary/blog-summary-list"
 
-const title = "Blogs"
+const title = "Short notes"
 
 export function Head() {
   return <HeadWithNavBarTop title={title} />
 }
 
 const BlogsPage = ({ data, location }) => {
-  const posts = data.allMdx.nodes
+  console.log(data)
+  const notes = data.allMdx.nodes
 
   return (
     <Layout location={location}>
       <h1 className="title">{title}</h1>
-      <BlogSummaryList posts={posts} />
+      <BlogSummaryList posts={notes} />
     </Layout>
   )
 }
@@ -24,17 +25,14 @@ const BlogsPage = ({ data, location }) => {
 export default BlogsPage
 
 export const pageQuery = graphql`
-  query ($published: [Boolean!]!) {
+  query {
     site {
       siteMetadata {
         title
       }
     }
     allMdx(
-      filter: {
-        fields: { sourceInstanceName: { eq: "blog" } }
-        frontmatter: { published: { in: $published } }
-      }
+      filter: { fields: { sourceInstanceName: { eq: "notes" } } }
       sort: { frontmatter: { date: DESC } }
     ) {
       nodes {

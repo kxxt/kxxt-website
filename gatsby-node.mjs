@@ -26,33 +26,30 @@ export async function createPages({ graphql, actions, reporter }) {
 
   createRedirect({ fromPath: "/friends", toPath: "/links", isPermanent: true })
   // Get all markdown blog posts sorted by date
-  const result = await graphql(`
+  const blog = await graphql(`
     {
-      allFile(
+      allMdx(
         filter: {
-          sourceInstanceName: { eq: "blog" }
-          extension: { in: ["mdx", "md"] }
+          fields: { sourceInstanceName: { eq: "blog" } }
           ${onlySelectPublishedArticlesInProd}
         }
-        sort: { childMdx: { frontmatter: { date: DESC } } }
+        sort: { frontmatter: { date: DESC } }
       ) {
         edges {
           node {
-            childMdx {
-              body
-              id
-              fields {
-                slug
-              }
-              frontmatter {
-                title
-                published
-              }
+            body
+            id
+            fields {
+              slug
+              absolutePath
             }
-            absolutePath
+            frontmatter {
+              title
+              published
+            }
           }
         }
-        group(field: { childMdx: { frontmatter: { tags: SELECT } } }) {
+        group(field: { frontmatter: { tags: SELECT } }) {
           tag: fieldValue
           totalCount
         }
@@ -60,31 +57,31 @@ export async function createPages({ graphql, actions, reporter }) {
     }
   `)
 
-  if (result.errors) {
+  if (blog.errors) {
     reporter.panicOnBuild(
       `There was an error querying your blog posts`,
-      result.errors
+      blog.errors,
     )
     return
   }
 
-  let posts = result.data.allFile.edges
+  let posts = blog.data.allMdx.edges
 
   // Create blog posts pages
   // But only if there's at least one markdown file found at "content/blog" (defined in gatsby-config.js)
   // `context` is available in the template as a prop and as a variable in GraphQL
 
   if (posts.length > 0) {
-    posts.forEach(({ node: { childMdx: post, absolutePath } }, index) => {
-      const nextPostId = index === 0 ? null : posts[index - 1].node.childMdx.id
+    posts.forEach(({ node: post }, index) => {
+      const nextPostId = index === 0 ? null : posts[index - 1].node.id
       const previousPostId =
-        index === posts.length - 1 ? null : posts[index + 1].node.childMdx.id
+        index === posts.length - 1 ? null : posts[index + 1].node.id
 
       createPage({
         path: `blog${post.fields.slug}`,
         component: `${path.resolve(
-          "./src/templates/blog-post.js"
-        )}?__contentFilePath=${absolutePath}`,
+          "./src/templates/blog-post.js",
+        )}?__contentFilePath=${post.fields.absolutePath}`,
         context: {
           id: post.id,
           previousPostId,
@@ -94,7 +91,7 @@ export async function createPages({ graphql, actions, reporter }) {
     })
   }
 
-  const tags =  result.data.allFile.group
+  const tags = blog.data.allMdx.group
   if (tags.length > 0) {
     tags.forEach(({ tag, totalCount }) => {
       createPage({
@@ -103,6 +100,67 @@ export async function createPages({ graphql, actions, reporter }) {
         context: {
           tag,
           totalCount,
+        },
+      })
+    })
+  }
+
+  // Get all markdown notes sorted by date
+  const noteData = await graphql(`
+    {
+      allMdx(
+        filter: {
+          fields: { sourceInstanceName: { eq: "notes" } }
+        }
+        sort: { frontmatter: { date: DESC } }
+      ) {
+        edges {
+          node {
+            body
+            id
+            fields {
+              slug
+              absolutePath
+            }
+            frontmatter {
+              title
+            }
+          }
+        }
+        group(field: { frontmatter: { tags: SELECT } }) {
+          tag: fieldValue
+          totalCount
+        }
+      }
+    }
+  `)
+
+  if (noteData.errors) {
+    reporter.panicOnBuild(`There was an error querying your notes`, noteData.errors)
+    return
+  }
+
+  let notes = noteData.data.allMdx.edges;
+
+  // Create blog posts pages
+  // But only if there's at least one markdown file found at "content/blog" (defined in gatsby-config.js)
+  // `context` is available in the template as a prop and as a variable in GraphQL
+
+  if (notes.length > 0) {
+    notes.forEach(({ node: note }, index) => {
+      const nextNoteId = index === 0 ? null : notes[index - 1].node.id
+      const previousNoteId =
+        index === notes.length - 1 ? null : notes[index + 1].node.id
+
+      createPage({
+        path: `notes${note.fields.slug}`,
+        component: `${path.resolve(
+          "./src/templates/blog-post.js",
+        )}?__contentFilePath=${note.fields.absolutePath}`,
+        context: {
+          id: note.id,
+          previousPostId: previousNoteId,
+          nextPostId: nextNoteId,
         },
       })
     })
@@ -121,11 +179,28 @@ export async function onCreateNode({ node, actions, getNode }) {
       node,
       value,
     })
+
+    const { sourceInstanceName, absolutePath } = getNode(node.parent)
+
     createNodeField({
       node,
-      name: `timeToRead`,
-      value: Math.ceil(readingTime(node.body).minutes),
+      name: "absolutePath",
+      value: absolutePath,
     })
+
+    createNodeField({
+      node,
+      name: "sourceInstanceName",
+      value: sourceInstanceName,
+    })
+
+    if (sourceInstanceName === "blog") {
+      createNodeField({
+        node,
+        name: `timeToRead`,
+        value: Math.ceil(readingTime(node.body).minutes),
+      })
+    }
   }
 }
 
@@ -181,7 +256,8 @@ export function createSchemaCustomization({ actions }) {
 
     type MdxFields {
       slug: String!
-      timeToRead: Int!
+      timeToRead: Int
+      sourceInstanceName: String!
     }
 
     type Frontmatter {

@@ -7,6 +7,7 @@ export const blogFields = graphql`
     tableOfContents
     fields {
       timeToRead
+      sourceInstanceName
     }
     frontmatter {
       title
@@ -38,6 +39,7 @@ export const blogSummaryFields = graphql`
     fields {
       slug
       timeToRead
+      sourceInstanceName
     }
     frontmatter {
       date(formatString: "MMMM DD, YYYY")
