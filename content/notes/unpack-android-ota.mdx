@@ -1,0 +1,32 @@
+---
+title: Unpack Android OTA
+date: 2023-12-17 20:15:26+08:00
+tags: [android]
+---
+
+Short answer: use https://github.com/AndroidDumps/dumpyara , which will dump almost everything of interest.
+
+To unpack individual images: use [`payload-dumper-go`](https://github.com/ssut/payload-dumper-go), which is available in ArchLinuxCN repo.
+
+If you REALLY want to do it by hand, here is the way to extract individual images from `super.img`:
+
+If `super.img` is a sparse image, then we need to unsparse it first.
+
+```bash
+$ file imgs/CN/super.img  
+imgs/CN/super.img: Android sparse image, version: 1.0, Total of 2228224 4096-byte output blocks in 141 input chunk  
+s.
+```
+
+Use `simg2img` from Arch Linux `extra/android-tools` package to unsparse it.
+
+```bash
+simg2img super.img super.img.unsparsed
+```
+
+Then we can unpack it using `lpunpack` from Arch Linux `extra/android-tools` package.
+
+```bash
+mkdir dump
+lpunpack super.img.unsparsed dump
+```
