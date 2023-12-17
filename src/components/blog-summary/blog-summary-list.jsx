@@ -3,7 +3,7 @@ import BlogSummary from "./blog-summary"
 
 const BlogSummaryList = ({ posts }) => (
   <ol style={{ listStyle: `none` }}>
-    {posts.map(({ childMdx: post }) => {
+    {posts.map(post => {
       return (
         <li key={post.fields.slug}>
           <BlogSummary post={post} />

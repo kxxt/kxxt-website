@@ -16,11 +16,11 @@ const navContentConfig = {
   },
 }
 
-const BlogBottomNavContent = ({ post, pos }) => {
+const BlogBottomNavContent = ({ post, pos, source }) => {
   return (
     <li className="box">
       <Link
-        to={`/blog${post.fields.slug}`}
+        to={`/${source}${post.fields.slug}`}
         rel={pos}
         style={{
           flexDirection: navContentConfig[pos].flexDirection,
@@ -44,16 +44,18 @@ const BlogBottomNavContent = ({ post, pos }) => {
   )
 }
 
-const BlogBottomNav = ({ next, previous }) => {
+const BlogBottomNav = ({ next, previous, source = "blog" }) => {
   return (
     <nav className={styles.bottomNav}>
       <ul className={styles.blogPostNav}>
         {previous ? (
-          <BlogBottomNavContent post={previous} pos="prev" />
+          <BlogBottomNavContent post={previous} pos="prev" source={source} />
         ) : (
           <li />
         )}
-        {next && <BlogBottomNavContent post={next} pos="next" />}
+        {next && (
+          <BlogBottomNavContent post={next} pos="next" source={source} />
+        )}
       </ul>
     </nav>
   )

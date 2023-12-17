@@ -10,7 +10,7 @@ export function Head({ pageContext }) {
 }
 
 const TagPage = ({ data, location, pageContext }) => {
-  const posts = data.allFile.nodes
+  const posts = data.allMdx.nodes
   return (
     <Layout location={location}>
       <h1 className="title">Tag: {pageContext.tag}</h1>
@@ -26,27 +26,25 @@ const TagPage = ({ data, location, pageContext }) => {
 
 export const pageQuery = graphql`
   query ($tag: String) {
-    allFile(
+    allMdx(
       filter: {
-        sourceInstanceName: { eq: "blog" }
-        extension: { in: ["mdx", "md"] }
-        childMdx: { frontmatter: { tags: { in: [$tag] } } }
+        fields: { sourceInstanceName: { eq: "blog" } }
+        frontmatter: { tags: { in: [$tag] } }
       }
-      sort: { childMdx: { frontmatter: { date: DESC } } }
+      sort: { frontmatter: { date: DESC } }
     ) {
       nodes {
-        childMdx {
-          fields {
-            slug
-            timeToRead
-          }
-          excerpt
-          frontmatter {
-            title
-            description
-            tags
-            date(formatString: "MMMM DD, YYYY")
-          }
+        fields {
+          slug
+          timeToRead
+          sourceInstanceName
+        }
+        excerpt
+        frontmatter {
+          title
+          description
+          tags
+          date(formatString: "MMMM DD, YYYY")
         }
       }
     }

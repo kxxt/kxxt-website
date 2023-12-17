@@ -11,7 +11,7 @@ export function Head() {
 }
 
 const TagsPage = ({ data, location }) => {
-  const tags = data.allFile.group
+  const tags = data.allMdx.group
   return (
     <Layout location={location}>
       <h1 className="title">All Tags</h1>
@@ -22,15 +22,14 @@ const TagsPage = ({ data, location }) => {
 
 export const pageQuery = graphql`
   query ($published: [Boolean!]!) {
-    allFile(
+    allMdx(
       filter: {
-        sourceInstanceName: { eq: "blog" }
-        extension: { in: ["mdx", "md"] }
-        childMdx: { frontmatter: { published: { in: $published } } }
+        fields: { sourceInstanceName: { eq: "blog" } }
+        frontmatter: { published: { in: $published } }
       }
-      sort: { childMdx: { frontmatter: { date: DESC } } }
+      sort: { frontmatter: { date: DESC } }
     ) {
-      group(field: { childMdx: { frontmatter: { tags: SELECT } } }) {
+      group(field: { frontmatter: { tags: SELECT } }) {
         tag: fieldValue
         totalCount
       }
