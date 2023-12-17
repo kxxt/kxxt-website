@@ -85,7 +85,14 @@ const Footer = () => {
               <li>
                 <a href="/rss.xml">
                   <IconText color="orange" icon={faRss}>
-                    RSS Feed
+                    RSS Feed (Blogs)
+                  </IconText>
+                </a>
+              </li>
+              <li>
+                <a href="/notes-feed.xml">
+                  <IconText color="orange" icon={faRss}>
+                    RSS Feed (Short Notes)
                   </IconText>
                 </a>
               </li>
