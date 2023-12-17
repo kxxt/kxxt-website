@@ -141,8 +141,8 @@ const skills = {
 }
 const personal_projects = {
   aspeak_desc: {
-    zh: "2022 年 5 月至今. 一个 Azure 语音合成服务的 CLI. 最初我采用 Python 编写了它, 直接调用微软的 SDK 包. 最近我已经用 Rust 重写了它, 现在它直接使用 Websockets 与 Azure 的服务进行通信, 不再依赖微软的 SDK.",
-    en: "May. 2022 - Present. It is a CLI for Azure speech synthesis service originally written in Python. I have rewritten it in Rust to use WebSockets directly so it no longer relies on the SDK from Microsoft.",
+    zh: "2022 年 5 月至今. 一个 Azure 语音合成服务的 CLI. 最初我采用 Python 编写了它, 直接调用微软的 SDK 包. 最近我已经用 Rust 重写了它, 现在它直接使用 Websockets / REST API 与 Azure 的服务进行通信, 不再依赖微软的 SDK.",
+    en: "May. 2022 - Present. It is a CLI for Azure speech synthesis service originally written in Python. I have rewritten it in Rust to use WebSockets / REST API directly so it no longer relies on the SDK from Microsoft.",
   },
   category_manager_desc: {
     zh: (
