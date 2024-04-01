@@ -11,7 +11,6 @@ export function Head() {
 }
 
 const BlogsPage = ({ data, location }) => {
-  console.log(data)
   const notes = data.allMdx.nodes
 
   return (
