@@ -1,7 +1,7 @@
 @import "~bulma/sass/base/generic";
 
-$toc-link-active-bg-color: #00d1b2;
-$toc-link-hover-bg-color: bulmaLighten($primary, 20%);
+$toc-link-active-bg-color: var(--bulma-primary);
+$toc-link-hover-bg-color: var(--bulma-primary-dark-invert);
 $box-shadow-spread: 0.3rem;
 
 @mixin toc-item-box {
@@ -10,7 +10,9 @@ $box-shadow-spread: 0.3rem;
   margin-bottom: 0.3rem;
   position: relative;
   transition: color ease-in-out 0.4s;
+  color: var(--bulma-text-base);
   & > a {
+    color: var(--bulma-text-base);
     transition: color ease-in-out 0.4s;
   }
   overflow: hidden;
@@ -20,7 +22,9 @@ $box-shadow-spread: 0.3rem;
     width: 0;
     height: 100%;
     position: absolute;
-    transition: width 0.5s ease-out, color 0.4s ease-in,
+    transition:
+      width 0.5s ease-out,
+      color 0.4s ease-in,
       background-color 0.4s ease-in;
     background-color: $toc-link-active-bg-color;
     top: 0;
@@ -29,9 +33,9 @@ $box-shadow-spread: 0.3rem;
   }
   &:hover {
     box-shadow: $toc-link-hover-bg-color 0 0 $box-shadow-spread;
-    color: black;
+    color: var(--bulma-text-00);
     & > a {
-      color: black;
+      color: var(--bulma-text-00);
     }
     &::before {
       background-color: $toc-link-hover-bg-color;
@@ -41,9 +45,9 @@ $box-shadow-spread: 0.3rem;
 }
 
 @mixin toc-item-box-active {
-  color: white;
+  color: var(--bulma-primary-00) !important;
   & > a {
-    color: white;
+    color: var(--bulma-primary-00) !important;
   }
   box-shadow: $toc-link-active-bg-color 0 0 $box-shadow-spread;
   &::before {

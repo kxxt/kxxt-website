@@ -1,3 +1,5 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faBurger } from "@fortawesome/free-solid-svg-icons"
 import React from "react"
 
 const NavbarBurger = ({ toggle }) => (
@@ -11,9 +13,7 @@ const NavbarBurger = ({ toggle }) => (
     aria-label="menu"
     aria-expanded="false"
   >
-    <span aria-hidden="true" />
-    <span aria-hidden="true" />
-    <span aria-hidden="true" />
+    <FontAwesomeIcon icon={faBurger} />
   </a>
 )
 

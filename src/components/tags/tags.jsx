@@ -7,7 +7,7 @@ const TagLink = ({ tag, totalCount = 0, fontSize }) => {
     <Link
       key={tag}
       to={`/tags/${tag}/`}
-      className={`tag ${styles.tag}`}
+      className={`tag is-primary`}
       style={{ fontSize }}
       itemProp="keywords"
     >
@@ -20,7 +20,7 @@ const Tag = ({ tag, fontSize }) => {
   return (
     <span
       key={tag}
-      className={`tag ${styles.tag}`}
+      className={`tag is-primary`}
       style={{ fontSize }}
       itemProp="keywords"
     >

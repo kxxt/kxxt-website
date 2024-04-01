@@ -13,7 +13,7 @@ export default function FriendCard({
 }) {
   const circleClass = isCircle ? styles.circle : ""
   return (
-    <div className={`card ${styles.card} ${className}`}>
+    <div className={`card ${styles.card} ${className ?? ""}`}>
       <div className={`card-content`}>
         {/* Gatsby doesn't allow me to forward src to StaticImage. 
             But I don't want to use a dynamic image here either. 
