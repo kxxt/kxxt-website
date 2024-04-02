@@ -27,7 +27,7 @@ export default function FriendCard({
             </div>
           </a>
           <div className="media-content">
-            <p className={`title is-4 ${styles.name}`}>
+            <p className={`title is-4`}>
               <a href={link}>{name}</a>
             </p>
             <p className="subtitle is-6">
