@@ -154,7 +154,10 @@ const LinkPage = ({ location }) => {
         <ul>
           <li>网站名称: kxxt 的小站</li>
           <li>我的昵称: kxxt</li>
-          <li>一句话： 一个没有分页功能和夜间模式的小破站</li>
+          <li>
+            一句话：
+            一个没有分页功能的我时不时想起来（hopefully）就会写点东西的小破站
+          </li>
           <li>
             网站图标:{" "}
             <div className="tags is-inline">
