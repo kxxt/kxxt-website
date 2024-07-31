@@ -9679,7 +9679,7 @@ __metadata:
     upath: "npm:^2.0.1"
   peerDependencies:
     gatsby: ^4 || ^5
-  checksum: ecddcaf40c4e663d43e16d6265205432e8eb97d3267148670a7602df7fd1c7494143d78dcfd16fb2c1e4be07780424fd2e8a457c9e931d2fa3f8670c43ad0ab9
+  checksum: 4c782f6c018ba831004580a8689b23bf847681a29b5f570b46a1a020df1242b7a1a317dd6450fda6854827bda7831a475d18f6dce5a15ac93485e508e173dcb3
   languageName: node
   linkType: hard
 
