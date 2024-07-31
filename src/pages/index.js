@@ -33,8 +33,9 @@ const BlogIndex = ({ data, location }) => {
     // `<strong style="background: mediumpurple;">Haskell</strong>`,
     `<strong style="background: #e84d22;color: white;">Rust</strong>`,
     // `<strong style="background: purple;">F#</strong>`,
-    `<strong style="color: goldenrod;">Computer Science</strong>`,
-    `<strong style="color: deepskyblue;">React</strong> and <strong style="color: mediumspringgreen;">Vue</strong>`,
+    `<strong style="color: goldenrod;">CyberSec</strong>`,
+    // `<strong style="color: deepskyblue;">React</strong> and <strong style="color: mediumspringgreen;">Vue</strong>`,
+    `<strong style="color: goldenrod;">Linux Kernel</strong>`,
   ]
   const learningsLines = learnings.map(
     learning => `${langsSummaryLine}<br/>I'm learning ${learning}.^1000`,
@@ -44,12 +45,11 @@ const BlogIndex = ({ data, location }) => {
   )}.`
   const softwareLine = `${learningsSummaryLine}<br/>Check out these cool projects of mine: <a href="https://github.com/kxxt/aspeak"><strong style="background: darkolivegreen;color: azure;text-decoration-line: underline;">aspeak</strong></a> and <a href="https://github.com/kxxt/tracexec"><strong style="background: darkturquoise;color: palegoldenrod;text-decoration-line: underline;">tracexec</strong></a>.`
   const websiteLine = `${learningsSummaryLine}<br/>I built this site with <strong style="color: mediumpurple;">Gatsby.js</strong> and <strong style="color: cyan;">Bulma.</strong>`
-  const osLine = `${learningsSummaryLine}<br>Proudly using <span style="color: #26a0ef">Garuda Linux</span>, <span style="color: #63a4a9">Lineage OS</span> and <span style="color: #f75c2e">Firefox</span>.`
+  const osLine = `${learningsSummaryLine}<br>Proudly using <span style="color: #26a0ef">Arch Linux</span>, <span style="color: #63a4a9">Lineage OS (with patches)</span> and <span style="color: #f75c2e">Firefox</span>.`
   const strings = [
     line1,
     line2,
-    `${line1}I'm a senior from <strong>Shandong University</strong>.`,
-    `${line1}I'm a student majoring in <span style="color: hotpink;">data science</span> and <span style="color: lightseagreen;">artificial intelligence.</span>`,
+    `${line1}I'm pursuing my master degree at USTC</strong>.`,
     `${line2}<br/>`,
     line3,
     ...langsLines,
