@@ -1,8 +1,8 @@
 .icon-text {
+  align-items: center;
+  flex-wrap: nowrap;
   & > :global(.icon) {
     height: 1.5rem;
     width: 1rem;
   }
-  align-items: center;
-  flex-wrap: nowrap;
 }

@@ -11,11 +11,13 @@ $box-shadow-spread: 0.3rem;
   position: relative;
   transition: color ease-in-out 0.4s;
   color: var(--bulma-text-base);
+  overflow: hidden;
+  
   & > a {
     color: var(--bulma-text-base);
     transition: color ease-in-out 0.4s;
   }
-  overflow: hidden;
+  
   &::before {
     content: "";
     display: block;
@@ -46,10 +48,10 @@ $box-shadow-spread: 0.3rem;
 
 @mixin toc-item-box-active {
   color: var(--bulma-primary-00) !important;
+  box-shadow: $toc-link-active-bg-color 0 0 $box-shadow-spread;
   & > a {
     color: var(--bulma-primary-00) !important;
   }
-  box-shadow: $toc-link-active-bg-color 0 0 $box-shadow-spread;
   &::before {
     width: 100% !important;
   }
