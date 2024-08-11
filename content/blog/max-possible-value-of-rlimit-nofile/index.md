@@ -27,10 +27,12 @@ But unfortunately, there's no answer that could convince me. So I decided to div
 #define INR_OPEN_MAX 4096	/* Hard limit for nfile rlimits */
 ```
 
-But that's not the maximium possible value of `RLIMIT_NOFILE`.
+<CH.Section>
+
+But that's not the maximium possible value of _`RLIMIT_NOFILE`_.
 
 To answer the question, we need to take a look at `kernel/sys.c`,
-where `do_prlimit` is the function resposible for handling our request to bump `RLIMIT_NOFILE`.
+where _`do_prlimit`_ is the function resposible for handling our request to bump _`RLIMIT_NOFILE`_.
 
 ```c
 /* make sure you are allowed to change @tsk limits before calling this */
@@ -55,15 +57,11 @@ static int do_prlimit(struct task_struct *tsk, unsigned int resource,
 }
 ```
 
-We can see that the hard maximum possible value of `RLIMIT_NOFILE` is `sysctl_nr_open`, which is defined in `fs/file.c`:
+</CH.Section>
 
-So by kernel default, the maximum value of `RLIMIT_NOFILE` is `1048576`.
+We can see that the hard maximum possible value of _`RLIMIT_NOFILE`_ is _`sysctl_nr_open`_, which is defined in `fs/file.c`:
 
-But `fs.nr_open` sysctl could be raised upto `sysctl_nr_open_max`.
-
-`sysctl fs.nr_open` returns `1073741816` on my laptop. I don't know what program set it.
-
-Now let's calculate the maximum possible value of `sysctl_nr_open` on x86_64 architecture:
+<CH.Section>
 
 ```c
 unsigned int sysctl_nr_open __read_mostly = 1024*1024;
@@ -74,10 +72,20 @@ unsigned int sysctl_nr_open_max =
 	__const_min(INT_MAX, ~(size_t)0/sizeof(void *)) & -BITS_PER_LONG;
 ```
 
-- `BITS_PER_LONG` is `64` on x86_64 so `-BITS_PER_LONG` is `0xffffffffffffffc0`
-- `~(size_t)0/sizeof(void *))` is `2305843009213693952` (`0x2000000000000000`)
-- It is bigger than `INT_MAX`.
-- so `sysctl_nr_open_max` is `INT_MAX & 0xffffffffffffffc0 = 2147483584` on x86_64.
+So by kernel default, the maximum value of _`RLIMIT_NOFILE`_ is `1048576`.
+
+But `fs.nr_open` sysctl could be raised upto _`sysctl_nr_open_max`_.
+
+`sysctl fs.nr_open` returns `1073741816` on my laptop. I don't know what program set it.
+
+Now let's calculate the maximum possible value of _`sysctl_nr_open`_ on x86_64 architecture:
+
+- _`BITS_PER_LONG`_ is `64` on x86_64 so _`-BITS_PER_LONG`_ is _`0xffffffffffffffc0`_
+- _`~(size_t)0/sizeof(void *))`_ is `2305843009213693952` (_`0x2000000000000000`_)
+- It is bigger than _`INT_MAX`_.
+- so _`sysctl_nr_open_max`_ is _`INT_MAX & 0xffffffffffffffc0 = 2147483584`_ on x86_64.
+
+</CH.Section>
 
 This could be verified by running:
 
