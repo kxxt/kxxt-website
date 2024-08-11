@@ -4,11 +4,12 @@
 @import "~bulma/sass/utilities/mixins";
 
 @function headings($before: "", $from: 1, $to: 6, $after: "") {
-  @if $from == $to {
+  @if $from ==$to {
     @return "#{$before} h#{$from}#{$after}";
-  } @else {
-    @return "#{$before} h#{$from}#{$after}, " +
-      headings($before, $from + 1, $to, $after);
+  }
+
+  @else {
+    @return "#{$before} h#{$from}#{$after}, "+headings($before, $from + 1, $to, $after);
   }
 }
 
@@ -46,6 +47,7 @@ code {
 
 a code {
   color: dodgerblue;
+
   &:hover {
     text-decoration: underline;
   }
@@ -57,11 +59,9 @@ a code {
   text-decoration: none;
   display: inline;
   transition: all 0.35s linear;
-  background: linear-gradient(
-    to bottom,
-    rgba(var(--bulma-primary), 1) 0%,
-    rgba(var(--bulma-primary), 1) 98%
-  );
+  background: linear-gradient(to bottom,
+      rgba(var(--bulma-primary), 1) 0%,
+      rgba(var(--bulma-primary), 1) 98%);
   background-size: 0px 2px;
   background-repeat: no-repeat;
   background-position: left 100%;
@@ -70,6 +70,10 @@ a code {
     color: rgba(var(--bulma-primary), 1);
     background-size: 100% 2px;
   }
+}
+
+.ch-inline-code {
+  margin-inline: 0.2em;
 }
 
 @mixin dark-theme {
@@ -86,9 +90,11 @@ a code {
 
 a[target="_blank"]:not(.tag, .gatsby-resp-image-link, .clear):after {
   margin: 0 3px 0 5px;
+
   @include light-theme {
     content: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVR42qXKwQkAIAxDUUdxtO6/RBQkQZvSi8I/pL4BoGw/XPkh4XigPmsUgh0626AjRsgxHTkUThsG2T/sIlzdTsp52kSS1wAAAABJRU5ErkJggg==);
   }
+
   @include dark-theme {
     content: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAa0lEQVQYV2NkwAFm9/f/R5ZiRBdILSxkhCmY29+f8I+BYT6ID1aILImuiImBIRGkGKtCmEkgRcmFhQtAhmEoRFcEswFF4fz+foU/DAz3YSZheAbZjSDFiYWFD2CKYH7A6RnKFOIKdJg4yGkATbVU62dxD+oAAAAASUVORK5CYII=);
   }
