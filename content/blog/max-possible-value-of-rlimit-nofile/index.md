@@ -97,7 +97,7 @@ sysctl: setting key "fs.nr_open": Invalid argument
 ```
 
 So the max possible value of `RLIMIT_NOFILE` is `2147483584`,
-only possible if and only if `sysctl fs.nr_open=2147483585`.
+only possible if and only if `sysctl fs.nr_open=2147483584`.
 
 This answer is based on Linux source code at commit `34ac1e82e5a78d5ed7f647766f5b1b51ca4d983a`.
 Future/Past linux versions might have a different limit.
