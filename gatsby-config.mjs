@@ -111,7 +111,7 @@ export default {
           `gatsby-remark-images`,
           {
             resolve: "gatsby-remark-copy-relative-linked-files",
-            options: { prefix: "public/blog" },
+            options: { prefix: "public/blog", hrefPrefix: "blog" },
           },
         ],
       },
