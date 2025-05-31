@@ -57,8 +57,6 @@ https://github.com/wolegis/mkinitcpio-systemd-extras/wiki/Networking#predictable
 
 :::
 
-Now we have basic networking in initramfs. However, it is not enough. For tailscale to work, we need
-working DNS resolution.
 
 
 # Tailscale in Initramfs
