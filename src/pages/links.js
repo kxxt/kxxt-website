@@ -122,6 +122,23 @@ const LinkPage = ({ location }) => {
         />
       }
     />,
+    <FriendCard
+      name="RTXUX's Blog"
+      key="rtxux"
+      subtitle="@rtxux"
+      socialLink="https://github.com/rtxux"
+      description=""
+      link="https://https://blog.rtxux.xyz/"
+      isCircle={true}
+      icon={
+        <StaticImage
+          src="../images/links/rtxux.jpg"
+          alt="rtxux"
+          width={48}
+          height={48}
+        />
+      }
+    />,
   ]
   return (
     <Layout location={location}>
