@@ -1180,6 +1180,49 @@ Although adb implements authorization, you may still want to limit it to tailsca
 
 # Co-existence with Android System VPN
 
+In theory, we can use another VPN in Android system and that's true in practice.
+
+But in practice, the VPN from Android system will affect tailscale connection.
+
+For example, with the Android VPN taking over all traffic, tailscale will fail to establish direct connection
+between peers and fallback to relay mode, which might harm connection quality.
+
+I am using it with Clash Meta For Android, which is a rule-based proxy supporting complex user-defined rules.
+I found enabling IPv6 support in Clash Meta For Android helps tailscale to establish direct connection with peers.
+
+And adding a DIRECT rule for all tailscale derps at least avoids tunneling the tailscale relay traffic through Android VPN. Here is my script for generating such rules:
+
+```python
+#!/usr/bin/env python3
+
+#
+# Generates the tailscale rule provider for clash-meta
+#
+
+import requests
+import pathlib
+from datetime import datetime
+
+file = pathlib.Path(__file__).parent.parent / 'rules' / 'tailscale.yaml'
+
+derp = requests.get("https://login.tailscale.com/derpmap/default").json()["Regions"]
+
+with open(file, 'w') as f:
+    print(f"# Automatically generated on {datetime.now()}, do NOT modify by hand", file=f)
+    print("payload:", file=f)
+
+
+    print(r"- DOMAIN-REGEX,^derp.*\.tailscale\.com,DIRECT", file=f)
+
+    for key, v in derp.items():
+        for node in v["Nodes"]:
+            comment = f"{v['RegionName']}\t\t{v['Latitude']}\t\t{v['Longitude']}\t\t{node['Name']}\t\t{node['HostName']}"
+            if "IPv4" in node:
+                print(f"- IP-CIDR,{node['IPv4']}/32,DIRECT \t\t\t# {comment}", file=f)
+            if "IPv6" in node:
+                print(f"- IP-CIDR6,{node['IPv6']}/64,DIRECT \t\t# {comment}", file=f)
+```
+
 # Wrap Up
 
 Thank you for taking time to read this long blog post.
