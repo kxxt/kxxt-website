@@ -1185,7 +1185,8 @@ In theory, we can use another VPN in Android system and that's true in practice.
 But in practice, the VPN from Android system will affect tailscale connection.
 
 For example, with the Android VPN taking over all traffic, tailscale will fail to establish direct connection
-between peers and fallback to relay mode, which might harm connection quality.
+between peers and fallback to relay mode, which might harm connection quality. What's worse, even the connection
+with tailscale relay is established over the Android VPN, sigificantly downgrades the tailscale connection.
 
 I am using it with Clash Meta For Android, which is a rule-based proxy supporting complex user-defined rules.
 I found enabling IPv6 support in Clash Meta For Android helps tailscale to establish direct connection with peers.
