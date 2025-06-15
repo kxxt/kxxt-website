@@ -834,7 +834,7 @@ which means that it will just ignore all SELinux rules.
 
 ```m4 external/tailscale/sepolicy/tailscaled.te
 # Tailscale service
-type tailscaled, domain, coredomain, bpfdomain, relaxeddomain, socket_between_core_and_vendor_violators;
+type tailscaled, domain, coredomain, bpfdomain, socket_between_core_and_vendor_violators;
 type tailscaled_exec, exec_type, system_file_type, file_type;
 type tailscaled_data_file, file_type;
 
