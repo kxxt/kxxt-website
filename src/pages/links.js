@@ -128,12 +128,29 @@ const LinkPage = ({ location }) => {
       subtitle="@rtxux"
       socialLink="https://github.com/rtxux"
       description=""
-      link="https://https://blog.rtxux.xyz/"
+      link="https://blog.rtxux.xyz/"
       isCircle={true}
       icon={
         <StaticImage
           src="../images/links/rtxux.jpg"
           alt="rtxux"
+          width={48}
+          height={48}
+        />
+      }
+    />,
+    <FriendCard
+      name="Integral's Blog"
+      key="integral"
+      subtitle="@Integral-Tech"
+      socialLink="https://github.com/Integral-Tech"
+      description=""
+      link="https://blog.i7.homes/"
+      isCircle={true}
+      icon={
+        <StaticImage
+          src="../images/links/integral.png"
+          alt="integral"
           width={48}
           height={48}
         />
