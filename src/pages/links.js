@@ -145,7 +145,7 @@ const LinkPage = ({ location }) => {
       subtitle="@Integral-Tech"
       socialLink="https://github.com/Integral-Tech"
       description=""
-      link="https://blog.i7.homes/"
+      link="https://blog.i7arch.com/"
       isCircle={true}
       icon={
         <StaticImage
