@@ -12,7 +12,7 @@ Creating a brand new open-source (or even closed-source) project is fun, but mai
 And as for maintaining an eBPF program, it is clearly not fun.
 I am always interested in creating fun projects (the latest one is https://kconfigwtf.kxxt.dev, BTW)
 and being a drive-by contributor in the FOSS community.
-But appranently I didn't pay enough effort to properly maintain my projects.
+But apparently I didn't pay enough effort to properly maintain my projects.
 I think the turning point for me to become a maintainer is the packaging of [tracexec](https://github.com/kxxt/tracexec)
 into official software repositories of Arch Linux and NixOS, which increased expectation upon me to properly maintain it.
 
