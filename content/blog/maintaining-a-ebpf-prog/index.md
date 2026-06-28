@@ -23,7 +23,7 @@ in September 2024, but marked as experimental. Almost two years later, I finally
 And now I am writing a blog post to share my findings.
 
 Although this blog post is mostly about maintaining a userspace software written in Rust with an eBPF program written in C
-and loaded with [libbpf-rs](github.com/libbpf/libbpf-rs), I believe most of the content still applies if your userspace/eBPF program
+and loaded with [libbpf-rs](https://github.com/libbpf/libbpf-rs), I believe most of the content still applies if your userspace/eBPF program
 is written in another language. I will start by categorizing the maintenance burdens in the next section.
 
 # Maintenance Burdens
