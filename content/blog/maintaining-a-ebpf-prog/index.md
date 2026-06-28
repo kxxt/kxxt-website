@@ -103,7 +103,7 @@ But you still need to handle the mess since distros are still on old kernels and
 
 ### Architecture Differences
 
-Many eBPF features are implement in a CPU architecture-specific way.
+Many eBPF features are implemented in a CPU architecture-specific way.
 Thus it is normal for a feature to be supported on x86_64 earlier than other architectures.
 So the Minimum Supported Kernel Version of your eBPF may be different depending on CPU architecture.
 Here are two examples that I encountered.
