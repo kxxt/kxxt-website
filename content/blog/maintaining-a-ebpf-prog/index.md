@@ -158,7 +158,7 @@ Location:
 There's no verifier error in the logs and the log doesn't say it failed to load. It only states that
 the attachment of eBPF program failed.
 
-The errno coveys almost no information about why the attachment failed.
+The errno conveys almost no information about why the attachment failed.
 
 When eBPF failed, how could we debug it and find the root cause? No joking, with eBPF itself.
 
