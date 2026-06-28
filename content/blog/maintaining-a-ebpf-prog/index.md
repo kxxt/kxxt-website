@@ -369,7 +369,7 @@ I bisected LLVM and find [`627746581b8f ("Reapply "[clang][CodeGen] Zero init un
 However, this patch looks benign. It only zero-initializes structure padding and recursively empty-initializes members not explicitly initialized in the initializer list.
 
 It turns out that a special argument is spilled onto the stack.
-The argument is is a pointer to a BPF map element.
+The argument is a pointer to a BPF map element.
 The spill requires the verifier to track it on the stack across the long & complex function body.
 And the verifier gave up in the end.
 I [fixed it by adjusting the code](https://github.com/kxxt/tracexec/pull/106) to save the verifier from tracking the spilled variable across the whole function.
