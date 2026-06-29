@@ -77,7 +77,7 @@ Is there anything wrong with this approach?
 
 Yes. You will find it failing to load on Fedora 43.
 
-Sleepable eBPF programs relies on `CONFIG_FUNCTION_ERROR_INJECTION`, which is enabled in Arch Linux kernels
+Sleepable eBPF programs rely on `CONFIG_FUNCTION_ERROR_INJECTION`, which is enabled in Arch Linux kernels
 but not in Fedora kernels. What a surprise! Our sleepable eBPF programs are not injecting any errors but would rely
 on such a kernel config. [It turns out that the sleepable eBPF check are just using the error injection list
 as an allowlist and there actually should have been no problem using sleepable eBPF without `CONFIG_FUNCTION_ERROR_INJECTION`](https://lore.kernel.org/bpf/CAADnVQK6qP8izg+k9yV0vdcT-+=axtFQ2fKw7D-2Ei-V6WS5Dw@mail.gmail.com/)
