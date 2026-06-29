@@ -1,6 +1,6 @@
 ---
 title: "Actually Maintaining an eBPF Program"
-date: 2026-06-28
+date: 2026-06-29
 description: "Maintaining an eBPF program is hard. This blog post explains why and how."
 tags: [linux, kernel, eBPF, tracexec, rust]
 published: true
