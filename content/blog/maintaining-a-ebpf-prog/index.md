@@ -143,7 +143,7 @@ However, RISC-V is still using BPF interpreter by default when I wrote this blog
 
 ### Dynamic Ftrace with Direct Calls
 
-I am not an expert on Linux kernel. So the following error message when I run my `fentry` program looks very confusing to me.
+I am not an expert on Linux kernel. So the following error message that shows when I run my `fentry` program looks very confusing to me.
 
 ```c
 libbpf: prog 'sys_execve': failed to attach: -ENOTSUPP
@@ -275,7 +275,7 @@ RISC-V syscall wrappers can start at an ftrace patchable function entry, and gen
 ## Why not tracepoints?
 
 You might be wondering why I didn't use syscall tracepoints.
-After all, unlike kprobes/fprobes syscall tracepoints are highly stable kernel interfaces.
+After all, unlike kprobes/fprobes, syscall tracepoints are highly stable kernel interfaces.
 By using syscall tracepoints, we can skip a lot of caveats mentioned above.
 
 There are three reasons.
@@ -387,7 +387,7 @@ But how could we measure coverage of an eBPF program?
 - Cilium created [`coverbee`](https://github.com/cilium/coverbee) but the project looks unmaintained now, with the last release of v0.3.2 on Mar 6, 2023. It is, of course, written in go so I cannot directly use it in my tests, which uses libbpf-rs instead.
 - Elastic created [`bpfcov`](https://github.com/elastic/bpfcov) but the project is also unmaintained now, with the last code change happened in 2022. It contains an out-of-tree LLVM pass to instrument your eBPF programs and a CLI to collect source-based coverage for eBPF programs.
 
-I didn't find more projects for measuring the coverage of eBPF programs. And the only two projects I find appears unmaintained.
+I didn't find more projects for measuring the coverage of eBPF programs. And the only two projects I found appears unmaintained.
 
 ## Continuous Integration
 
@@ -1147,12 +1147,15 @@ which would shorten the time between a regression patch is merged and the regres
 # Conclusion
 
 Writing an eBPF program is fun, but maintaining one takes effort and can be hard.
-Note I am not writing this blog post to discourage you from maintaining an eBPF program.
+I am not writing this blog post to discourage you from maintaining an eBPF program.
 On the contrary, this blog post might encourage you to do so, because any problem listed in this blog post is already a solved problem.
 
 The maintenance burden of eBPF programs is still much heavier than user-space software, but that's not a fair comparison.
 After all, eBPF is kernel code, and we should compare it against other kernel code like out-of-tree kernel modules.
 IMO the maintenance burden of eBPF programs is much much lighter than out-of-tree kernel modules, with the safety guarantee offered by the verifier at the same time.
+
+Key takeaway: Please maintain a CI for your eBPF program to establish a minimum supported kernel version and catch regressions
+from both the kernel and changes to your eBPF programs.
 
 # Acknowledgements
 
