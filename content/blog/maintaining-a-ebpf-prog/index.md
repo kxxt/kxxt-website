@@ -374,9 +374,13 @@ The spill requires the verifier to track it on the stack across the long & compl
 And the verifier gave up in the end.
 I [fixed it by adjusting the code](https://github.com/kxxt/tracexec/pull/106) to save the verifier from tracking the spilled variable across the whole function.
 
-## Test Coverage
+## Tests and Code Coverage
 
-It is easy to measure test coverage of a user-space program because there are a lot of tools (`cargo-llvm-cov` for example).
+How could we test eBPF applications? Testing eBPF programs naturally requires root (or a bunch of `CAP_XXX` combinations).
+So now I need to run tests as root in Rust projects.
+Unfortunately there is no existing mechanism in Rust/Cargo to configure some tests to run as root.
+
+And it is easy to measure test coverage of a user-space program because there are a lot of tools (`cargo-llvm-cov` for example).
 
 But how could we measure coverage of an eBPF program?
 
@@ -404,17 +408,751 @@ But setting up a CI for eBPF programs is easier said than done.
 
 # My Current Solutions
 
+That's a lot of maintenance burdens. In this section, let's see how I dealt with them.
+
+## Implementation Wrappers
+
+As mentioned in [*Dynamic Ftrace with Direct Calls*](#dynamic-ftrace-with-direct-calls) and [*Syscall Wrappers*](#syscall-wrappers),
+sometimes fentry eBPF programs fail to attach, and sometimes kprobe eBPF programs fail to attach.
+But I never find a case where both of them fail.
+So naturally the solution is implement both program types and dynamically choose which one to load
+in userspace based on feature detection results or user preference.
+
+To do that, though, we must first have multiple implementations in the eBPF program.
+For example, in the following code, The actual implementation is function `trace_exec_common`.
+We support both kprobe and fprobe by writing simple wrappers around `trace_exec_common`.
+
+
+```c
+#ifdef TRACEXEC_TARGET_X86_64
+#define SYSCALL_PREFIX "x64"
+#define SYSCALL_COMPAT_PREFIX "ia32_compat"
+#elif TRACEXEC_TARGET_AARCH64
+#define SYSCALL_PREFIX "arm64"
+#elif TRACEXEC_TARGET_RISCV64
+#define SYSCALL_PREFIX "riscv"
+#endif
+
+
+static __always_inline int trace_exec_common(bool is_execveat, bool is_compat,
+                                             const u8 *base_filename,
+                                             const u8 *const *argv,
+                                             const u8 *const *envp);
+
+SEC("kprobe/__" SYSCALL_PREFIX "_sys_execve")
+int BPF_KSYSCALL(sys_execve_kprobe, u8 *base_filename, u8 const *const *argv,
+                 u8 const *const *envp) {
+  trace_exec_common(false, false, base_filename, argv, envp);
+  return 0;
+}
+
+SEC("fentry/__" SYSCALL_PREFIX "_sys_execve")
+int BPF_PROG(sys_execve_fentry, struct pt_regs *regs) {
+  trace_exec_common(false, false, (u8 *)PT_REGS_PARM1_CORE(regs),
+                    (u8 const *const *)PT_REGS_PARM2_CORE(regs),
+                    (u8 const *const *)PT_REGS_PARM3_CORE(regs));
+  return 0;
+}
+
+SEC("fentry/__" SYSCALL_PREFIX "_sys_execveat")
+int BPF_PROG(sys_execveat_fentry, struct pt_regs *regs, int ret) {
+  trace_exec_common(true, false, (u8 *)PT_REGS_PARM2_CORE(regs),
+                    (u8 const *const *)PT_REGS_PARM3_CORE(regs),
+                    (u8 const *const *)PT_REGS_PARM4_CORE(regs));
+  struct exec_event *event = bpf_task_storage_get(
+      &execs, (struct task_struct *)bpf_get_current_task_btf(), NULL, BPF_ANY);
+  if (!event || !ctx)
+    return 0;
+
+  event->fd = PT_REGS_PARM1_CORE(regs);
+  event->flags = PT_REGS_PARM5_CORE(regs);
+  return 0;
+}
+
+SEC("kprobe/__" SYSCALL_PREFIX "_sys_execveat")
+int BPF_KSYSCALL(sys_execveat_kprobe, s32 fd, u8 *base_filename,
+                 u8 const *const *argv, u8 const *const *envp, u64 flags) {
+  trace_exec_common(true, false, base_filename, argv, envp);
+  struct exec_event *event = bpf_task_storage_get(
+      &execs, (struct task_struct *)bpf_get_current_task_btf(), NULL, BPF_ANY);
+  if (!event || !ctx)
+    return 0;
+
+  event->fd = fd;
+  event->flags = flags;
+  return 0;
+}
+```
+
 ## Conditional Loading
+
+To dynamically select the eBPF implementation to use, we can perform feature detection in user-space and allow users to override them.
+For example, here is my code for detecting whether `fentry/kprobe` programs should be used.
+
+```rust
+pub fn kernel_have_ftrace_with_direct_calls(
+  kconfig: Option<&HashMap<String, ConfigSetting>>,
+  override_env: Option<&[(OsString, OsString)]>,
+) -> bool {
+  // First, check special env `TRACEXEC_USE_KPROBE`
+  if elevate::env_var_string(override_env, "TRACEXEC_USE_KPROBE")
+    .map(|v| !v.is_empty())
+    .unwrap_or_default()
+  {
+    return false;
+  }
+  elevate::env_var_string(override_env, "TRACEXEC_USE_FENTRY")
+    .map(|v| !v.is_empty())
+    .unwrap_or_default() ||
+  // Then, we try to read kernel config
+  kconfig
+    .map(|configs| configs.contains_key("CONFIG_DYNAMIC_FTRACE_WITH_DIRECT_CALLS"))
+    .unwrap_or_default() ||
+  // Finally, we try to decide based on kernel version
+  {
+    cfg_if! {
+      if #[cfg(target_arch = "x86_64")] {
+        // We support linux >= 5.17, which all have this feature
+        true
+      } else if #[cfg(target_arch = "aarch64")] {
+        // https://github.com/torvalds/linux/commit/2aa6ac03516d078cf0c35aaa273b5cd11ea9734c
+        tracexec_core::is_current_kernel_ge((6, 4)).unwrap_or_default()
+      } else if #[cfg(target_arch = "riscv64")] {
+        // https://github.com/torvalds/linux/commit/b21cdb9523e5561b97fd534dbb75d132c5c938ff
+        tracexec_core::is_current_kernel_ge((6, 16)).unwrap_or_default()
+      } else {
+          compile_error!("unsupported architecture");
+      }
+    }
+  }
+}
+
+pub fn kernel_rejects_syscall_wrapper_kprobes(
+  #[allow(unused)] kconfig: Option<&HashMap<String, ConfigSetting>>,
+) -> bool {
+  cfg_if! {
+    if #[cfg(target_arch = "riscv64")] {
+      let Some(configs) = kconfig else {
+        return false;
+      };
+      // RISC-V syscall wrappers can start at an ftrace patchable function entry,
+      // and generic kprobes rejects those without CONFIG_KPROBES_ON_FTRACE:
+      // https://github.com/torvalds/linux/blob/ab9de95c9cf952332ab79453b4b5d1bfca8e514f/kernel/kprobes.c#L1598-L1602
+      kernel_have_syscall_wrappers(kconfig)
+        && configs.contains_key("CONFIG_DYNAMIC_FTRACE")
+        && !configs.contains_key("CONFIG_KPROBES_ON_FTRACE")
+    } else {
+      false
+    }
+  }
+}
+```
 
 ## Conditional Code
 
-## `bpfcov-rs`
+Many other compatibility problems can be solved with conditional code.
+Some are in user-space, while others are in kernel-space.
+The most complex ones require both user-space and kernel-space conditional code.
+
+### Kernel-Space
+
+libbpf provides a convenient mechanism for resolving conditional code at eBPF program load-time based on kernel version.
+For example, the following code enables RCU kfuncs only when the kernel version is greater than 6.2, which introduced eBPF RCU kfuncs.
+It ensures that we won't accidentally use RCU kfuncs on kernels that do not support them, like 6.1lts.
+
+```c
+// Kernel version at program load time
+extern int LINUX_KERNEL_VERSION __kconfig;
+
+extern void bpf_rcu_read_lock(void) __ksym;
+extern void bpf_rcu_read_unlock(void) __ksym;
+
+#define MIN_KERNEL_VERSION_FOR_RCU_KFUNC KERNEL_VERSION(6, 2, 0)
+
+int __always_inline rcu_read_lock() {
+  if (LINUX_KERNEL_VERSION >= MIN_KERNEL_VERSION_FOR_RCU_KFUNC) {
+    bpf_rcu_read_lock();
+  }
+  return 0;
+}
+
+int __always_inline rcu_read_unlock() {
+  if (LINUX_KERNEL_VERSION >= MIN_KERNEL_VERSION_FOR_RCU_KFUNC) {
+    bpf_rcu_read_unlock();
+  }
+  return 0;
+}
+```
+
+For checking the existence of kfuncs, we can also use the `bpf_ksym_exists` macro.
+We no longer need to hard-code the kernel version thus it's simpler than the above example.
+
+```c
+extern void bpf_rcu_read_lock(void) __weak __ksym;
+extern void bpf_rcu_read_unlock(void) __weak __ksym;
+
+int __always_inline rcu_read_lock() {
+  if (bpf_ksym_exists(bpf_rcu_read_lock)) {
+    bpf_rcu_read_lock();
+  }
+  return 0;
+}
+
+int __always_inline rcu_read_unlock() {
+  if (bpf_ksym_exists(bpf_rcu_read_unlock)) {
+    bpf_rcu_read_unlock();
+  }
+  return 0;
+}
+```
+
+I also use it to implement polyfills for kfuncs.
+For example, the kernel added a [bits iterator](https://docs.ebpf.io/linux/kfuncs/bpf_iter_bits_new/) in 6.11.
+Prior to 6.11, I use hand-written C code to implement the same functionality.
+Using the new bits iterator helps me overcome a [verifier performance regression introduced in 6.19.4](#the-mainline-regression),
+but I still want to support old kernels.
+
+<CH.Code rows={20}>
+
+```c CoreLogic
+extern int bpf_iter_bits_new(struct bpf_iter_bits *it, const u64 *unsafe_ptr__ign, u32 nr_words) __weak __ksym;
+
+const u32 BPF_BITS_ITER_MAX_BYTES = 512;
+const u32 BPF_BITS_ITER_MAX_BITS = BPF_BITS_ITER_MAX_BYTES * 8;
+
+static int read_fds(struct exec_event *event) {
+  ...
+  if (bpf_ksym_exists(bpf_iter_bits_new)) {
+    // When using iter_bits, the unit of size is bit (not the number of words)
+    ctx.size *= BITS_PER_LONG;
+    u32 chunks =
+        (ctx.size + BPF_BITS_ITER_MAX_BITS - 1) / BPF_BITS_ITER_MAX_BITS;
+    ret = bpf_loop(chunks, iter_fdset_chunk, &ctx, 0);
+  } else {
+    ret = bpf_loop(ctx.size, read_fds_impl, &ctx, 0);
+  }
+  ...
+}
+```
+
+```c Polyfill
+// BEGIN hand-written implementation for iterating the fdset
+
+// Ref:
+// https://elixir.bootlin.com/linux/v6.10.3/source/include/asm-generic/bitops/__ffs.h#L45
+static __always_inline unsigned int generic___ffs(unsigned long word) {
+  unsigned int num = 0;
+
+#if BITS_PER_LONG == 64
+  if ((word & 0xffffffff) == 0) {
+    num += 32;
+    word >>= 32;
+  }
+#endif
+  if ((word & 0xffff) == 0) {
+    num += 16;
+    word >>= 16;
+  }
+  if ((word & 0xff) == 0) {
+    num += 8;
+    word >>= 8;
+  }
+  if ((word & 0xf) == 0) {
+    num += 4;
+    word >>= 4;
+  }
+  if ((word & 0x3) == 0) {
+    num += 2;
+    word >>= 2;
+  }
+  if ((word & 0x1) == 0)
+    num += 1;
+  return num;
+}
+
+// Find the next set bit
+//   Returns the bit number for the next set bit
+//   If no bits are set, returns BITS_PER_LONG.
+// Ref:
+// https://github.com/torvalds/linux/blob/0b2811ba11b04353033237359c9d042eb0cdc1c1/include/linux/find.h#L44-L69
+static __always_inline unsigned int find_next_bit(long bitmap,
+                                                  unsigned int offset) {
+  if (offset >= BITS_PER_LONG)
+    return BITS_PER_LONG;
+  bitmap &= GENMASK(BITS_PER_LONG - 1, offset);
+  return bitmap ? generic___ffs(bitmap) : BITS_PER_LONG;
+}
+
+// A helper to read fdset into cache,
+// read open file descriptors and send info into ringbuf
+static int read_fds_impl(u32 index, struct fdset_reader_context *ctx) {
+  struct exec_event *event;
+  if (ctx == NULL || (event = ctx->event) == NULL)
+    return 1; // unreachable
+  // 64 bits of a larger fdset.
+  long unsigned int *pfdset = &ctx->fdset[index];
+  struct fdset_word_reader_context subctx = {
+      .event = event,
+      .fd_array = ctx->fd_array,
+      .next_bit = BITS_PER_LONG,
+      .word_index = index,
+  };
+  // Read a 64bits part of fdset from kernel
+  int ret = bpf_core_read(&subctx.fdset, sizeof(subctx.fdset), pfdset);
+  if (ret < 0) {
+    debug("Failed to read %u/%u member of fdset", index, ctx->size);
+    event->header.flags |= FDS_PROBE_FAILURE;
+    return 1;
+  }
+  long unsigned int *pcloexec_set = &ctx->cloexec_set[index];
+  // Read a 64bits part of close_on_exec set from kernel
+  ret = bpf_core_read(&subctx.cloexec, sizeof(subctx.cloexec), pcloexec_set);
+  if (ret < 0) {
+    debug("Failed to read %u/%u member of close_on_exec", index, ctx->size);
+    subctx.flags_read_failure = true;
+    // fallthrough
+  }
+  // debug("cloexec %u/%u = %lx", index, ctx->size, // subctx.fdset,
+  //       subctx.cloexec);
+  // if it's all zeros, let's skip it:
+  if (subctx.fdset == 0)
+    return 0;
+  subctx.next_bit = find_next_bit(subctx.fdset, 0);
+  bpf_loop(BITS_PER_LONG, read_fdset_word, &subctx, 0);
+  return 0;
+}
+
+static int read_fdset_word(u32 index, struct fdset_word_reader_context *ctx) {
+  if (ctx == NULL)
+    return 1;
+  if (ctx->next_bit == BITS_PER_LONG)
+    return 1;
+  unsigned int fdnum = ctx->next_bit + BITS_PER_LONG * ctx->word_index;
+  bool cloexec = false;
+  if (ctx->cloexec & (1UL << ctx->next_bit))
+    cloexec = true;
+  _read_fd(fdnum, ctx->fd_array, ctx->event, cloexec,
+           ctx->flags_read_failure);
+  ctx->next_bit = find_next_bit(ctx->fdset, ctx->next_bit + 1);
+  return 0;
+}
+
+// END hand-written implementation for iterating the fdset
+```
+
+```c New-Implementation
+// BEGIN iter bits implementation for iterating the fdset
+
+static int iter_fdset_chunk(u32 chunk, void *data) {
+  struct fdset_reader_context *ctx = data;
+  int ret;
+
+  const u32 base = chunk * BPF_BITS_ITER_MAX_BITS;
+
+  if (base >= ctx->size)
+    return 1; // stop loop
+
+  u32 remaining = ctx->size - base;
+  u32 chunk_nr_words =
+      (remaining < BPF_BITS_ITER_MAX_BITS ? remaining
+                                          : BPF_BITS_ITER_MAX_BITS) /
+      BITS_PER_LONG;
+
+  const u64 *fdset_chunk = ((const u64 *)ctx->fdset) + (base / 64);
+
+  int *pbit_index;
+  bpf_for_each(bits, pbit_index, fdset_chunk, chunk_nr_words) {
+    u32 fd = base + *pbit_index;
+
+    bool cloexec = false;
+
+    int index = fd / 64;
+    int offset = fd & 63;
+
+    long unsigned int *pcloexec_set = &ctx->cloexec_set[index];
+    u64 cloexec_word = 0;
+    bool flags_read_failure = false;
+
+    ret = bpf_core_read(&cloexec_word, sizeof(cloexec_word), pcloexec_set);
+    if (ret < 0) {
+      debug("Failed to check if fd %u is cloexec", fd);
+      flags_read_failure = true;
+    }
+
+    cloexec = cloexec_word & (1UL << offset);
+
+    ret = _read_fd(fd, ctx->fd_array, ctx->event, cloexec,
+                   flags_read_failure);
+    if (ret != 0) {
+      debug("Failed to get info about fd %u (inside bpf bits iter)", fd);
+    }
+  }
+
+  return 0;
+}
+
+// END iter bits implementation for iterating the fdset
+```
+
+</CH.Code>
+
+### User-Space
+
+Some nice new improvements of eBPF are not compatible with old kernels, like [*`BPF_F_NO_PREALLOC` Maps with Sleepable eBPF*](#bpf_f_no_prealloc-maps-with-sleepable-ebpf).
+
+This one could be toggled from user-space by setting the map flags via libbpf-rs, as demonstrated by the following code.
+Thus we can keep the compatibility with old kernel while enjoying the new improvement on new kernels.
+
+```rust
+const MIN_SLEEPABLE_NO_PREALLOC_HASH_MAPS: (u32, u32) = (6, 1);
+
+pub fn kernel_supports_sleepable_no_prealloc_hash_maps() -> bool {
+  tracexec_core::is_current_kernel_ge(MIN_SLEEPABLE_NO_PREALLOC_HASH_MAPS).unwrap_or_default()
+}
+
+...
+
+if kernel_supports_sleepable_no_prealloc_hash_maps() {
+  open_skel
+    .maps
+    .tracee_closure
+    .set_map_flags(BPF_F_NO_PREALLOC)?;
+}
+```
+
+To handle missing [*Syscall Wrappers*](#syscall-wrappers), we need additional user-space code,
+because the `SEC` macro only accepts compile-time constants.
+Luckily, we can change the kernel symbol to attach at runtime in user-space code.
+
+The following code detects the presence of syscall wrappers and disables autoattaching eBPF programs.
+
+```rust
+pub fn kernel_have_syscall_wrappers(
+  #[allow(unused)] kconfig: Option<&HashMap<String, ConfigSetting>>,
+) -> bool {
+  // arm64 and x86_64 both have syscall wrappers long before 5.17
+  cfg_if! {
+   if #[cfg(target_arch = "riscv64")] {
+      // https://github.com/torvalds/linux/commit/b21cdb9523e5561b97fd534dbb75d132c5c938ff
+      kconfig
+        .map(|configs| configs.contains_key("CONFIG_ARCH_HAS_SYSCALL_WRAPPER"))
+        .unwrap_or_default() ||
+        tracexec_core::is_current_kernel_ge((6, 6)).unwrap_or_default()
+    } else {
+      true
+    }
+  }
+}
+
+let kernel_have_syscall_wrappers = kernel_have_syscall_wrappers(kconfig.as_ref());
+if !kernel_have_syscall_wrappers {
+  // Only handle kprobe here because the only supported kernels
+  // that could trigger it is riscv linux < 6.6, which won't
+  // support ftrace_with_direct_calls anyway.
+  open_skel.progs.sys_execve_kprobe.set_autoattach(false);
+  open_skel.progs.sys_execveat_kprobe.set_autoattach(false);
+  open_skel
+    .progs
+    .sys_exit_execve_kretprobe
+    .set_autoattach(false);
+  open_skel
+    .progs
+    .sys_exit_execveat_kretprobe
+    .set_autoattach(false);
+}
+```
+
+Then we can manually attach to the symbols without syscall wrappers.
+
+```rust
+pub fn attach_kprobes_without_syscall_wrappers(
+  skel: &mut TracexecSystemSkel,
+  attach_set: BitFlags<AttachSet>,
+) -> libbpf_rs::Result<()> {
+  if attach_set.contains(AttachSet::Execve) {
+    skel.links.sys_execve_kprobe = Some(
+      skel
+        .progs
+        .sys_execve_kprobe
+        .attach_kprobe(false, "__se_sys_execve")?,
+    );
+    skel.links.sys_exit_execve_kretprobe = Some(
+      skel
+        .progs
+        .sys_exit_execve_kretprobe
+        .attach_kprobe(true, "__se_sys_execve")?,
+    );
+  }
+
+  if attach_set.contains(AttachSet::Execveat) {
+    skel.links.sys_execveat_kprobe = Some(
+      skel
+        .progs
+        .sys_execveat_kprobe
+        .attach_kprobe(false, "__se_sys_execveat")?,
+    );
+
+    skel.links.sys_exit_execveat_kretprobe = Some(
+      skel
+        .progs
+        .sys_exit_execveat_kretprobe
+        .attach_kprobe(true, "__se_sys_execveat")?,
+    );
+  }
+  Ok(())
+}
+
+
+let mut skel = open_skel.load()?;
+skel.attach()?;
+if !kernel_have_syscall_wrappers {
+  attach_kprobes_without_syscall_wrappers(&mut skel, AttachSet::all())?;
+}
+```
+
+### Combination of Kernel-Space and User-Space 
+
+The more complex problems requires conditional code in both kernel-space and user-space.
+
+<CH.Section>
+
+For example, suppose we want to use sleepable eBPF program whenever possible and fallback to non-sleepable eBPF program.
+
+We should use sleepable _`bpf_copy_from_user`_ in sleepable context and use non-sleepable _`bpf_probe_read_user`_ in non-sleepable context.
+Otherwise the verifier will yell at us.
+But AFAIK there is no way to determine whether we are in a sleepable context or not. So we need to pass that information from the user-space.
+
+The following code shows the kernel part. It also involves falling-back to _`bpf_probe_read_user_str`_ when the kernel does not support the _`bpf_copy_from_user_str`_ kfunc.
+
+```c
+extern int bpf_copy_from_user_str(void *dst, u32 dst__sz, const void *unsafe_ptr__ign, u64 flags) __weak __ksym;
+
+const volatile struct {
+  u32 nofile;
+  bool follow_fork;
+  bool sleepable;
+  pid_t tracee_pid;
+  unsigned int tracee_pidns_inum;
+} tracexec_config = {
+    // https://www.kxxt.dev/blog/max-possible-value-of-rlimit-nofile/
+    .nofile = 2147483584,
+    .follow_fork = false,
+    .sleepable = false,
+    .tracee_pid = 0,
+    .tracee_pidns_inum = 0,
+};
+
+static __always_inline int read_user_pointer(void *dst, u32 size,
+                                             const void *unsafe_ptr) {
+  if (tracexec_config.sleepable) {
+    return bpf_copy_from_user(dst, size, unsafe_ptr);
+  }
+  return bpf_probe_read_user(dst, size, unsafe_ptr);
+}
+
+static __always_inline int read_user_string(void *dst, u32 size,
+                                            const void *unsafe_ptr) {
+  if (tracexec_config.sleepable && bpf_ksym_exists(bpf_copy_from_user_str)) {
+    return bpf_copy_from_user_str(dst, size, unsafe_ptr, BPF_ANY);
+  }
+  return bpf_probe_read_user_str(dst, size, unsafe_ptr);
+}
+```
+
+</CH.Section>
+
+<CH.Section>
+
+The following user-space code probes whether sleepable eBPF programs are available and set _`BPF_F_SLEEPABLE`_ and _`rodata.tracexec_config.sleepable`_ correspondingly.
+
+```rust
+pub fn can_i_use_sleepable_fentry(
+  kconfig: Option<&HashMap<String, ConfigSetting>>,
+  override_env: Option<&[(OsString, OsString)]>,
+) -> bool {
+  if elevate::env_var_string(override_env, "TRACEXEC_NO_SLEEP")
+    .map(|v| !v.is_empty())
+    .unwrap_or_default()
+  {
+    return false;
+  }
+  kconfig
+    .map(|configs| configs.contains_key("CONFIG_FUNCTION_ERROR_INJECTION"))
+    // Defaults to true
+    .unwrap_or(true)
+}
+
+
+// Check if we can use sleepable fentry
+if can_i_use_sleepable_fentry(kconfig.as_ref(), override_env) {
+  rodata.tracexec_config.sleepable = MaybeUninit::new(true);
+  // Can use sleepable fentry :(
+  open_skel.progs.sys_execve_fentry.set_flags(BPF_F_SLEEPABLE);
+  open_skel
+    .progs
+    .sys_execveat_fentry
+    .set_flags(BPF_F_SLEEPABLE);
+  #[cfg(target_arch = "x86_64")]
+  {
+    open_skel.progs.compat_sys_execve.set_flags(BPF_F_SLEEPABLE);
+    open_skel
+      .progs
+      .compat_sys_execveat
+      .set_flags(BPF_F_SLEEPABLE);
+  }
+}
+```
+
+</CH.Section>
+
+### Handle Alternative Syscall Interfaces
+
+Currently tracexec only handles the most popular [*Alternative Syscall Interface*](#alternative-syscall-interfaces): 32bit syscall interface on x86_64.
+Naturally, it is done by conditional compilation.
+And it requires carefully handling of user-space data in the eBPF code because pointers are 32bit.
+
+```c
+#ifdef TRACEXEC_TARGET_X86_64
+#define SYSCALL_PREFIX "x64"
+#define SYSCALL_COMPAT_PREFIX "ia32_compat"
+#define COMPAT_PT_REGS_PARM1_CORE(x) ((u32)(BPF_CORE_READ(__PT_REGS_CAST(x), bx)))
+#define COMPAT_PT_REGS_PARM2_CORE(x) ((u32)(BPF_CORE_READ(__PT_REGS_CAST(x), cx)))
+#define COMPAT_PT_REGS_PARM3_CORE(x) ((u32)(BPF_CORE_READ(__PT_REGS_CAST(x), dx)))
+#define COMPAT_PT_REGS_PARM4_CORE(x) ((u32)(BPF_CORE_READ(__PT_REGS_CAST(x), si)))
+#define COMPAT_PT_REGS_PARM5_CORE(x) ((u32)(BPF_CORE_READ(__PT_REGS_CAST(x), di)))
+#endif
+
+#ifdef SYSCALL_COMPAT_PREFIX
+
+SEC("fexit/__" SYSCALL_COMPAT_PREFIX "_sys_execveat")
+int BPF_PROG(compat_sys_exit_execveat, struct pt_regs *regs, int ret) {
+  return tp_sys_exit_exec(ret);
+}
+
+SEC("fentry/__" SYSCALL_COMPAT_PREFIX "_sys_execveat")
+int BPF_PROG(compat_sys_execveat, struct pt_regs *regs, int ret) {
+  trace_exec_common(true, true, (u8 *)(u64)COMPAT_PT_REGS_PARM2_CORE(regs),
+                    (u8 const *const *)(u64)COMPAT_PT_REGS_PARM3_CORE(regs),
+                    (u8 const *const *)(u64)COMPAT_PT_REGS_PARM4_CORE(regs));
+  struct exec_event *event = bpf_task_storage_get(
+      &execs, (struct task_struct *)bpf_get_current_task_btf(), NULL, BPF_ANY);
+  if (!event || !ctx)
+    return 0;
+
+  event->fd = COMPAT_PT_REGS_PARM1_CORE(regs);
+  event->flags = COMPAT_PT_REGS_PARM5_CORE(regs);
+  return 0;
+}
+
+SEC("fexit/__" SYSCALL_COMPAT_PREFIX "_sys_execve")
+int BPF_PROG(compat_sys_exit_execve, struct pt_regs *regs, int ret) {
+  return tp_sys_exit_exec(ret);
+}
+
+SEC("fentry/__" SYSCALL_COMPAT_PREFIX "_sys_execve")
+int BPF_PROG(compat_sys_execve, struct pt_regs *regs) {
+  trace_exec_common(false, true, (u8 *)(u64)COMPAT_PT_REGS_PARM1_CORE(regs),
+                    (u8 const *const *)(u64)COMPAT_PT_REGS_PARM2_CORE(regs),
+                    (u8 const *const *)(u64)COMPAT_PT_REGS_PARM3_CORE(regs));
+  return 0;
+}
+#endif
+```
+
+There is a limitation with this approach, though.
+It assumes that the 32-bit alternative syscall interface always exists and will cause the eBPF program to fail to load when it doesn't.
+
+Currently that problem does not surface since all major Linux distros enable it by default at the time of writing: https://kconfigwtf.kxxt.dev/CONFIG_/IA32_EMULATION/.
+But I do anticipate that it will become a real problem in the future as 32-bit support rots and distros will start to disable it.
+
+## Running eBPF tests in a Rust project
+
+I didn't find a particularly good way to run part of Rust tests as root.
+But we can run the tests that need to run as root separately from the normal tests by marking them as ignored:
+
+```rust
+#[rstest]
+#[file_serial(bpf)]
+#[ignore = "root"]
+fn test_trace_fork_emits_fork_event(sh_executable: PathBuf) -> color_eyre::Result<()> {
+  with_skel(function_name!(), prepare_trace_fork_only, |skel| {
+    let capture = run_fork_and_capture(skel, &sh_executable, Duration::from_secs(2))?;
+    assert_eq!(capture.event.header.r#type, event_type::FORK_EVENT);
+    assert_ne!(capture.child_pid, capture.event.parent_tgid);
+    Ok(())
+  })
+}
+```
+
+And run all the ignored tests as root:
+
+```bash
+CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_RUNNER="sudo -E" cargo test --workspace -- --ignored
+```
+
+## `bpfcov-rs`: Code Coverage for libbpf-rs Programs
+
+To solve the [code coverage problem of libbpf-rs eBPF programs](#tests-and-code-coverage), I forked `bpfcov` to modernize it and add support for libbpf-rs.
+
+The original code base requires outdated LLVM 12.0 and produces the coverage output in an ancient format.
+Unfortunately, I knows little about handling LLVM major version upgrades for an LLVM pass plugin.
+But with my proper guidance and validation loop, coding agents successfully ported the ancient code base
+to modern LLVM 21/22 and implemented a rust crate for usage with libbpf-rs.
+
+The code repository of `bpfcov-rs` is at https://github.com/kxxt/bpfcov-rs. It is also published as `bpfcov` on crates.io.
+
+Finally I can track the code coverage of eBPF code in CodeCov: https://app.codecov.io/gh/kxxt/tracexec/blob/main/crates%2Ftracexec-backend-ebpf%2Fsrc%2Ftracexec_system.bpf.c.
+
+![Code coverage screenshot of eBPF code](./bpfcov-rs.png)
 
 ## UKCI with Nix
 
+To continuously test the eBPF code against many (Kernel version, LLVM version, CPU architecture) combinations,
+I created a UKCI (User-space Kernel-space CI) system with Nix.
+It is based on the [kernel-development-flake](https://github.com/jordanisaacs/kernel-module-flake).
 
+Testing the full (Kernel version, LLVM version, CPU architecture) combinations takes a lot of time and I made a compromise
+by only testing the (Kernel version, CPU architecture) combinations with latest stable LLVM.
+The full combinations are only tested once per week.
+But I will add a `full-ci` label to eBPF related PRs to ensure that they are tested with the full combinations.
+
+The UKCI works as follows:
+
+1. Building the flake produces kernels, initrds and test binaries of the tested combinations.
+2. `ukci` script starts the qemu virtual machines and test scripts in parallel.
+3. Each test script attempts to ssh into its VM and execute the tests.
+4. After all tests finished, a test summary is outputted in GitHub Actions UI, as shown in the following picture.
+
+![UKCI summary in GitHub Actions UI](./ukci-summary.png)
+
+Currently my UKCI setup supports 3 architectures: x86_64, arm64 and riscv64.
+
+- x86_64 UKCI runs with KVM as GitHub Actions supports KVM in their x86_64 runners.
+- arm64 UKCI runs without KVM on GitHub Actions' linux arm64 runners.
+- riscv64 UKCI is cross-compiled from x86_64 and runs via `qemu-system-riscv64` on x86_64 runners.
+  - On the one hand, GitHub Actions do not offer native riscv64 runners.
+  - On the other hand, at the time of writing, using nixpkgs on riscv64 natively is almost impossible.
+    There is a binary cache for cross-compilation to riscv64 but no binary cache for native compilation.
+
+My kernel test matrix includes the following kernel targets and I use a GitHub Actions workflow to update it weekly.
+
+- The Minimum Supported Kernel Version (MSKV)
+- LTS kernels: 6.1lts, 6.6lts, 6.12lts, 6.18lts
+- Latest stable kernel: 7.1 at the time of writing.
+- Latest RC release if exist.
+
+I am planning to integrate `bpf-next` into my UKCI as well,
+which would shorten the time between a regression patch is merged and the regression is noticed by me.
 
 # Conclusion
+
+Writing an eBPF program is fun, but maintaining one takes effort and can be hard.
+Note I am not writing this blog post to discourage you from maintaining an eBPF program.
+To the countrary, this blog post might encourage you to do so, because any problem listed in this blog post is already a solved problem.
+
+The maintenance burden of eBPF programs is still much heavier than user-space software, but that's not a fair comparison after all.
+eBPF is kernel code, and we should compare it against other kernel code like out-of-tree kernel modules.
+IMO the maintenance burden of eBPF programs is much much lighter than out-of-tree kernel modules, with the safety-guarantee offered by the verifier at the same time.
 
 # Acknowledgements
 
