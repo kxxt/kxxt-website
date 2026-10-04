@@ -6,31 +6,38 @@
 const books = {
   items: [
     {
-      title: "A Philosophy of Software Design",
-      creator: "John Ousterhout",
-      year: "2021",
-      description:
-        "A compact, opinionated guide to managing complexity and designing software that remains understandable as it grows.",
-      tags: ["Software", "Design", "Engineering"],
-      url: "https://web.stanford.edu/~ouster/cgi-bin/book.php",
-    },
-    {
-      title: "The Design of Everyday Things",
-      creator: "Don Norman",
+      title: "The Art of Thinking Clearly",
+      creator: "Rolf Dobelli",
       year: "2013",
-      description:
-        "An inviting introduction to affordances, feedback, and why confusing objects are usually a design problem—not a user problem.",
-      tags: ["Design", "Psychology", "UX"],
-      url: "https://mitpress.mit.edu/9780262525671/the-design-of-everyday-things/",
+      description: "Common thinking errors definitely worth knowing.",
+      tags: ["Non-fiction"],
+      url: "https://en.wikipedia.org/wiki/The_Art_of_Thinking_Clearly",
     },
     {
-      title: "The Three-Body Problem",
-      creator: "Liu Cixin",
-      year: "2008",
+      title: "1984",
+      creator: "George Orwell",
+      year: "1949",
+      description: "I don't think I need to write a description for this book.",
+      tags: ["Dystopia"],
+      url: "https://en.wikipedia.org/wiki/Nineteen_Eighty-Four",
+    },
+    {
+      title: "Animal Farm",
+      creator: "George Orwell",
+      year: "1945",
       description:
-        "Hard science fiction that moves from the upheaval of the Cultural Revolution to questions on a genuinely cosmic scale.",
-      tags: ["Science fiction", "First contact", "China"],
-      url: "https://us.macmillan.com/books/9780765382030/thethreebodyproblem/",
+        "I read this book in my childhood by chance and it is really influential.",
+      tags: ["Dystopia"],
+      url: "https://en.wikipedia.org/wiki/Animal_Farm",
+    },
+    {
+      title: "Fluent Python",
+      creator: "Luciano Ramalho",
+      year: "2022",
+      description:
+        "(If you are interested in Python)",
+      tags: ["Python", "Programming"],
+      url: "https://www.fluentpython.com/",
     },
   ],
   // Add named groups using { title, description?, items: [...] }.
