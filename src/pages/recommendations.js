@@ -92,7 +92,7 @@ const RecommendationCard = ({ imageMap, item }) => {
       <div className={`card-content ${styles.cardContent}`}>
         <div className={styles.cardHeading}>
           <div>
-            <Title className="title is-4">{item.title}</Title>
+            <Title className="title is-4 is-spaced">{item.title}</Title>
             <p className="subtitle is-6">
               {item.creator} <span aria-hidden="true">·</span> {item.year}
             </p>
