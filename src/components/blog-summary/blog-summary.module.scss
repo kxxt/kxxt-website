@@ -1,4 +1,4 @@
-@import "~bulma/sass/utilities/mixins";
+@use "bulma/sass/utilities/mixins" as bulma-mixins;
 
 .blog-summary {
   margin-bottom: 20px;
@@ -15,12 +15,12 @@
 
 .time-to-read {
   margin-right: 1rem;
-  @include mobile() {
+  @include bulma-mixins.mobile() {
     margin-bottom: 0.3rem;
   }
 }
 
-@include mobile() {
+@include bulma-mixins.mobile() {
   .title {
     text-align: center;
   }
@@ -32,7 +32,7 @@
   align-items: center;
   margin-bottom: 0.3rem;
 
-  @include mobile() {
+  @include bulma-mixins.mobile() {
     & {
       flex-direction: column;
     }

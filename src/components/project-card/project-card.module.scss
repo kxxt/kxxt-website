@@ -1,4 +1,4 @@
-@import "~bulma/sass/utilities/mixins";
+@use "bulma/sass/utilities/mixins" as bulma-mixins;
 
 :global(.card).horizontal {
   display: flex;
@@ -30,19 +30,19 @@
   }
 }
 
-@include desktop {
+@include bulma-mixins.desktop {
   :global(.card).horizontal {
     max-width: 90%;
   }
 }
 
-@include tablet {
+@include bulma-mixins.tablet {
   :global(.card).horizontal {
     max-width: 95%;
   }
 }
 
-@include touch {
+@include bulma-mixins.touch {
   :global(.card).horizontal {
     flex-direction: column;
     max-width: 100%;

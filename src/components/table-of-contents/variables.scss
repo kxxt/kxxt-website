@@ -1,4 +1,4 @@
-@import "~bulma/sass/base/generic";
+@use "bulma/sass/base/generic";
 
 $toc-link-active-bg-color: var(--bulma-primary);
 $toc-link-hover-bg-color: var(--bulma-primary-dark-invert);

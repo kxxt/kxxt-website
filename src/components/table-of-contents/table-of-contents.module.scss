@@ -1,4 +1,4 @@
-@import "variables";
+@use "variables";
 
 @media print {
   .toc {
@@ -44,7 +44,7 @@ details.toc-details {
   }
 
   &:not(.toc-top-level) > summary {
-    @include toc-item-box;
+    @include variables.toc-item-box;
   }
 }
 
@@ -53,5 +53,5 @@ details.toc-details {
 }
 
 .active {
-  @include toc-item-box-active;
+  @include variables.toc-item-box-active;
 }

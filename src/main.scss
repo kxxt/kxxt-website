@@ -1,7 +1,7 @@
 @charset "utf-8";
 
-@import "~bulma/bulma";
-@import "~bulma/sass/utilities/mixins";
+@use "bulma/bulma";
+@use "bulma/sass/utilities/mixins" as bulma-mixins;
 
 @function headings($before: "", $from: 1, $to: 6, $after: "") {
   @if $from ==$to {
@@ -17,7 +17,7 @@
   margin-top: 1rem;
 }
 
-@include touch {
+@include bulma-mixins.touch {
   #main-container {
     padding: 0 2em;
   }

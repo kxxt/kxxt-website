@@ -1,4 +1,4 @@
-@import "~bulma/sass/utilities/mixins";
+@use "bulma/sass/utilities/mixins" as bulma-mixins;
 
 .controls {
   display: grid;
@@ -79,7 +79,7 @@
   }
 }
 
-@include touch {
+@include bulma-mixins.touch {
   .controls {
     grid-template-columns: 1fr;
     align-items: stretch;
@@ -91,7 +91,7 @@
   }
 }
 
-@include mobile {
+@include bulma-mixins.mobile {
   .card-heading {
     flex-direction: column-reverse;
     gap: 0.75rem;
