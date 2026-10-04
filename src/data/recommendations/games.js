@@ -108,8 +108,6 @@ const games = {
   sections: [
     {
       title: "Half-Life franchise",
-      description:
-        "The complete story-focused series, including Gearbox's three expansions.",
       items: [
         {
           title: "Half-Life",
@@ -175,8 +173,6 @@ const games = {
     },
     {
       title: "Assassin's Creed franchise",
-      description:
-        "The main story releases and substantial narrative spin-offs in release order.",
       items: [
         {
           title: "Assassin's Creed",
@@ -369,8 +365,6 @@ const games = {
     },
     {
       title: "Uncharted series",
-      description:
-        "Every distinct Uncharted game, excluding collections and remasters.",
       items: [
         {
           title: "Uncharted: Drake's Fortune",
@@ -430,8 +424,6 @@ const games = {
     },
     {
       title: "The Last of Us series",
-      description:
-        "Every distinct story release, with remasters and the Part I remake represented by their original game.",
       items: [
         {
           title: "The Last of Us",
@@ -455,7 +447,6 @@ const games = {
     },
     {
       title: "Death Stranding series",
-      description: "Both released entries in Kojima Productions' series.",
       items: [
         {
           title: "Death Stranding",
@@ -479,8 +470,6 @@ const games = {
     },
     {
       title: "Tomb Raider franchise",
-      description:
-        "The mainline adventures and substantial standalone Lara Croft spin-offs, excluding ports and remasters.",
       items: [
         {
           title: "Tomb Raider",
@@ -513,8 +502,6 @@ const games = {
     },
     {
       title: "Metro series",
-      description:
-        "All four released story games, including the virtual-reality prequel.",
       items: [
         {
           title: "Metro 2033",
@@ -547,8 +534,6 @@ const games = {
     },
     {
       title: "Red Dead Redemption series",
-      description:
-        "The complete released Red Dead line, including Undead Nightmare's standalone campaign.",
       items: [
         {
           title: "Red Dead Redemption",
