@@ -17,6 +17,7 @@ import RecommendationGallery from "@/components/recommendation-gallery/recommend
 import Tags from "@/components/tags/tags"
 import recommendations from "@/data/recommendations"
 
+import "../admonition.scss"
 import * as styles from "./recommendations.module.scss"
 
 const categoryDetails = {
@@ -222,6 +223,13 @@ const RecommendationsPage = ({ location }) => {
         Books, games, documentaries, and other things I think are worth your
         time.
       </p>
+
+      <div className="blog-post">
+        <div className="admonition warning" role="note">
+          <p className="admonition-title">Warning</p>
+          <p>May contain AI generated descriptions</p>
+        </div>
+      </div>
 
       <div className={`box ${styles.controls}`}>
         <div className={styles.searchControl}>
