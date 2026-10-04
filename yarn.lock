@@ -12393,7 +12393,6 @@ __metadata:
     katex: "npm:^0.16.20"
     lint-staged: "npm:>=15"
     lodash: "npm:^4.17.21"
-    material-design-color: "npm:^2.3.2"
     node-gyp: "npm:^11.0.0"
     playwright: "npm:1.49.1"
     prettier: "npm:^3.4.2"
@@ -13063,13 +13062,6 @@ __metadata:
   bin:
     marked: bin/marked.js
   checksum: e09da211544b787ecfb25fed07af206060bf7cd6d9de6cb123f15c496a57f83b7aabea93340aaa94dae9c94e097ae129377cad6310abc16009590972e85f4212
-  languageName: node
-  linkType: hard
-
-"material-design-color@npm:^2.3.2":
-  version: 2.3.2
-  resolution: "material-design-color@npm:2.3.2"
-  checksum: 2c6f7a65b0594ba50feafa962d4022302bcc779a6d6a0ed3dee7443d561578b1d8c74f6efd92deca29a1a5db4784bf7c5d5b5bd58df8739270ef60fdf0198afb
   languageName: node
   linkType: hard
 

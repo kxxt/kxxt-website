@@ -1,4 +1,4 @@
-@import "../../../node_modules/bulma/sass/utilities/mixins";
+@use "bulma/sass/utilities/mixins" as bulma-mixins;
 
 .blog-post-nav {
   display: flex;
@@ -27,7 +27,7 @@
   }
 }
 
-@include mobile() {
+@include bulma-mixins.mobile() {
   .blog-post-nav > :global(.box) {
     width: 100%;
   }

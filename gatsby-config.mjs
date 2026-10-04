@@ -29,7 +29,15 @@ export default {
     //   resolve: "gatsby-plugin-exclude",
     //   options: { paths: ["/content/**"] }
     // },
-    "gatsby-plugin-sass",
+    {
+      resolve: "gatsby-plugin-sass",
+      options: {
+        sassOptions: {
+          // Gatsby's bundled sass-loader still uses the legacy JavaScript API.
+          silenceDeprecations: ["legacy-js-api"],
+        },
+      },
+    },
 
     `gatsby-plugin-image`,
     {
