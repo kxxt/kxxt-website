@@ -1,0 +1,99 @@
+@import "~bulma/sass/utilities/mixins";
+
+.controls {
+  display: grid;
+  grid-template-columns: minmax(16rem, 1fr) auto;
+  align-items: end;
+  gap: 1.5rem;
+  margin-bottom: 1rem !important;
+
+  :global(.buttons) {
+    margin-bottom: 0;
+  }
+}
+
+.search-control {
+  max-width: 32rem;
+}
+
+.result-count {
+  margin-bottom: 0.75rem;
+  color: var(--bulma-text-weak);
+  font-size: 0.85rem;
+}
+
+.recommendation-group + .recommendation-group {
+  margin-top: 1.5rem;
+}
+
+.section-heading {
+  margin-bottom: 0.75rem;
+
+  :global(.title) {
+    margin-bottom: 0.5rem;
+  }
+
+  :global(.subtitle) {
+    margin-bottom: 0;
+  }
+}
+
+.card-column {
+  display: flex;
+}
+
+.card {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
+
+.card-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  :global(.tags) {
+    margin-top: auto;
+    margin-bottom: 0;
+    padding-top: 1.25rem;
+  }
+}
+
+.card-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+
+  :global(.title) {
+    margin-bottom: 0.5rem;
+  }
+
+  :global(.subtitle) {
+    margin-bottom: 1.25rem;
+  }
+
+  > :global(.tag) {
+    flex: none;
+  }
+}
+
+@include touch {
+  .controls {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .search-control {
+    max-width: none;
+  }
+}
+
+@include mobile {
+  .card-heading {
+    flex-direction: column-reverse;
+    gap: 0.75rem;
+  }
+}
