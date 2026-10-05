@@ -13,8 +13,17 @@ const games: RecommendationCollection = {
       year: "2022",
       description:
         "A playful first-person adventure that makes non-Euclidean geometry something you can explore and gradually understand.",
-      tags: ["Puzzle", "Exploration", "Indie"],
+      tags: ["Puzzle", "Math", "Indie"],
       url: "https://store.steampowered.com/app/1256230/Hyperbolica/",
+    },
+    {
+      title: "4D Golf",
+      creator: "CodeParade",
+      year: "2024",
+      description:
+        "The only actual 4D game in first personal view AFAIK.",
+      tags: ["Puzzle", "Math", "Golf"],
+      url: "https://store.steampowered.com/app/2147950/4D_Golf/",
     },
     {
       title: "Silent Hill 2",
