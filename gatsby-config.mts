@@ -27,7 +27,11 @@ interface FeedQuery {
 }
 
 const config: GatsbyConfig = {
-  graphqlTypegen: { generateOnBuild: true },
+  graphqlTypegen: {
+    generateOnBuild: true,
+    // Vercel moves our hooks into gatsby-node.ts.__vercel_builder_backup__.ts.
+    documentSearchPaths: ["./gatsby-node*.ts", "./plugins/**/gatsby-node.ts"],
+  },
   siteMetadata: {
     title: `kxxt`,
     author: {
