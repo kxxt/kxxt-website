@@ -1,37 +1,29 @@
 // Thanks to https://github.com/asciinema/asciinema-player/issues/72#issuecomment-1051545675
 
 import React, { useEffect, useRef, useState } from "react"
+import type { PlayerOptions } from "asciinema-player"
 import "asciinema-player/dist/bundle/asciinema-player.css"
 
-type AsciinemaPlayerProps = {
+type AsciinemaPlayerProps = PlayerOptions & {
   src: string
-  // START asciinemaOptions
-  cols?: string
-  rows?: string
-  autoPlay?: boolean
-  preload?: boolean
-  loop?: boolean | number
-  startAt?: number | string
-  speed?: number
-  idleTimeLimit?: number
-  theme?: string
-  poster?: string
-  fit?: string
-  fontSize?: string
-  // END asciinemaOptions
 }
 
 function AsciinemaPlayer({ src, ...asciinemaOptions }: AsciinemaPlayerProps) {
   const ref = useRef<HTMLDivElement>(null)
   const [player, setPlayer] = useState<typeof import("asciinema-player")>()
   useEffect(() => {
-    import("asciinema-player").then(p => {
-      setPlayer(p)
+    let cancelled = false
+    import("asciinema-player").then(module => {
+      if (!cancelled) setPlayer(module)
     })
+    return () => {
+      cancelled = true
+    }
   }, [])
   useEffect(() => {
     const currentRef = ref.current
-    const instance = player?.create(src, currentRef, asciinemaOptions)
+    if (!player || !currentRef) return
+    const instance = player.create(src, currentRef, asciinemaOptions)
     return () => {
       instance?.dispose()
     }

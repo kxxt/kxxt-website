@@ -3,3 +3,4 @@ package.json
 package-lock.json
 public
 static
+src/gatsby-types.d.ts

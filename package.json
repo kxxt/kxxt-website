@@ -68,37 +68,53 @@
   "devDependencies": {
     "@babel/core": "^7.26.0",
     "@babel/eslint-parser": "^7.26.5",
+    "@types/hast": "^3.0.0",
+    "@types/lodash": "^4.17.17",
+    "@types/mdast": "^4.0.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "@types/react-modal-image": "^2.0.5",
+    "@types/unist": "^3.0.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^9.18.0",
     "husky": ">=9",
     "lint-staged": ">=15",
+    "mdast-util-directive": "^3.0.0",
+    "mdast-util-to-hast": "^13.0.0",
     "node-gyp": "^11.0.0",
     "playwright": "1.49.1",
     "prettier": "^3.4.2",
     "sass": "^1.83.4",
+    "tsx": "^4.19.0",
     "typescript": "^5.7.3",
+    "unified": "^11.0.0",
     "webpack": "^5.97.1"
   },
   "homepage": "https://www.kxxt.dev",
+  "resolutions": {
+    "@types/react": "^18.3.0"
+  },
   "keywords": [
     "gatsby",
     "blog",
     "personal website"
   ],
   "license": "See LICENSE",
-  "main": "n/a",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kxxt/kxxt-website.git"
   },
   "scripts": {
-    "build": "gatsby build",
+    "build": "gatsby build && tsc --noEmit",
+    "build:limited": "GATSBY_CPU_COUNT=1 PARCEL_WORKERS=1 GATSBY_EXPERIMENTAL_QUERY_CONCURRENCY=1 GATSBY_CONCURRENT_DOWNLOAD=1 UV_THREADPOOL_SIZE=1 VIPS_CONCURRENCY=1 GOMAXPROCS=1 NODE_OPTIONS='--max-old-space-size=3072 --v8-pool-size=1' yarn build",
+    "typecheck": "tsc --noEmit",
     "develop": "gatsby develop",
-    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
+    "format": "prettier --write \"**/*.{js,jsx,mjs,ts,tsx,mts,json,md}\"",
     "start": "gatsby develop",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
-    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1",
+    "test": "tsx --test --test-concurrency=1 tests/*.test.*",
     "prettier": "prettier --write .",
     "prepare": "husky install"
   },
