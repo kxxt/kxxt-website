@@ -1,5 +1,7 @@
 @charset "utf-8";
 
+// Include icon sizing before Bulma to avoid load-time shifts and preserve overrides.
+@use "@fortawesome/fontawesome-svg-core/styles.css";
 @use "bulma/bulma";
 @use "bulma/sass/utilities/mixins" as bulma-mixins;
 
